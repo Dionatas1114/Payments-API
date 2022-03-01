@@ -9,6 +9,7 @@ public interface ItemMessages {
     String itemDataDeleted = "Dados do item deletados com sucesso!";
     //Error Messages
     String itemNotCreated = "Não foi possível cadastrar o item, tente mais tarde";
+    String itemAlreadyExists = "Item já cadastrado, tente inserir outros dados";
     String itemDataNotUpdated = "Não foi possível atualizar os dados do item, tente mais tarde";
     String itemDataNotDeleted = "Não foi possível deletar os dados do item, tente mais tarde";
 }

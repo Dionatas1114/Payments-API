@@ -67,12 +67,12 @@ public class UserController {
         Object result;
 
         String name = userData.getName ();
-        UserModel userName = userRepository.findByName(name);
-        boolean userNameAlreadyExists = Objects.equals(userName.name, name);
+        UserModel userModel = userRepository.findByName(name);
+        boolean userNameAlreadyExists = Objects.equals(userModel.name, name);
 
         String email = userData.getEmail();
-        UserModel userEmail = userRepository.findByEmail(email);
-        boolean userEmailAlreadyExists = Objects.equals(userEmail.email, email);
+        UserModel user_model = userRepository.findByEmail(email);
+        boolean userEmailAlreadyExists = Objects.equals(user_model.email, email);
 
         try {
             if (userNameAlreadyExists || userEmailAlreadyExists){
@@ -89,18 +89,18 @@ public class UserController {
 
     @RequestMapping(path = {"api/users/{id}"}, method = RequestMethod.PUT)
     public ResponseEntity<String> updateUser(@Validated @PathVariable("id") UUID userId, @RequestBody UserModel userData){
-        ResponseEntity<String> result;
         logger.info(String.format("UPDATE: /api/users/%s", userId));
-        
+        ResponseEntity<String> result;
+
         boolean userNotExists = !userRepository.existsById(userId);
 
         String name = userData.getName ();
-        UserModel userName = userRepository.findByName(name);
-        boolean userNameAlreadyExists = Objects.equals(userName.name, name);
+        UserModel userModel = userRepository.findByName(name);
+        boolean userNameAlreadyExists = Objects.equals(userModel.name, name);
 
         String email = userData.getEmail();
-        UserModel userEmail = userRepository.findByEmail(email);
-        boolean userEmailAlreadyExists = Objects.equals(userEmail.email, email);
+        UserModel user_model = userRepository.findByEmail(email);
+        boolean userEmailAlreadyExists = Objects.equals(user_model.email, email);
         
         try {
             if (userNotExists){
@@ -121,8 +121,9 @@ public class UserController {
 
     @RequestMapping(path = {"api/users/{id}"}, method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteUser(@PathVariable("id") UUID userId) {
-        ResponseEntity<String> result;
         logger.info(String.format("DELETE: /api/users/%s", userId));
+        ResponseEntity<String> result;
+
         try {
             if (!userRepository.existsById(userId)) {
                 result = new ResponseEntity<>(userNotFound, HttpStatus.NOT_FOUND);
