@@ -29,6 +29,7 @@ public class ItemController extends BaseEntity {
     public Object findAllItems(){
         logger.info("GET: /api/items");
         Object result;
+
         try {
             if (itemRepository.count() == 0)
                 result = new ResponseEntity<>(ItemMessages.itemsEmpty, HttpStatus.NOT_FOUND);
@@ -47,6 +48,7 @@ public class ItemController extends BaseEntity {
     public Object findItem(@PathVariable("id") UUID itemId){
         logger.info(String.format("GET: /api/items/%s", itemId));
         Object result;
+
         try {
             Optional<ItemModel> itemFind = itemRepository.findById(itemId);
             if (itemFind.isPresent()){
@@ -64,12 +66,19 @@ public class ItemController extends BaseEntity {
 
     @RequestMapping(path = {"api/items"}, method = RequestMethod.POST)
     public Object createItem(@RequestBody ItemModel itemData) {
-        Object result;
         logger.info("POST: /api/items");
-        //TODO FILTER IF ITEM ALREADY EXISTS
+        Object result;
+
+        String itemName = itemData.getItemName();
+        boolean itemNameAlreadyExists = itemRepository.existsByItemName(itemName);
+
         try {
-            itemService.saveItemData (itemData);
-            result = new ResponseEntity<>(itemData, HttpStatus.CREATED);
+            if (itemNameAlreadyExists){
+                result = new ResponseEntity<>(ItemMessages.itemAlreadyExists, HttpStatus.CONFLICT);
+            } else {
+                itemService.saveItemData (itemData);
+                result = new ResponseEntity<>(itemData, HttpStatus.CREATED);
+            }
         } catch (Exception e) {
             result = new ResponseEntity<>(ItemMessages.itemNotCreated, HttpStatus.BAD_REQUEST);
             e.printStackTrace();
@@ -79,9 +88,9 @@ public class ItemController extends BaseEntity {
 
     @RequestMapping(path = {"api/items/{id}"}, method = RequestMethod.PUT)
     public ResponseEntity<String> updateItem(@PathVariable("id") UUID itemId, @RequestBody ItemModel itemData){
-        ResponseEntity<String> result;
         logger.info(String.format("UPDATE: /api/items/%s", itemId));
-        //TODO FILTER IF ITEM ALREADY EXISTS
+        ResponseEntity<String> result;
+
         try {
             if (!itemRepository.existsById(itemId)){
                 result = new ResponseEntity<>(ItemMessages.itemNotFound, HttpStatus.NOT_FOUND);
@@ -99,8 +108,9 @@ public class ItemController extends BaseEntity {
 
     @RequestMapping(path = {"api/items/{id}"}, method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteItem(@PathVariable("id") UUID itemId) {
-        ResponseEntity<String> result;
         logger.info(String.format("DELETE: /api/items/%s", itemId));
+        ResponseEntity<String> result;
+
         try {
             if (!itemRepository.existsById(itemId)) {
                 result = new ResponseEntity<>(ItemMessages.itemNotFound, HttpStatus.NOT_FOUND);
