@@ -1,11 +1,13 @@
 package com.api.payments.repository;
 
 import com.api.payments.model.ItemModel;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ItemRepository extends CrudRepository<ItemModel, UUID> {
+public interface ItemRepository extends JpaRepository<ItemModel, UUID> {
+
+    boolean existsByItemName(String itemName);
 
     boolean existsById(UUID itemId);
 

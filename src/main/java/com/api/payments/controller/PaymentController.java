@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,6 +28,7 @@ public class PaymentController {
     public Object findAllPayments(){
         logger.info("GET: /api/payments");
         Object result;
+
         try {
             if (paymentRepository.count() == 0)
                 result = new ResponseEntity<>(PaymentMessages.paymentsEmpty, HttpStatus.NOT_FOUND);
@@ -47,6 +47,7 @@ public class PaymentController {
     public Object findPayment(@PathVariable("id") UUID paymentId){
         logger.info(String.format("GET: /api/payments/%s", paymentId));
         Object result;
+
         try {
             Optional<PaymentModel> paymentFind = paymentRepository.findById(paymentId);
             if (paymentFind.isPresent()){
@@ -66,7 +67,7 @@ public class PaymentController {
     public Object createPayment(@RequestBody PaymentModel paymentData) {
         Object result;
         logger.info("POST: /api/payments");
-        //TODO FILTER IF PAYMENT ALREADY EXISTS
+
         try {
             paymentService.savePaymentData (paymentData);
             result = new ResponseEntity<>(paymentData, HttpStatus.CREATED);
@@ -81,7 +82,7 @@ public class PaymentController {
     public ResponseEntity<String> updatePayment(@PathVariable("id") UUID paymentId, @RequestBody PaymentModel paymentData){
         ResponseEntity<String> result;
         logger.info(String.format("UPDATE: /api/payments/%s", paymentId));
-        //TODO FILTER IF PAYMENT ALREADY EXISTS
+
         try {
             if (!paymentRepository.existsById(paymentId)){
                 result = new ResponseEntity<>(PaymentMessages.paymentNotFound, HttpStatus.NOT_FOUND);
@@ -101,6 +102,7 @@ public class PaymentController {
     public ResponseEntity<String> deletePayment(@PathVariable("id") UUID paymentId) {
         ResponseEntity<String> result;
         logger.info(String.format("DELETE: /api/payments/%s", paymentId));
+
         try {
             if (!paymentRepository.existsById(paymentId)) {
                 result = new ResponseEntity<>(PaymentMessages.paymentNotFound, HttpStatus.NOT_FOUND);

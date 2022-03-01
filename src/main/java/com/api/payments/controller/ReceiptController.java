@@ -62,9 +62,9 @@ public class ReceiptController {
 
     @RequestMapping(path = {"api/receipts"}, method = RequestMethod.POST)
     public Object createReceipt(@RequestBody ReceiptModel receiptData) {
-        Object result;
         logger.info("POST: /api/receipts");
-        //TODO FILTER IF RECEIPT ALREADY EXISTS
+        Object result;
+
         try {
             receiptService.saveReceiptData (receiptData);
             result = new ResponseEntity<>(receiptData, HttpStatus.CREATED);
@@ -77,9 +77,9 @@ public class ReceiptController {
 
     @RequestMapping(path = {"api/receipts/{id}"}, method = RequestMethod.PUT)
     public ResponseEntity<String> updateReceipt(@PathVariable("id") UUID receiptId, @RequestBody ReceiptModel receiptData){
-        ResponseEntity<String> result;
         logger.info(String.format("UPDATE: /api/receipts/%s", receiptId));
-        //TODO FILTER IF RECEIPT ALREADY EXISTS
+        ResponseEntity<String> result;
+
         try {
             if (!receiptRepository.existsById(receiptId)){
                 result = new ResponseEntity<>(ReceiptMessages.receiptNotFound, HttpStatus.NOT_FOUND);
@@ -97,8 +97,9 @@ public class ReceiptController {
 
     @RequestMapping(path = {"api/receipts/{id}"}, method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteReceiptId(@PathVariable("id") UUID receiptId) {
-        ResponseEntity<String> result;
         logger.info(String.format("DELETE: /api/receipts/%s", receiptId));
+        ResponseEntity<String> result;
+
         try {
             if (!receiptRepository.existsById(receiptId)) {
                 result = new ResponseEntity<>(ReceiptMessages.receiptNotFound, HttpStatus.NOT_FOUND);
