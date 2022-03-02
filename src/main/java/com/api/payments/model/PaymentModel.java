@@ -2,7 +2,6 @@ package com.api.payments.model;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.UUID;
@@ -41,6 +40,7 @@ public class PaymentModel extends BaseEntity {
     public LocalDate paymentDate;
 
     @Column(nullable = false, length = 10)
+    public String paymentType = "unique"; //unique daily weekly monthly and yearly
     public String currency = "BRL"; //R$
     public double interest = 0.00;
     public double fine = 0.00;

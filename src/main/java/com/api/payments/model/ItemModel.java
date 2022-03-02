@@ -1,9 +1,6 @@
 package com.api.payments.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import javax.persistence.*;
 import java.util.UUID;
 
@@ -28,7 +25,7 @@ public class ItemModel extends BaseEntity {
 
     public String productBrand;
     public String category = "Other";
-    public String manufacturer = "Not Informed"; //fabricante
+    public String manufacturer = "Uninformed"; //fabricante
     public String captionPacking; //KG, L
 
     @Column(nullable = false)

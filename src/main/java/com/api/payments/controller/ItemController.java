@@ -10,8 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/")
@@ -64,16 +63,71 @@ public class ItemController extends BaseEntity {
         return result;
     }
 
+    @RequestMapping(path = {"api/items/byItemName"}, method = RequestMethod.GET)
+    public Object findItemsByItemName(@RequestBody ItemModel itemData){
+        logger.info("GET: /api/items/byItemName");
+        Object result;
+
+        String itemName = itemData.itemName;
+
+        try {
+            List<ItemModel> itemsFound = itemRepository.findByItemName(itemName);
+            if (itemsFound.size() > 0){
+                result = new ResponseEntity<>(itemsFound, HttpStatus.OK);
+            } else {
+                result = new ResponseEntity<>(ItemMessages.itemNotFound, HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e){
+            result = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @RequestMapping(path = {"api/items/byItemType"}, method = RequestMethod.GET)
+    public Object findItemsByItemType(@RequestBody ItemModel itemData){
+        logger.info("GET: /api/items/byItemType");
+        Object result;
+
+        String itemType = itemData.itemType;
+
+        try {
+            List<ItemModel> itemsFound = itemRepository.findByItemType(itemType);
+            if (itemsFound.size() > 0){
+                result = new ResponseEntity<>(itemsFound, HttpStatus.OK);
+            } else {
+                result = new ResponseEntity<>(ItemMessages.itemNotFound, HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e){
+            result = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     @RequestMapping(path = {"api/items"}, method = RequestMethod.POST)
     public Object createItem(@RequestBody ItemModel itemData) {
         logger.info("POST: /api/items");
         Object result;
 
-        String itemName = itemData.getItemName();
-        boolean itemNameAlreadyExists = itemRepository.existsByItemName(itemName);
+        String itemName = itemData.itemName;
+        String itemType = itemData.itemType;
+        String productBrand = itemData.itemType;
+        String captionPacking = itemData.itemType;
+
+        List<ItemModel> foundItemsName = itemRepository.findByItemName(itemName);
+        List<ItemModel> foundItemsType = itemRepository.findByItemType(itemType);
+        List<ItemModel> foundItemsProductBrand = itemRepository.findByProductBrand(productBrand);
+        List<ItemModel> foundItemsCaptionPacking = itemRepository.findByCaptionPacking(captionPacking);
+
+        boolean itemAlreadyExists =
+                foundItemsName.size() > 0
+                && foundItemsType.size() > 0
+                && foundItemsProductBrand.size() > 0
+                && foundItemsCaptionPacking.size() > 0;
 
         try {
-            if (itemNameAlreadyExists){
+            if (itemAlreadyExists){
                 result = new ResponseEntity<>(ItemMessages.itemAlreadyExists, HttpStatus.CONFLICT);
             } else {
                 itemService.saveItemData (itemData);
