@@ -39,8 +39,9 @@ public class ReceiptModel extends BaseEntity {
     public LocalDate expirationDate;
     public LocalDate paymentDate;
 
-    @Column(nullable = false, length = 5)
-    public String currency = "R$";
+    @Column(nullable = false, length = 10)
+    public String receiptType = "unique"; //unique daily weekly monthly and yearly
+    public String currency = "BRL"; //R$
     public double interest = 0.00;
     public double fine = 0.00;
     public double increasedValue = 0.00;
