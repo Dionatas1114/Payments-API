@@ -9,9 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.util.*;
 
 @RestController
 @RequestMapping("/")
@@ -29,6 +28,7 @@ public class ReceiptController {
     public Object findAllReceipts(){
         logger.info("GET: /api/receipts");
         Object result;
+
         try {
             if (receiptRepository.count() == 0){
                 result = new ResponseEntity<>(ReceiptMessages.receiptsEmpty, HttpStatus.NOT_FOUND);
@@ -46,10 +46,37 @@ public class ReceiptController {
     public Object findReceipt(@PathVariable("id") UUID receiptId){
         logger.info(String.format("GET: /api/receipts/%s", receiptId));
         Object result;
+
         try {
-            Optional<ReceiptModel> receiptFind = this.receiptRepository.findById(receiptId);
+            Optional<ReceiptModel> receiptFind = receiptRepository.findById(receiptId);
+
             if (receiptFind.isPresent()){
                 result = new ResponseEntity<>(receiptFind.get(), HttpStatus.OK);
+            } else {
+                result = new ResponseEntity<>(ReceiptMessages.receiptNotFound, HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e){
+            result = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+//    List<ReceiptModel> findByDebtorFullName(LocalDate debtorFullName);
+//    List<ReceiptModel> findByPaymentStatus(LocalDate paymentStatus);
+//    List<ReceiptModel> findByPaymentMethod(LocalDate paymentMethod);
+
+    @RequestMapping(path = {"api/receipts/byExpirationDate"}, method = RequestMethod.GET)
+    public Object findReceiptsByExpirationDate(@RequestBody ReceiptModel receiptData){
+        logger.info("GET: /api/receipts/byExpirationDate");
+        Object result;
+
+        try {
+            LocalDate expirationDate = receiptData.expirationDate;
+            List<ReceiptModel> foundReceipts = receiptRepository.findByExpirationDate(expirationDate);
+
+            if (foundReceipts.size() > 0){
+                result = new ResponseEntity<>(foundReceipts, HttpStatus.OK);
             } else {
                 result = new ResponseEntity<>(ReceiptMessages.receiptNotFound, HttpStatus.NOT_FOUND);
             }

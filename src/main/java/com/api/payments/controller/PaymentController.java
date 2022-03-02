@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.Optional;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.util.*;
 
 @RestController
 @RequestMapping("/")
@@ -44,15 +44,41 @@ public class PaymentController {
     }
 
     @RequestMapping(path = {"api/payments/{id}"}, method = RequestMethod.GET)
-    public Object findPayment(@PathVariable("id") UUID paymentId){
+    public Object findPaymentById(@PathVariable("id") UUID paymentId){
         logger.info(String.format("GET: /api/payments/%s", paymentId));
         Object result;
 
         try {
             Optional<PaymentModel> paymentFind = paymentRepository.findById(paymentId);
+
             if (paymentFind.isPresent()){
                 PaymentModel payment = paymentFind.get();
                 result = new ResponseEntity<>(payment, HttpStatus.OK);
+            } else {
+                result = new ResponseEntity<>(PaymentMessages.paymentNotFound, HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e){
+            result = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+//    List<PaymentModel> findByDebtorFullName(LocalDate debtorFullName);
+//    List<PaymentModel> findByPaymentStatus(LocalDate paymentStatus);
+//    List<PaymentModel> findByPaymentMethod(LocalDate paymentMethod);
+
+    @RequestMapping(path = {"api/payments/byExpirationDate"}, method = RequestMethod.GET)
+    public Object findPaymentsByExpirationDate(@RequestBody PaymentModel paymentData){
+        logger.info("GET: /api/payments/byExpirationDate");
+        Object result;
+
+        try {
+            LocalDate expirationDate = paymentData.expirationDate;
+            List<PaymentModel> paymentsFound = paymentRepository.findByExpirationDate(expirationDate);
+
+            if (paymentsFound.size() > 0){
+                result = new ResponseEntity<>(paymentsFound, HttpStatus.OK);
             } else {
                 result = new ResponseEntity<>(PaymentMessages.paymentNotFound, HttpStatus.NOT_FOUND);
             }

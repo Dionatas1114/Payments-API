@@ -10,9 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/")
@@ -30,6 +28,7 @@ public class UserController {
     public Object findAllUsers(){
         logger.info("GET: /api/users");
         Object result;
+
         try {
             if (userRepository.count() == 0){
                 result = new ResponseEntity<>(usersEmpty, HttpStatus.NOT_FOUND);
@@ -47,6 +46,7 @@ public class UserController {
     public Object findUser(@PathVariable("id") UUID userId){
         logger.info(String.format("GET: /api/users/%s", userId));
         Object result;
+
         try {
             Optional<UserModel> userFind = userRepository.findById(userId);
             if (userFind.isPresent ()){
