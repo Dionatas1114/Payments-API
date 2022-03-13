@@ -8,7 +8,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 @SpringBootApplication
 public class PaymentsApplication {
 
-	private static Logger logger = Logger.getLogger(PaymentsApplication.class);
+	private static final Logger logger = Logger.getLogger(PaymentsApplication.class);
 
 	public static void main(String[] args) {
 		ConfigurableApplicationContext context =
