@@ -2,20 +2,15 @@ package com.api.payments.model;
 
 import lombok.*;
 import javax.persistence.*;
-import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "items")
 @EqualsAndHashCode(callSuper = true)
 public class ItemModel extends BaseEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", updatable = false, unique = true, nullable = false, length = 16)
-    private UUID id;
 
     @Column(nullable = false, length = 50)
     public String itemName;
