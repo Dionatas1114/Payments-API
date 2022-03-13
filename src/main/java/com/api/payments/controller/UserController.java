@@ -1,6 +1,5 @@
 package com.api.payments.controller;
 
-import static com.api.payments.messages.UserMessages.*;
 import com.api.payments.model.UserModel;
 import com.api.payments.repository.UserRepository;
 import com.api.payments.services.UserService;
@@ -10,7 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.*;
+
+import static com.api.payments.messages.UserMessages.*;
 
 @RestController
 @RequestMapping("/")
@@ -66,23 +68,11 @@ public class UserController {
         logger.info("POST: /api/users");
         Object result;
 
-        String name = userData.getName ();
-        UserModel userModel = userRepository.findByName(name);
-        boolean userNameAlreadyExists = Objects.equals(userModel.name, name);
-
-        String email = userData.getEmail();
-        UserModel user_model = userRepository.findByEmail(email);
-        boolean userEmailAlreadyExists = Objects.equals(user_model.email, email);
-
         try {
-            if (userNameAlreadyExists || userEmailAlreadyExists){
-                result = new ResponseEntity<>(userAlreadyExists, HttpStatus.CONFLICT);
-            } else {
-                userService.saveUserData (userData);
-                result = new ResponseEntity<>(userData, HttpStatus.CREATED);
-            }
+            userService.saveUserData (userData);
+            result = new ResponseEntity<>(userData, HttpStatus.CREATED);
         } catch (Exception e) {
-            result = new ResponseEntity<>(userAlreadyExists, HttpStatus.BAD_REQUEST);
+            result = new ResponseEntity<>(userNotCreated, HttpStatus.BAD_REQUEST);
         }
         return result;
     }

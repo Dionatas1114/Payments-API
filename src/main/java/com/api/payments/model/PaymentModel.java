@@ -1,27 +1,17 @@
 package com.api.payments.model;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.UUID;
 
-@Builder
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "payments")
 @EqualsAndHashCode(callSuper = true)
 public class PaymentModel extends BaseEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @ApiModelProperty(notes = "Identificação do pagamento no banco de dados")
-    @Column(name = "id", updatable = false, unique = true, nullable = false, length = 16)
-    private UUID id;
 
     @Column(nullable = false, length = 50)
     public String debtorFullName;
