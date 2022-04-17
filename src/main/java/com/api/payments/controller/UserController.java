@@ -1,6 +1,6 @@
 package com.api.payments.controller;
 
-import com.api.payments.model.UserModel;
+import com.api.payments.entity.Users;
 import com.api.payments.repository.UserRepository;
 import com.api.payments.services.UserService;
 import com.sun.istack.logging.Logger;
@@ -35,7 +35,7 @@ public class UserController {
             if (userRepository.count() == 0){
                 result = new ResponseEntity<>(usersEmpty, HttpStatus.NOT_FOUND);
             } else {
-                result = new ResponseEntity<>(userRepository.findAll(), HttpStatus.OK);
+                result = new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
             }
         } catch (Exception e) {
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -50,7 +50,7 @@ public class UserController {
         Object result;
 
         try {
-            Optional<UserModel> userFind = userRepository.findById(userId);
+            Optional<Users> userFind = userRepository.findById(userId);
             if (userFind.isPresent ()){
                 result = new ResponseEntity<>(userFind.get(), HttpStatus.OK);
             } else {
@@ -64,46 +64,39 @@ public class UserController {
     }
 
     @RequestMapping(path = {"api/users"}, method = RequestMethod.POST)
-    public Object createUser(@Validated @RequestBody UserModel userData) {
+    public Object createUser(@Validated @RequestBody Users usersData) {
         logger.info("POST: /api/users");
         Object result;
 
         try {
-            userService.saveUserData (userData);
-            result = new ResponseEntity<>(userData, HttpStatus.CREATED);
+            userService.saveUserData (usersData);
+            result = new ResponseEntity<>(usersData, HttpStatus.CREATED);
         } catch (Exception e) {
-            result = new ResponseEntity<>(userNotCreated, HttpStatus.BAD_REQUEST);
+            result = new ResponseEntity<>(userNotCreated + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return result;
     }
 
     @RequestMapping(path = {"api/users/{id}"}, method = RequestMethod.PUT)
-    public ResponseEntity<String> updateUser(@Validated @PathVariable("id") UUID userId, @RequestBody UserModel userData){
+    public ResponseEntity<String> updateUser(@Validated @PathVariable("id") UUID userId, @RequestBody Users usersData){
         logger.info(String.format("UPDATE: /api/users/%s", userId));
         ResponseEntity<String> result;
 
         boolean userNotExists = !userRepository.existsById(userId);
 
-        String name = userData.getName ();
-        UserModel userModel = userRepository.findByName(name);
-        boolean userNameAlreadyExists = Objects.equals(userModel.name, name);
+        String name = usersData.getName ();
+        Users usersModel = userRepository.findByName(name);
+        boolean userNameAlreadyExists = Objects.equals(usersModel.name, name);
 
-        String email = userData.getEmail();
-        UserModel user_model = userRepository.findByEmail(email);
-        boolean userEmailAlreadyExists = Objects.equals(user_model.email, email);
+        String email = usersData.getEmail();
+        Users users_model = userRepository.findByEmail(email);
+        boolean userEmailAlreadyExists = Objects.equals(users_model.email, email);
         
         try {
-            if (userNotExists){
-                result = new ResponseEntity<>(userNotFound, HttpStatus.NOT_FOUND);
-            } else if (userNameAlreadyExists || userEmailAlreadyExists){
-                result = new ResponseEntity<>(userAlreadyExists, HttpStatus.CONFLICT);
-            } else {
-                userData.setId(userId);
-                userService.saveUserData (userData);
-                result = new ResponseEntity<>(userDataUpdated, HttpStatus.OK);
-            }
+            userService.updateUserData (usersData, userId);
+            result = new ResponseEntity<>(userDataUpdated, HttpStatus.OK);
         } catch (Exception e){
-            result = new ResponseEntity<>(userDataNotUpdated, HttpStatus.BAD_REQUEST);
+            result = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
             e.printStackTrace();
         }
         return result;

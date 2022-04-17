@@ -1,6 +1,6 @@
 package com.api.payments.services;
 
-import com.api.payments.model.ItemModel;
+import com.api.payments.entity.Items;
 import com.api.payments.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,20 +13,20 @@ public class ItemService {
     @Autowired
     private ItemRepository itemRepository;
 
-    public void saveItemData(ItemModel itemData) throws Exception {
+    public void saveItemData(Items itemsData) throws Exception {
 
-        String itemName = itemData.getItemName ();
-        String itemType = itemData.getItemType ();
-        String productBrand = itemData.getProductBrand ();
-        String category = itemData.getCategory ();
-        String manufacturer = itemData.getManufacturer ();
-        String captionPacking = itemData.getCaptionPacking ();
-        double totalPrice = itemData.getTotalPrice ();
-        double unitaryPrice = itemData.getUnitaryPrice ();
-        double discountPrice = itemData.getDiscountPrice ();
-        String barCode = itemData.getBarCode ();
-        String internalCode = itemData.getInternalCode ();
-        String description = itemData.getDescription ();
+        String itemName = itemsData.getItemName ();
+        String itemType = itemsData.getItemType ();
+        String productBrand = itemsData.getProductBrand ();
+        String category = itemsData.getCategory ();
+        String manufacturer = itemsData.getManufacturer ();
+        String captionPacking = itemsData.getCaptionPacking ();
+        double totalPrice = itemsData.getTotalPrice ();
+        double unitaryPrice = itemsData.getUnitaryPrice ();
+        double discountPrice = itemsData.getDiscountPrice ();
+        String barCode = itemsData.getBarCode ();
+        String internalCode = itemsData.getInternalCode ();
+        String description = itemsData.getDescription ();
 
         itemValidator (
                 itemName,
@@ -43,6 +43,6 @@ public class ItemService {
                 description
         );
 
-        itemRepository.save (itemData);
+        itemRepository.save (itemsData);
     }
 }

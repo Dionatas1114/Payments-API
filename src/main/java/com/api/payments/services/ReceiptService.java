@@ -1,6 +1,6 @@
 package com.api.payments.services;
 
-import com.api.payments.model.ReceiptModel;
+import com.api.payments.entity.Receipts;
 import com.api.payments.repository.ReceiptRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,23 +13,23 @@ public class ReceiptService {
     @Autowired
     public ReceiptRepository receiptRepository;
 
-    public void saveReceiptData (ReceiptModel receiptData) throws Exception {
+    public void saveReceiptData (Receipts receiptsData) throws Exception {
 
-        String debtorFullName = receiptData.getDebtorFullName ();
-        String debtorLastName = receiptData.getDebtorLastName ();
-        String paymentMethod = receiptData.getPaymentMethod ();
-        Boolean paymentStatus = receiptData.getPaymentStatus ();
-        LocalDate paymentDate = receiptData.getPaymentDate ();
-        LocalDate expirationDate = receiptData.getExpirationDate ();
-        String currency = receiptData.getCurrency ();
-        double interest = receiptData.getInterest ();
-        double fine = receiptData.getFine ();
-        double increasedValue = receiptData.getIncreasedValue ();
-        double discPayAdvance = receiptData.getDiscPayAdvance ();
-        double originalValue = receiptData.getOriginalValue ();
-        double total = receiptData.getTotal ();
-        String description = receiptData.getDescription ();
-        String messageText = receiptData.getMessageText ();
+        String debtorFullName = receiptsData.getDebtorFullName ();
+        String debtorLastName = receiptsData.getDebtorLastName ();
+        String paymentMethod = receiptsData.getPaymentMethod ();
+        Boolean paymentStatus = receiptsData.getPaymentStatus ();
+        LocalDate paymentDate = receiptsData.getPaymentDate ();
+        LocalDate expirationDate = receiptsData.getExpirationDate ();
+        String currency = receiptsData.getCurrency ();
+        double interest = receiptsData.getInterest ();
+        double fine = receiptsData.getFine ();
+        double increasedValue = receiptsData.getIncreasedValue ();
+        double discPayAdvance = receiptsData.getDiscPayAdvance ();
+        double originalValue = receiptsData.getOriginalValue ();
+        double total = receiptsData.getTotal ();
+        String description = receiptsData.getDescription ();
+        String messageText = receiptsData.getMessageText ();
 
         receiptValidator (
                 debtorFullName,
@@ -49,6 +49,6 @@ public class ReceiptService {
                 messageText
         );
 
-        receiptRepository.save (receiptData);
+        receiptRepository.save (receiptsData);
     }
 }

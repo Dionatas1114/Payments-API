@@ -1,23 +1,23 @@
 package com.api.payments.repository;
 
-import com.api.payments.model.PaymentModel;
+import com.api.payments.entity.Payments;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.time.LocalDate;
 import java.util.*;
 
-public interface PaymentRepository extends JpaRepository<PaymentModel, UUID> {
+public interface PaymentRepository extends JpaRepository<Payments, UUID> {
 
-    List<PaymentModel> findByDebtorFullName(LocalDate debtorFullName);
+    List<Payments> findByDebtorFullName(LocalDate debtorFullName);
 
-    List<PaymentModel> findByPaymentStatus(LocalDate paymentStatus);
+    List<Payments> findByPaymentStatus(LocalDate paymentStatus);
 
-    List<PaymentModel> findByPaymentMethod(LocalDate paymentMethod);
+    List<Payments> findByPaymentMethod(LocalDate paymentMethod);
 
-    List<PaymentModel> findByExpirationDate(LocalDate expirationDate);
+    List<Payments> findByExpirationDate(LocalDate expirationDate);
 
     boolean existsById(UUID paymentId);
 
-    Optional<PaymentModel> findById(UUID paymentId);
+    Optional<Payments> findById(UUID paymentId);
 
     void deleteById(UUID paymentId);
 }

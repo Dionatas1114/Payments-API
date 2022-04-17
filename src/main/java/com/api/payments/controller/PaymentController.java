@@ -1,7 +1,7 @@
 package com.api.payments.controller;
 
 import com.api.payments.messages.PaymentMessages;
-import com.api.payments.model.PaymentModel;
+import com.api.payments.entity.Payments;
 import com.api.payments.repository.PaymentRepository;
 import com.api.payments.services.PaymentService;
 import com.sun.istack.logging.Logger;
@@ -33,7 +33,7 @@ public class PaymentController {
             if (paymentRepository.count() == 0)
                 result = new ResponseEntity<>(PaymentMessages.paymentsEmpty, HttpStatus.NOT_FOUND);
             else {
-                Iterable<PaymentModel> allPayments = paymentRepository.findAll();
+                Iterable<Payments> allPayments = paymentRepository.findAll();
                 result = new ResponseEntity<>(allPayments, HttpStatus.OK);
             }
         } catch (Exception e){
@@ -49,11 +49,11 @@ public class PaymentController {
         Object result;
 
         try {
-            Optional<PaymentModel> paymentFind = paymentRepository.findById(paymentId);
+            Optional<Payments> paymentFind = paymentRepository.findById(paymentId);
 
             if (paymentFind.isPresent()){
-                PaymentModel payment = paymentFind.get();
-                result = new ResponseEntity<>(payment, HttpStatus.OK);
+                Payments payments = paymentFind.get();
+                result = new ResponseEntity<>(payments, HttpStatus.OK);
             } else {
                 result = new ResponseEntity<>(PaymentMessages.paymentNotFound, HttpStatus.NOT_FOUND);
             }
@@ -69,13 +69,13 @@ public class PaymentController {
 //    List<PaymentModel> findByPaymentMethod(LocalDate paymentMethod);
 
     @RequestMapping(path = {"api/payments/byExpirationDate"}, method = RequestMethod.GET)
-    public Object findPaymentsByExpirationDate(@RequestBody PaymentModel paymentData){
+    public Object findPaymentsByExpirationDate(@RequestBody Payments paymentsData){
         logger.info("GET: /api/payments/byExpirationDate");
         Object result;
 
         try {
-            LocalDate expirationDate = paymentData.expirationDate;
-            List<PaymentModel> paymentsFound = paymentRepository.findByExpirationDate(expirationDate);
+            LocalDate expirationDate = paymentsData.expirationDate;
+            List<Payments> paymentsFound = paymentRepository.findByExpirationDate(expirationDate);
 
             if (paymentsFound.size() > 0){
                 result = new ResponseEntity<>(paymentsFound, HttpStatus.OK);
@@ -90,13 +90,13 @@ public class PaymentController {
     }
 
     @RequestMapping(path = {"api/payments"}, method = RequestMethod.POST)
-    public Object createPayment(@RequestBody PaymentModel paymentData) {
+    public Object createPayment(@RequestBody Payments paymentsData) {
         Object result;
         logger.info("POST: /api/payments");
 
         try {
-            paymentService.savePaymentData (paymentData);
-            result = new ResponseEntity<>(paymentData, HttpStatus.CREATED);
+            paymentService.savePaymentData (paymentsData);
+            result = new ResponseEntity<>(paymentsData, HttpStatus.CREATED);
         } catch (Exception e) {
             result = new ResponseEntity<>(PaymentMessages.paymentNotCreated, HttpStatus.BAD_REQUEST);
             e.printStackTrace();
@@ -105,7 +105,7 @@ public class PaymentController {
     }
 
     @RequestMapping(path = {"api/payments/{id}"}, method = RequestMethod.PUT)
-    public ResponseEntity<String> updatePayment(@PathVariable("id") UUID paymentId, @RequestBody PaymentModel paymentData){
+    public ResponseEntity<String> updatePayment(@PathVariable("id") UUID paymentId, @RequestBody Payments paymentsData){
         ResponseEntity<String> result;
         logger.info(String.format("UPDATE: /api/payments/%s", paymentId));
 
@@ -113,8 +113,8 @@ public class PaymentController {
             if (!paymentRepository.existsById(paymentId)){
                 result = new ResponseEntity<>(PaymentMessages.paymentNotFound, HttpStatus.NOT_FOUND);
             } else {
-                paymentData.setId(paymentId);
-                paymentService.savePaymentData (paymentData);
+                paymentsData.setId(paymentId);
+                paymentService.savePaymentData (paymentsData);
                 result = new ResponseEntity<>(PaymentMessages.paymentDataUpdated, HttpStatus.OK);
             }
         } catch (Exception e){

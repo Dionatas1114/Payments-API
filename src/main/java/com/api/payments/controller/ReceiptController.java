@@ -1,7 +1,7 @@
 package com.api.payments.controller;
 
 import com.api.payments.messages.ReceiptMessages;
-import com.api.payments.model.ReceiptModel;
+import com.api.payments.entity.Receipts;
 import com.api.payments.repository.ReceiptRepository;
 import com.api.payments.services.ReceiptService;
 import com.sun.istack.logging.Logger;
@@ -48,7 +48,7 @@ public class ReceiptController {
         Object result;
 
         try {
-            Optional<ReceiptModel> receiptFind = receiptRepository.findById(receiptId);
+            Optional<Receipts> receiptFind = receiptRepository.findById(receiptId);
 
             if (receiptFind.isPresent()){
                 result = new ResponseEntity<>(receiptFind.get(), HttpStatus.OK);
@@ -67,13 +67,13 @@ public class ReceiptController {
 //    List<ReceiptModel> findByPaymentMethod(LocalDate paymentMethod);
 
     @RequestMapping(path = {"api/receipts/byExpirationDate"}, method = RequestMethod.GET)
-    public Object findReceiptsByExpirationDate(@RequestBody ReceiptModel receiptData){
+    public Object findReceiptsByExpirationDate(@RequestBody Receipts receiptsData){
         logger.info("GET: /api/receipts/byExpirationDate");
         Object result;
 
         try {
-            LocalDate expirationDate = receiptData.expirationDate;
-            List<ReceiptModel> foundReceipts = receiptRepository.findByExpirationDate(expirationDate);
+            LocalDate expirationDate = receiptsData.expirationDate;
+            List<Receipts> foundReceipts = receiptRepository.findByExpirationDate(expirationDate);
 
             if (foundReceipts.size() > 0){
                 result = new ResponseEntity<>(foundReceipts, HttpStatus.OK);
@@ -88,13 +88,13 @@ public class ReceiptController {
     }
 
     @RequestMapping(path = {"api/receipts"}, method = RequestMethod.POST)
-    public Object createReceipt(@RequestBody ReceiptModel receiptData) {
+    public Object createReceipt(@RequestBody Receipts receiptsData) {
         logger.info("POST: /api/receipts");
         Object result;
 
         try {
-            receiptService.saveReceiptData (receiptData);
-            result = new ResponseEntity<>(receiptData, HttpStatus.CREATED);
+            receiptService.saveReceiptData (receiptsData);
+            result = new ResponseEntity<>(receiptsData, HttpStatus.CREATED);
         } catch (Exception e) {
             result = new ResponseEntity<>(ReceiptMessages.receiptNotCreated, HttpStatus.BAD_REQUEST);
             e.printStackTrace();
@@ -103,7 +103,7 @@ public class ReceiptController {
     }
 
     @RequestMapping(path = {"api/receipts/{id}"}, method = RequestMethod.PUT)
-    public ResponseEntity<String> updateReceipt(@PathVariable("id") UUID receiptId, @RequestBody ReceiptModel receiptData){
+    public ResponseEntity<String> updateReceipt(@PathVariable("id") UUID receiptId, @RequestBody Receipts receiptsData){
         logger.info(String.format("UPDATE: /api/receipts/%s", receiptId));
         ResponseEntity<String> result;
 
@@ -111,8 +111,8 @@ public class ReceiptController {
             if (!receiptRepository.existsById(receiptId)){
                 result = new ResponseEntity<>(ReceiptMessages.receiptNotFound, HttpStatus.NOT_FOUND);
             } else {
-                receiptData.setId(receiptId);
-                receiptService.saveReceiptData (receiptData);
+                receiptsData.setId(receiptId);
+                receiptService.saveReceiptData (receiptsData);
                 result = new ResponseEntity<>(ReceiptMessages.receiptDataUpdated, HttpStatus.OK);
             }
         } catch (Exception e){
