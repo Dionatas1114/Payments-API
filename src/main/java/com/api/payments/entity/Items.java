@@ -1,4 +1,4 @@
-package com.api.payments.model;
+package com.api.payments.entity;
 
 import lombok.*;
 import javax.persistence.*;
@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "items")
 @EqualsAndHashCode(callSuper = true)
-public class ItemModel extends BaseEntity {
+public class Items extends BaseEntity {
 
     @Column(nullable = false, length = 50)
     public String itemName;

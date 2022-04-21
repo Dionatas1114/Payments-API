@@ -1,23 +1,23 @@
 package com.api.payments.repository;
 
-import com.api.payments.model.ReceiptModel;
+import com.api.payments.entity.Receipts;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.time.LocalDate;
 import java.util.*;
 
-public interface ReceiptRepository extends JpaRepository<ReceiptModel, UUID> {
+public interface ReceiptRepository extends JpaRepository<Receipts, UUID> {
 
-    List<ReceiptModel> findByDebtorFullName(LocalDate debtorFullName);
+    List<Receipts> findByDebtorFullName(LocalDate debtorFullName);
 
-    List<ReceiptModel> findByPaymentStatus(LocalDate paymentStatus);
+    List<Receipts> findByPaymentStatus(LocalDate paymentStatus);
 
-    List<ReceiptModel> findByPaymentMethod(LocalDate paymentMethod);
+    List<Receipts> findByPaymentMethod(LocalDate paymentMethod);
 
-    List<ReceiptModel> findByExpirationDate(LocalDate expirationDate);
+    List<Receipts> findByExpirationDate(LocalDate expirationDate);
 
     boolean existsById(UUID receiptId);
 
-    Optional<ReceiptModel> findById(UUID receiptId);
+    Optional<Receipts> findById(UUID receiptId);
 
     void deleteById(UUID receiptId);
 }

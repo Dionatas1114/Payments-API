@@ -1,4 +1,4 @@
-package com.api.payments.model;
+package com.api.payments.entity;
 
 import lombok.*;
 import javax.persistence.*;
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "payments")
 @EqualsAndHashCode(callSuper = true)
-public class PaymentModel extends BaseEntity {
+public class Payments extends BaseEntity {
 
     @Column(nullable = false, length = 50)
     public String debtorFullName;
