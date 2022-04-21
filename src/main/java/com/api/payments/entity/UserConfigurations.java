@@ -1,20 +1,24 @@
 package com.api.payments.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "user_configurations")
 @EqualsAndHashCode(callSuper = true)
 public class UserConfigurations extends BaseEntity{
 
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @OneToOne()
+    @JoinColumn(name = "user_id")
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    @NotNull
     @JsonIgnore
     public Users user;
 
-    @Column(nullable = false)
     public boolean hasNotifications;
 
     public Users getUser() {

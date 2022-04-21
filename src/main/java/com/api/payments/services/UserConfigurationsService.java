@@ -29,8 +29,6 @@ public class UserConfigurationsService {
         UserConfigurationsDto userConfigurationsDto = new UserConfigurationsDto();
 
         userConfigurationsDto.setHasNotifications(userConfigurations.hasNotifications);
-        userConfigurationsDto.setId(userConfigurations.getUser().getId());
-        userConfigurationsDto.setName(userConfigurations.getUser().getName());
         return userConfigurationsDto;
     }
 }

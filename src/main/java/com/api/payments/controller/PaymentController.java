@@ -5,6 +5,7 @@ import com.api.payments.entity.Payments;
 import com.api.payments.repository.PaymentRepository;
 import com.api.payments.services.PaymentService;
 import com.sun.istack.logging.Logger;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,15 +14,12 @@ import java.time.LocalDate;
 import java.util.*;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/")
 public class PaymentController {
 
     private final Logger logger = Logger.getLogger(this.getClass());
-
-    @Autowired
     private PaymentRepository paymentRepository;
-
-    @Autowired
     private PaymentService paymentService;
 
     @RequestMapping(path = {"api/payments"}, method = RequestMethod.GET)

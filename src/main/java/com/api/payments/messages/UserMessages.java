@@ -8,9 +8,10 @@ public interface UserMessages {
     String userDataUpdated = "Dados do usuário atualizados com sucesso! ";
     String userDataDeleted = "Dados do usuário deletados com sucesso! ";
     //Error Messages
-    String userNotCreated = "Não foi possível cadastrar o usuário, tente mais tarde. ";
-    String userAlreadyExists = "Usuário já cadastrado, tente inserir outros dados. ";
-    String userDataNotUpdated = "Não foi possível atualizar os dados do usuário, tente mais tarde. ";
-    String userDataNotDeleted = "Não foi possível deletar os dados do usuário, tente mais tarde. ";
+    String userNotCreated = "Não foi possível cadastrar o usuário. ";
+    String userNameAlreadyRegistered = "Já existe um usuário cadastrado com este nome, tente inserir outros dados. ";
+    String userEmailAlreadyRegistered = "Já existe um usuário cadastrado com este email, tente inserir outros dados. ";
+    String userDataNotUpdated = "Não foi possível atualizar os dados do usuário. ";
+    String userDataNotDeleted = "Não foi possível deletar os dados do usuário. ";
 
 }

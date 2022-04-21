@@ -1,27 +1,27 @@
 package com.api.payments.controller;
 
-import com.api.payments.messages.ReceiptMessages;
 import com.api.payments.entity.Receipts;
+import com.api.payments.messages.ReceiptMessages;
 import com.api.payments.repository.ReceiptRepository;
 import com.api.payments.services.ReceiptService;
 import com.sun.istack.logging.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/")
 public class ReceiptController {
 
-    private Logger logger = Logger.getLogger(this.getClass());
-
-    @Autowired
+    private final Logger logger = Logger.getLogger(this.getClass());
     private ReceiptRepository receiptRepository;
-
-    @Autowired
     private ReceiptService receiptService;
 
     @RequestMapping(path = {"api/receipts"}, method = RequestMethod.GET)

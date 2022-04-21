@@ -2,7 +2,7 @@ package com.api.payments.controller;
 
 import com.api.payments.repository.UserConfigurationsRepository;
 import com.api.payments.services.UserConfigurationsService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,13 +10,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/")
 public class UserConfigurationsController {
 
-    @Autowired
     UserConfigurationsRepository userConfigurationsRepository;
-
-    @Autowired
     UserConfigurationsService userConfigurationsService;
 
     @RequestMapping(path = {"api/usersConfigurations"}, method = RequestMethod.GET)

@@ -1,9 +1,13 @@
 package com.api.payments.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "users")
 @EqualsAndHashCode(callSuper = true)
@@ -20,7 +24,6 @@ public class Users extends BaseEntity{
 
     @OneToOne(
             mappedBy = "user",
-            orphanRemoval = true,
             cascade = CascadeType.ALL)
     public UserConfigurations userConfigurations;
 

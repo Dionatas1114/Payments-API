@@ -4,19 +4,20 @@ import com.api.payments.entity.Payments;
 import com.api.payments.entity.Receipts;
 import com.api.payments.repository.PaymentRepository;
 import com.api.payments.repository.ReceiptRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.time.LocalDate;
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
+@RequestMapping("/")
 public class NotificationController {
 
-    @Autowired
     PaymentRepository paymentRepository;
-
-    @Autowired
     ReceiptRepository receiptRepository;
 
     @GetMapping(path = "/api/notifications/currentPayments")

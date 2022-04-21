@@ -1,27 +1,27 @@
 package com.api.payments.controller;
 
-import com.api.payments.messages.ItemMessages;
 import com.api.payments.entity.BaseEntity;
 import com.api.payments.entity.Items;
+import com.api.payments.messages.ItemMessages;
 import com.api.payments.repository.ItemRepository;
 import com.api.payments.services.ItemService;
 import com.sun.istack.logging.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.*;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/")
 public class ItemController extends BaseEntity {
 
     private final Logger logger = Logger.getLogger(this.getClass());
-
-    @Autowired
     private ItemRepository itemRepository;
-
-    @Autowired
     private ItemService itemService;
 
     @RequestMapping(path = {"api/items"}, method = RequestMethod.GET)
