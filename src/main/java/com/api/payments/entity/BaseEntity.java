@@ -1,4 +1,4 @@
-package com.api.payments.model;
+package com.api.payments.entity;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

@@ -1,19 +1,12 @@
 package com.api.payments.repository;
 
-import com.api.payments.model.UserModel;
+import com.api.payments.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.Optional;
 import java.util.UUID;
 
-public interface UserRepository extends JpaRepository<UserModel, UUID> {
+public interface UserRepository extends JpaRepository<Users, UUID> {
 
-    UserModel findByName(String name);
+    Users findByName(String name);
+    Users findByEmail(String email);
 
-    UserModel findByEmail(String email);
-
-    boolean existsById(UUID userId);
-
-    Optional<UserModel> findById(UUID userId);
-
-    void deleteById(UUID userId);
 }

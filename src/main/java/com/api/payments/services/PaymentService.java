@@ -1,6 +1,6 @@
 package com.api.payments.services;
 
-import com.api.payments.model.PaymentModel;
+import com.api.payments.entity.Payments;
 import com.api.payments.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,23 +13,23 @@ public class PaymentService {
     @Autowired
     public PaymentRepository paymentRepository;
 
-    public void savePaymentData (PaymentModel paymentData) throws Exception {
+    public void savePaymentData (Payments paymentsData) throws Exception {
 
-        String debtorFullName = paymentData.getDebtorFullName ();
-        String debtorLastName = paymentData.getDebtorLastName ();
-        String paymentMethod = paymentData.getPaymentMethod ();
-        Boolean paymentStatus = paymentData.getPaymentStatus ();
-        LocalDate paymentDate = paymentData.getPaymentDate ();
-        LocalDate expirationDate = paymentData.getExpirationDate ();
-        String currency = paymentData.getCurrency ();
-        double interest = paymentData.getInterest ();
-        double fine = paymentData.getFine ();
-        double increasedValue = paymentData.getIncreasedValue ();
-        double discPayAdvance = paymentData.getDiscPayAdvance ();
-        double originalValue = paymentData.getOriginalValue ();
-        double total = paymentData.getTotal ();
-        String description = paymentData.getDescription ();
-        String messageText = paymentData.getMessageText ();
+        String debtorFullName = paymentsData.getDebtorFullName ();
+        String debtorLastName = paymentsData.getDebtorLastName ();
+        String paymentMethod = paymentsData.getPaymentMethod ();
+        Boolean paymentStatus = paymentsData.getPaymentStatus ();
+        LocalDate paymentDate = paymentsData.getPaymentDate ();
+        LocalDate expirationDate = paymentsData.getExpirationDate ();
+        String currency = paymentsData.getCurrency ();
+        double interest = paymentsData.getInterest ();
+        double fine = paymentsData.getFine ();
+        double increasedValue = paymentsData.getIncreasedValue ();
+        double discPayAdvance = paymentsData.getDiscPayAdvance ();
+        double originalValue = paymentsData.getOriginalValue ();
+        double total = paymentsData.getTotal ();
+        String description = paymentsData.getDescription ();
+        String messageText = paymentsData.getMessageText ();
 
         paymentValidator(
                 debtorFullName,
@@ -49,6 +49,6 @@ public class PaymentService {
                 messageText
         );
 
-        paymentRepository.save (paymentData);
+        paymentRepository.save (paymentsData);
     }
 }

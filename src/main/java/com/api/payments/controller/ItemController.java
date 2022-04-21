@@ -1,27 +1,27 @@
 package com.api.payments.controller;
 
+import com.api.payments.entity.BaseEntity;
+import com.api.payments.entity.Items;
 import com.api.payments.messages.ItemMessages;
-import com.api.payments.model.BaseEntity;
-import com.api.payments.model.ItemModel;
 import com.api.payments.repository.ItemRepository;
 import com.api.payments.services.ItemService;
 import com.sun.istack.logging.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.*;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/")
 public class ItemController extends BaseEntity {
 
     private final Logger logger = Logger.getLogger(this.getClass());
-
-    @Autowired
     private ItemRepository itemRepository;
-
-    @Autowired
     private ItemService itemService;
 
     @RequestMapping(path = {"api/items"}, method = RequestMethod.GET)
@@ -33,7 +33,7 @@ public class ItemController extends BaseEntity {
             if (itemRepository.count() == 0)
                 result = new ResponseEntity<>(ItemMessages.itemsEmpty, HttpStatus.NOT_FOUND);
             else {
-                Iterable<ItemModel> allItems = itemRepository.findAll();
+                Iterable<Items> allItems = itemRepository.findAll();
                 result = new ResponseEntity<>(allItems, HttpStatus.OK);
             }
         } catch (Exception e){
@@ -49,10 +49,10 @@ public class ItemController extends BaseEntity {
         Object result;
 
         try {
-            Optional<ItemModel> itemFind = itemRepository.findById(itemId);
+            Optional<Items> itemFind = itemRepository.findById(itemId);
             if (itemFind.isPresent()){
-                ItemModel item = itemFind.get();
-                result = new ResponseEntity<>(item, HttpStatus.OK);
+                Items items = itemFind.get();
+                result = new ResponseEntity<>(items, HttpStatus.OK);
             } else {
                 result = new ResponseEntity<>(ItemMessages.itemNotFound, HttpStatus.NOT_FOUND);
             }
@@ -64,14 +64,14 @@ public class ItemController extends BaseEntity {
     }
 
     @RequestMapping(path = {"api/items/byItemName"}, method = RequestMethod.GET)
-    public Object findItemsByItemName(@RequestBody ItemModel itemData){
+    public Object findItemsByItemName(@RequestBody Items itemsData){
         logger.info("GET: /api/items/byItemName");
         Object result;
 
-        String itemName = itemData.itemName;
+        String itemName = itemsData.itemName;
 
         try {
-            List<ItemModel> itemsFound = itemRepository.findByItemName(itemName);
+            List<Items> itemsFound = itemRepository.findByItemName(itemName);
             if (itemsFound.size() > 0){
                 result = new ResponseEntity<>(itemsFound, HttpStatus.OK);
             } else {
@@ -85,14 +85,14 @@ public class ItemController extends BaseEntity {
     }
 
     @RequestMapping(path = {"api/items/byItemType"}, method = RequestMethod.GET)
-    public Object findItemsByItemType(@RequestBody ItemModel itemData){
+    public Object findItemsByItemType(@RequestBody Items itemsData){
         logger.info("GET: /api/items/byItemType");
         Object result;
 
-        String itemType = itemData.itemType;
+        String itemType = itemsData.itemType;
 
         try {
-            List<ItemModel> itemsFound = itemRepository.findByItemType(itemType);
+            List<Items> itemsFound = itemRepository.findByItemType(itemType);
             if (itemsFound.size() > 0){
                 result = new ResponseEntity<>(itemsFound, HttpStatus.OK);
             } else {
@@ -106,19 +106,19 @@ public class ItemController extends BaseEntity {
     }
 
     @RequestMapping(path = {"api/items"}, method = RequestMethod.POST)
-    public Object createItem(@RequestBody ItemModel itemData) {
+    public Object createItem(@RequestBody Items itemsData) {
         logger.info("POST: /api/items");
         Object result;
 
-        String itemName = itemData.itemName;
-        String itemType = itemData.itemType;
-        String productBrand = itemData.itemType;
-        String captionPacking = itemData.itemType;
+        String itemName = itemsData.itemName;
+        String itemType = itemsData.itemType;
+        String productBrand = itemsData.itemType;
+        String captionPacking = itemsData.itemType;
 
-        List<ItemModel> foundItemsName = itemRepository.findByItemName(itemName);
-        List<ItemModel> foundItemsType = itemRepository.findByItemType(itemType);
-        List<ItemModel> foundItemsProductBrand = itemRepository.findByProductBrand(productBrand);
-        List<ItemModel> foundItemsCaptionPacking = itemRepository.findByCaptionPacking(captionPacking);
+        List<Items> foundItemsName = itemRepository.findByItemName(itemName);
+        List<Items> foundItemsType = itemRepository.findByItemType(itemType);
+        List<Items> foundItemsProductBrand = itemRepository.findByProductBrand(productBrand);
+        List<Items> foundItemsCaptionPacking = itemRepository.findByCaptionPacking(captionPacking);
 
         boolean itemAlreadyExists =
                 foundItemsName.size() > 0
@@ -130,8 +130,8 @@ public class ItemController extends BaseEntity {
             if (itemAlreadyExists){
                 result = new ResponseEntity<>(ItemMessages.itemAlreadyExists, HttpStatus.CONFLICT);
             } else {
-                itemService.saveItemData (itemData);
-                result = new ResponseEntity<>(itemData, HttpStatus.CREATED);
+                itemService.saveItemData (itemsData);
+                result = new ResponseEntity<>(itemsData, HttpStatus.CREATED);
             }
         } catch (Exception e) {
             result = new ResponseEntity<>(ItemMessages.itemNotCreated, HttpStatus.BAD_REQUEST);
@@ -141,7 +141,7 @@ public class ItemController extends BaseEntity {
     }
 
     @RequestMapping(path = {"api/items/{id}"}, method = RequestMethod.PUT)
-    public ResponseEntity<String> updateItem(@PathVariable("id") UUID itemId, @RequestBody ItemModel itemData){
+    public ResponseEntity<String> updateItem(@PathVariable("id") UUID itemId, @RequestBody Items itemsData){
         logger.info(String.format("UPDATE: /api/items/%s", itemId));
         ResponseEntity<String> result;
 
@@ -149,8 +149,8 @@ public class ItemController extends BaseEntity {
             if (!itemRepository.existsById(itemId)){
                 result = new ResponseEntity<>(ItemMessages.itemNotFound, HttpStatus.NOT_FOUND);
             } else {
-                itemData.setId(itemId);
-                itemService.saveItemData (itemData);
+                itemsData.setId(itemId);
+                itemService.saveItemData (itemsData);
                 result = new ResponseEntity<>(ItemMessages.itemDataUpdated, HttpStatus.OK);
             }
         } catch (Exception e){
