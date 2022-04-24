@@ -14,9 +14,4 @@ public interface ItemRepository extends JpaRepository<Items, UUID> {
 
     List<Items> findByCaptionPacking(String captionPacking);
 
-    boolean existsById(UUID itemId);
-
-    Optional<Items> findById(UUID itemId);
-
-    void deleteById(UUID itemId);
 }

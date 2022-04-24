@@ -15,9 +15,4 @@ public interface ReceiptRepository extends JpaRepository<Receipts, UUID> {
 
     List<Receipts> findByExpirationDate(LocalDate expirationDate);
 
-    boolean existsById(UUID receiptId);
-
-    Optional<Receipts> findById(UUID receiptId);
-
-    void deleteById(UUID receiptId);
 }

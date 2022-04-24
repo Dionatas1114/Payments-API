@@ -2,7 +2,6 @@ package com.api.payments.controller;
 
 import com.api.payments.dto.UsersDto;
 import com.api.payments.services.UserService;
-import com.sun.istack.logging.Logger;
 import lombok.AllArgsConstructor;
 import org.sonatype.aether.RepositoryException;
 import org.springframework.http.HttpStatus;
@@ -20,7 +19,6 @@ import static com.api.payments.messages.UserMessages.*;
 @RequestMapping("/")
 public class UserController {
 
-    private final Logger logger = Logger.getLogger(this.getClass());
     private UserService userService;
 
     @GetMapping(path = {"api/users"})
@@ -63,7 +61,7 @@ public class UserController {
         try {
             userService.saveUserData (usersData);
             result = new ResponseEntity<>(userCreated, HttpStatus.CREATED);
-        } catch (RepositoryException e) {
+        } catch (ExceptionInInitializerError e) {
             result = new ResponseEntity<>(userNotCreated + e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e) {
             result = new ResponseEntity<>(userNotCreated + e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -80,11 +78,11 @@ public class UserController {
             userService.updateUserData (usersData, userId);
             result = new ResponseEntity<>(userDataUpdated, HttpStatus.OK);
         } catch (RepositoryException e){
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            result = new ResponseEntity<>(userDataNotUpdated + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (ExceptionInInitializerError e){
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+            result = new ResponseEntity<>(userDataNotUpdated + e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e){
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            result = new ResponseEntity<>(userDataNotUpdated + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return result;
     }
@@ -98,9 +96,9 @@ public class UserController {
             userService.deleteUserData(userId);
             result = new ResponseEntity<>(userDataDeleted, HttpStatus.OK);
         } catch (RepositoryException re) {
-            result = new ResponseEntity<>(re.getMessage(), HttpStatus.NOT_FOUND);
+            result = new ResponseEntity<>(userDataNotDeleted + re.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            result = new ResponseEntity<>(userDataNotDeleted, HttpStatus.BAD_REQUEST);
+            result = new ResponseEntity<>(userDataNotDeleted + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return result;
     }

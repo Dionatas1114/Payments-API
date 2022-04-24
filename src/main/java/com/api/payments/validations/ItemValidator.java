@@ -16,19 +16,19 @@ public class ItemValidator {
             String internalCode,
             String description
     )
-            throws Exception {
+            throws ExceptionInInitializerError {
 
-        if (itemName == null) throw new Exception (ItemValidatorMessages.itemNameInvalid);
-        if (itemType == null) throw new Exception (ItemValidatorMessages.itemTypeInvalid);
-        if (productBrand == null) throw new Exception (ItemValidatorMessages.productBrandInvalid);
-        if (category == null) throw new Exception (ItemValidatorMessages.categoryInvalid);
-        if (manufacturer == null) throw new Exception (ItemValidatorMessages.manufacturerInvalid);
-        if (captionPacking == null) throw new Exception (ItemValidatorMessages.captionPackingInvalid);
-        if (totalPrice == 0) throw new Exception (ItemValidatorMessages.totalPriceInvalid);
-        if (unitaryPrice == 0) throw new Exception (ItemValidatorMessages.unitaryPriceInvalid);
-        if (discountPrice == 0) throw new Exception (ItemValidatorMessages.discountPriceInvalid);
-        if (barCode == null) throw new Exception (ItemValidatorMessages.barCodeInvalid);
-        if (internalCode == null) throw new Exception (ItemValidatorMessages.internalCodeInvalid);
-        if (description == null) throw new Exception (ItemValidatorMessages.descriptionInvalid);
+        if (itemName == null) throw new ExceptionInInitializerError (ItemValidatorMessages.itemNameInvalid);
+        if (itemType == null) throw new ExceptionInInitializerError (ItemValidatorMessages.itemTypeInvalid);
+        if (productBrand == null) throw new ExceptionInInitializerError (ItemValidatorMessages.productBrandInvalid);
+        if (category == null) throw new ExceptionInInitializerError (ItemValidatorMessages.categoryInvalid);
+        if (manufacturer == null) throw new ExceptionInInitializerError (ItemValidatorMessages.manufacturerInvalid);
+        if (captionPacking == null) throw new ExceptionInInitializerError (ItemValidatorMessages.captionPackingInvalid);
+        if (totalPrice == 0) throw new ExceptionInInitializerError (ItemValidatorMessages.totalPriceInvalid);
+        if (unitaryPrice == 0) throw new ExceptionInInitializerError (ItemValidatorMessages.unitaryPriceInvalid);
+        if (discountPrice == 0) throw new ExceptionInInitializerError (ItemValidatorMessages.discountPriceInvalid);
+        if (barCode == null) throw new ExceptionInInitializerError (ItemValidatorMessages.barCodeInvalid);
+        if (internalCode == null) throw new ExceptionInInitializerError (ItemValidatorMessages.internalCodeInvalid);
+        if (description == null) throw new ExceptionInInitializerError (ItemValidatorMessages.descriptionInvalid);
     }
 }

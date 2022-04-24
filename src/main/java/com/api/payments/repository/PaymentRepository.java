@@ -15,9 +15,4 @@ public interface PaymentRepository extends JpaRepository<Payments, UUID> {
 
     List<Payments> findByExpirationDate(LocalDate expirationDate);
 
-    boolean existsById(UUID paymentId);
-
-    Optional<Payments> findById(UUID paymentId);
-
-    void deleteById(UUID paymentId);
 }

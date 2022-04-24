@@ -1,48 +1,21 @@
 package com.api.payments.services;
 
-import com.api.payments.entity.Items;
-import com.api.payments.repository.ItemRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.api.payments.dto.ItemsDto;
 import org.springframework.stereotype.Service;
 
-import static com.api.payments.validations.ItemValidator.itemValidator;
+import java.util.List;
+import java.util.UUID;
 
 @Service
-public class ItemService {
+public interface ItemService {
 
-    @Autowired
-    private ItemRepository itemRepository;
+    List<ItemsDto> findAllItems() throws Exception;
 
-    public void saveItemData(Items itemsData) throws Exception {
+    ItemsDto findOneItems(UUID itemId) throws Exception;
 
-        String itemName = itemsData.getItemName ();
-        String itemType = itemsData.getItemType ();
-        String productBrand = itemsData.getProductBrand ();
-        String category = itemsData.getCategory ();
-        String manufacturer = itemsData.getManufacturer ();
-        String captionPacking = itemsData.getCaptionPacking ();
-        double totalPrice = itemsData.getTotalPrice ();
-        double unitaryPrice = itemsData.getUnitaryPrice ();
-        double discountPrice = itemsData.getDiscountPrice ();
-        String barCode = itemsData.getBarCode ();
-        String internalCode = itemsData.getInternalCode ();
-        String description = itemsData.getDescription ();
+    void saveItemData(ItemsDto itemsData) throws Exception;
+    void updateItemData(UUID itemId, ItemsDto itemsData) throws Exception;
 
-        itemValidator (
-                itemName,
-                itemType,
-                productBrand,
-                category,
-                manufacturer,
-                captionPacking,
-                totalPrice,
-                unitaryPrice,
-                discountPrice,
-                barCode,
-                internalCode,
-                description
-        );
+    void deleteItemData(UUID itemId) throws Exception;
 
-        itemRepository.save (itemsData);
-    }
 }
