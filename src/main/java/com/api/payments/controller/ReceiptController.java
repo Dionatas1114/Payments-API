@@ -4,7 +4,6 @@ import com.api.payments.entity.Receipts;
 import com.api.payments.messages.ReceiptMessages;
 import com.api.payments.repository.ReceiptRepository;
 import com.api.payments.services.ReceiptService;
-import com.sun.istack.logging.Logger;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +19,13 @@ import java.util.UUID;
 @RequestMapping("/")
 public class ReceiptController {
 
-    private final Logger logger = Logger.getLogger(this.getClass());
     private ReceiptRepository receiptRepository;
     private ReceiptService receiptService;
 
-    @RequestMapping(path = {"api/receipts"}, method = RequestMethod.GET)
-    public Object findAllReceipts(){
-        logger.info("GET: /api/receipts");
-        Object result;
+    @GetMapping(path = {"api/receipts"})
+    public ResponseEntity findAllReceipts(){
+
+        ResponseEntity result;
 
         try {
             if (receiptRepository.count() == 0){
@@ -37,15 +35,14 @@ public class ReceiptController {
             }
         } catch (Exception e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-            e.printStackTrace();
         }
         return result;
     }
 
-    @RequestMapping(path = {"api/receipts/{id}"}, method = RequestMethod.GET)
-    public Object findReceipt(@PathVariable("id") UUID receiptId){
-        logger.info(String.format("GET: /api/receipts/%s", receiptId));
-        Object result;
+    @GetMapping(path = {"api/receipts/{id}"})
+    public ResponseEntity findReceipt(@PathVariable("id") UUID receiptId){
+
+        ResponseEntity result;
 
         try {
             Optional<Receipts> receiptFind = receiptRepository.findById(receiptId);
@@ -57,7 +54,6 @@ public class ReceiptController {
             }
         } catch (Exception e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-            e.printStackTrace();
         }
         return result;
     }
@@ -66,10 +62,10 @@ public class ReceiptController {
 //    List<ReceiptModel> findByPaymentStatus(LocalDate paymentStatus);
 //    List<ReceiptModel> findByPaymentMethod(LocalDate paymentMethod);
 
-    @RequestMapping(path = {"api/receipts/byExpirationDate"}, method = RequestMethod.GET)
-    public Object findReceiptsByExpirationDate(@RequestBody Receipts receiptsData){
-        logger.info("GET: /api/receipts/byExpirationDate");
-        Object result;
+    @GetMapping(path = {"api/receipts/byExpirationDate"})
+    public ResponseEntity findReceiptsByExpirationDate(@RequestBody Receipts receiptsData){
+
+        ResponseEntity result;
 
         try {
             LocalDate expirationDate = receiptsData.expirationDate;
@@ -82,29 +78,27 @@ public class ReceiptController {
             }
         } catch (Exception e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-            e.printStackTrace();
         }
         return result;
     }
 
-    @RequestMapping(path = {"api/receipts"}, method = RequestMethod.POST)
-    public Object createReceipt(@RequestBody Receipts receiptsData) {
-        logger.info("POST: /api/receipts");
-        Object result;
+    @PostMapping(path = {"api/receipts"})
+    public ResponseEntity createReceipt(@RequestBody Receipts receiptsData) {
+
+        ResponseEntity result;
 
         try {
             receiptService.saveReceiptData (receiptsData);
             result = new ResponseEntity<>(receiptsData, HttpStatus.CREATED);
         } catch (Exception e) {
             result = new ResponseEntity<>(ReceiptMessages.receiptNotCreated, HttpStatus.BAD_REQUEST);
-            e.printStackTrace();
         }
         return result;
     }
 
-    @RequestMapping(path = {"api/receipts/{id}"}, method = RequestMethod.PUT)
+    @PutMapping(path = {"api/receipts/{id}"})
     public ResponseEntity<String> updateReceipt(@PathVariable("id") UUID receiptId, @RequestBody Receipts receiptsData){
-        logger.info(String.format("UPDATE: /api/receipts/%s", receiptId));
+
         ResponseEntity<String> result;
 
         try {
@@ -117,14 +111,13 @@ public class ReceiptController {
             }
         } catch (Exception e){
             result = new ResponseEntity<>(ReceiptMessages.receiptDataNotUpdated, HttpStatus.BAD_REQUEST);
-            e.printStackTrace();
         }
         return result;
     }
 
-    @RequestMapping(path = {"api/receipts/{id}"}, method = RequestMethod.DELETE)
+    @DeleteMapping(path = {"api/receipts/{id}"})
     public ResponseEntity<String> deleteReceiptId(@PathVariable("id") UUID receiptId) {
-        logger.info(String.format("DELETE: /api/receipts/%s", receiptId));
+
         ResponseEntity<String> result;
 
         try {
@@ -136,7 +129,6 @@ public class ReceiptController {
             }
         } catch (Exception e) {
             result = new ResponseEntity<>(ReceiptMessages.receiptDataNotDeleted, HttpStatus.BAD_REQUEST);
-            e.printStackTrace();
         }
         return result;
     }

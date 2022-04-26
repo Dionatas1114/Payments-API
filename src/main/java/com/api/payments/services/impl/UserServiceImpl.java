@@ -30,9 +30,11 @@ public class UserServiceImpl implements UserService {
         List<Users> usersList = userRepository.findAll();
 
         boolean usersListEmpty = usersList.isEmpty();
-        if (usersListEmpty) throw new RepositoryException(usersEmpty);
+        if (usersListEmpty)
+            throw new RepositoryException(usersEmpty);
 
-        for(Users user : usersList) usersDtoList.add(convertToDto(user));
+        for (Users user : usersList)
+            usersDtoList.add(convertToDto(user));
 
         return usersDtoList;
     }
@@ -41,7 +43,8 @@ public class UserServiceImpl implements UserService {
     public UsersDto findOneUser(UUID userId) throws RepositoryException {
 
         Optional<Users> userFind = userRepository.findById(userId);
-        if (userFind.isEmpty()) throw new RepositoryException(userNotFound);
+        if (userFind.isEmpty())
+            throw new RepositoryException(userNotFound);
 
         return convertToDto(userFind.get());
     }
@@ -49,9 +52,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveUserData(UsersDto userDto) throws Exception {
 
-        String userName = userDto.getName ();
-        String email = userDto.getEmail ();
-        String password = userDto.getPassword ();
+        String userName = userDto.getName();
+        String email = userDto.getEmail();
+        String password = userDto.getPassword();
 
         if (userRepository.count() != 0) {
 
@@ -61,11 +64,13 @@ public class UserServiceImpl implements UserService {
             Users byEmail = userRepository.findByEmail(email);
             boolean userEmailAlreadyExists = Objects.equals(byEmail.email, email);
 
-            if (userNameAlreadyExists) throw new RepositoryException(userNameAlreadyRegistered);
-            if (userEmailAlreadyExists) throw new RepositoryException(userEmailAlreadyRegistered);
+            if (userNameAlreadyExists)
+                throw new ExceptionInInitializerError(userNameAlreadyRegistered);
+            if (userEmailAlreadyExists)
+                throw new ExceptionInInitializerError(userEmailAlreadyRegistered);
         }
 
-        userValidator (userName, email, password);
+        userValidator(userName, email, password);
 
         try {
             Users users = new Users();
@@ -81,7 +86,8 @@ public class UserServiceImpl implements UserService {
             userConfigurations.setUser(userDataSaved);
             userConfigurationsRepository.save(userConfigurations);
 
-        } catch (Exception e) {
+        } catch (
+                Exception e) {
             throw new RepositoryException(e.getMessage());
         }
     }
@@ -90,17 +96,18 @@ public class UserServiceImpl implements UserService {
     public void updateUserData(UsersDto userDto, UUID userId) throws Exception {
         UserConfigurations userConfigurations = new UserConfigurations();
 
-        String userName = userDto.getName ();
-        String email = userDto.getEmail ();
-        String password = userDto.getPassword ();
+        String userName = userDto.getName();
+        String email = userDto.getEmail();
+        String password = userDto.getPassword();
         boolean hasNotifications = userDto.getUserConfigurations().hasNotifications;
 
         Optional<Users> user = userRepository.findById(userId);
-        if (user.isEmpty()) throw new RepositoryException(userNotFound);
+        if (user.isEmpty())
+            throw new RepositoryException(userNotFound);
 
         List<Users> usersList = userRepository.findAll();
 
-        for(Users users : usersList) {
+        for (Users users : usersList) {
 
             if (Objects.equals(users.getName(), userName) && users.getId() != userId)
                 throw new ExceptionInInitializerError(userNameAlreadyRegistered);
@@ -109,9 +116,9 @@ public class UserServiceImpl implements UserService {
                 throw new ExceptionInInitializerError(userNameAlreadyRegistered);
         }
 
-        userValidator (userName, email, password);
+        userValidator(userName, email, password);
 
-        try{
+        try {
             UserConfigurations userConfiguration = userConfigurationsRepository.findByUserId(userId);
             Users users = new Users();
 
@@ -128,7 +135,8 @@ public class UserServiceImpl implements UserService {
             userConfigurations.setUser(users);
 
             userConfigurationsRepository.save(userConfigurations);
-        } catch (Exception e){
+        } catch (
+                Exception e) {
             throw new Exception(e.getMessage());
         }
     }
@@ -137,11 +145,13 @@ public class UserServiceImpl implements UserService {
     public void deleteUserData(UUID userId) throws Exception {
 
         boolean exists = userRepository.existsById(userId);
-        if (!exists) throw new RepositoryException(userNotFound);
+        if (!exists)
+            throw new RepositoryException(userNotFound);
 
         try {
             userRepository.deleteById(userId);
-        } catch (Exception e) {
+        } catch (
+                Exception e) {
             throw new Exception(e.getMessage());
         }
     }

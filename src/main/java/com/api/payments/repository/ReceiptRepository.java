@@ -8,11 +8,8 @@ import java.util.*;
 public interface ReceiptRepository extends JpaRepository<Receipts, UUID> {
 
     List<Receipts> findByDebtorFullName(LocalDate debtorFullName);
-
     List<Receipts> findByPaymentStatus(LocalDate paymentStatus);
-
     List<Receipts> findByPaymentMethod(LocalDate paymentMethod);
-
     List<Receipts> findByExpirationDate(LocalDate expirationDate);
 
 }

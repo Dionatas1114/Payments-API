@@ -3,10 +3,12 @@ package com.api.payments.dto;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Data
 public class PaymentsDto {
 
+    public UUID id;
     public String debtorFullName;
     public String debtorLastName;
     public String paymentMethod;

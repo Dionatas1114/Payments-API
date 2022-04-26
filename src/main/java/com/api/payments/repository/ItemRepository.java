@@ -7,11 +7,8 @@ import java.util.*;
 public interface ItemRepository extends JpaRepository<Items, UUID> {
 
     List<Items> findByItemName(String itemName);
-
     List<Items> findByItemType(String itemType);
-
     List<Items> findByProductBrand(String productBrand);
-
     List<Items> findByCaptionPacking(String captionPacking);
 
 }

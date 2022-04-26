@@ -4,6 +4,7 @@ import com.api.payments.dto.UserConfigurationsDto;
 import com.api.payments.repository.UserConfigurationsRepository;
 import com.api.payments.services.UserConfigurationsService;
 import lombok.AllArgsConstructor;
+import org.sonatype.aether.RepositoryException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,8 @@ public class UserConfigurationsController {
 
         try {
             result = new ResponseEntity<>(userConfigurationsService.findUserConfigurations(), HttpStatus.OK);
+        } catch (RepositoryException e) {
+            result = new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e) {
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static com.api.payments.messages.ItemMessages.*;
@@ -42,12 +41,12 @@ public class ItemController extends BaseEntity {
     }
 
     @GetMapping(path = {"api/items/{id}"})
-    public ResponseEntity<ItemsDto> findItem(@PathVariable("id") UUID itemId){
+    public ResponseEntity<ItemsDto> findItemById(@PathVariable("id") UUID itemId){
 
         ResponseEntity result;
 
         try {
-            ItemsDto item = itemService.findOneItems(itemId);
+            ItemsDto item = itemService.findItemById(itemId);
             result = new ResponseEntity<>(item, HttpStatus.OK);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -58,19 +57,19 @@ public class ItemController extends BaseEntity {
     }
 
     @GetMapping(path = {"api/items/byItemName"})
-    public ResponseEntity findItemsByItemName(@RequestBody Items itemsData){
+    public ResponseEntity<List<ItemsDto>> findByItemName(@RequestBody Items itemsData){
 
         ResponseEntity result;
 
         String itemName = itemsData.itemName;
 
         try {
-            List<Items> itemsFound = itemRepository.findByItemName(itemName);
-            if (itemsFound.size() > 0){
-                result = new ResponseEntity<>(itemsFound, HttpStatus.OK);
-            } else {
-                result = new ResponseEntity<>(itemNotFound, HttpStatus.NOT_FOUND);
-            }
+            List<ItemsDto> itemsFound = itemService.findByItemName(itemName);
+            result = new ResponseEntity<>(itemsFound, HttpStatus.OK);
+        } catch (RepositoryException e){
+            result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (ExceptionInInitializerError e){
+            result = new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -78,19 +77,17 @@ public class ItemController extends BaseEntity {
     }
 
     @GetMapping(path = {"api/items/byItemType"})
-    public ResponseEntity findItemsByItemType(@RequestBody Items itemsData){
+    public ResponseEntity<List<ItemsDto>> findItemsByItemType(@RequestBody Items itemsData){
 
         ResponseEntity result;
 
         String itemType = itemsData.itemType;
 
         try {
-            List<Items> itemsFound = itemRepository.findByItemType(itemType);
-            if (itemsFound.size() > 0){
-                result = new ResponseEntity<>(itemsFound, HttpStatus.OK);
-            } else {
-                result = new ResponseEntity<>(itemNotFound, HttpStatus.NOT_FOUND);
-            }
+            List<ItemsDto> itemsFound = itemService.findItemsByItemType(itemType);
+            result = new ResponseEntity<>(itemsFound, HttpStatus.OK);
+        } catch (RepositoryException e){
+            result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -102,38 +99,20 @@ public class ItemController extends BaseEntity {
 
         ResponseEntity result;
 
-        String itemName = itemsData.itemName;
-        String itemType = itemsData.itemType;
-        String productBrand = itemsData.itemType;
-        String captionPacking = itemsData.itemType;
-
-        List<Items> foundItemsName = itemRepository.findByItemName(itemName);
-        List<Items> foundItemsType = itemRepository.findByItemType(itemType);
-        List<Items> foundItemsProductBrand = itemRepository.findByProductBrand(productBrand);
-        List<Items> foundItemsCaptionPacking = itemRepository.findByCaptionPacking(captionPacking);
-
-        boolean itemAlreadyExists =
-                foundItemsName.size() > 0
-                && foundItemsType.size() > 0
-                && foundItemsProductBrand.size() > 0
-                && foundItemsCaptionPacking.size() > 0;
-
         try {
-            if (itemAlreadyExists){
-                result = new ResponseEntity<>(itemAlreadyExists, HttpStatus.CONFLICT);
-            } else {
-                itemService.saveItemData (itemsData);
-                result = new ResponseEntity<>(itemsData, HttpStatus.CREATED);
-            }
+            itemService.saveItemData (itemsData);
+            result = new ResponseEntity<>(itemsData, HttpStatus.CREATED);
+        } catch (RepositoryException e) {
+            result = new ResponseEntity<>(itemNotCreated + e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e) {
-            result = new ResponseEntity<>(itemNotCreated, HttpStatus.BAD_REQUEST);
-            e.printStackTrace();
+            result = new ResponseEntity<>(itemNotCreated + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return result;
     }
 
     @PutMapping(path = {"api/items/{id}"})
-    public ResponseEntity<String> updateItem(@PathVariable("id") UUID itemId, @RequestBody ItemsDto itemsData){
+    public ResponseEntity<String> updateItem(
+            @PathVariable("id") UUID itemId, @RequestBody ItemsDto itemsData){
 
         ResponseEntity<String> result;
 
@@ -142,6 +121,8 @@ public class ItemController extends BaseEntity {
             result = new ResponseEntity<>(itemDataUpdated, HttpStatus.OK);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(itemDataNotUpdated + e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (ExceptionInInitializerError e){
+            result = new ResponseEntity<>(itemDataNotUpdated + e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e){
             result = new ResponseEntity<>(itemDataNotUpdated + e.getMessage(), HttpStatus.BAD_REQUEST);
         }

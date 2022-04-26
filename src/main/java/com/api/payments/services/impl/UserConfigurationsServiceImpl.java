@@ -26,7 +26,7 @@ public class UserConfigurationsServiceImpl implements UserConfigurationsService 
         List<UserConfigurationsDto> userConfigurationsDtoList = new ArrayList<>();
         List<UserConfigurations> allUserConfigurations = userConfigurationsRepository.findAll();
 
-        if (allUserConfigurations.size() == 0) throw new RepositoryException(usersEmpty);
+        if (allUserConfigurations.isEmpty()) throw new RepositoryException(usersEmpty);
 
         for (UserConfigurations userConfigurations : allUserConfigurations) {
             userConfigurationsDtoList.add(convertToDto(userConfigurations));

@@ -2,9 +2,12 @@ package com.api.payments.dto;
 
 import lombok.Data;
 
+import java.util.UUID;
+
 @Data
 public class ItemsDto {
 
+    public UUID id;
     public String itemName;
     public String itemType;  //product or service
     public String productBrand;

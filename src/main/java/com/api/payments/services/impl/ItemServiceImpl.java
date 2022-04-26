@@ -9,13 +9,9 @@ import org.modelmapper.ModelMapper;
 import org.sonatype.aether.RepositoryException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
-import static com.api.payments.messages.ItemMessages.itemNotFound;
-import static com.api.payments.messages.ItemMessages.itemsEmpty;
+import static com.api.payments.messages.ItemMessages.*;
 import static com.api.payments.validations.ItemValidator.itemValidator;
 
 @Service
@@ -39,11 +35,40 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemsDto findOneItems(UUID itemId) throws RepositoryException {
+    public ItemsDto findItemById(UUID itemId) throws RepositoryException {
         Optional<Items> itemFind = itemRepository.findById(itemId);
         if (itemFind.isEmpty()) throw new RepositoryException(itemNotFound);
 
         return convertToDto(itemFind.get());
+    }
+
+    @Override
+    public List<ItemsDto> findByItemName(String itemName) throws Exception {
+
+        //validar itemName
+        List<ItemsDto> itemsDtoList = new ArrayList<>();
+        List<Items> itemsFound = itemRepository.findByItemName(itemName);
+
+        boolean itemsListEmpty = itemsFound.isEmpty();
+        if (itemsListEmpty) throw new RepositoryException(itemNotFound);
+
+        for(Items items : itemsFound) itemsDtoList.add(convertToDto(items));
+
+        return itemsDtoList;
+    }
+
+    @Override
+    public List<ItemsDto> findItemsByItemType(String itemType) throws Exception {
+
+        List<ItemsDto> itemsDtoList = new ArrayList<>();
+        List<Items> itemsList = itemRepository.findByItemType(itemType);
+
+        boolean itemsListEmpty = itemsList.isEmpty();
+        if (itemsListEmpty) throw new RepositoryException(itemsEmpty);
+
+        for (Items items : itemsList) itemsDtoList.add(convertToDto(items));
+
+        return itemsDtoList;
     }
 
     public void saveItemData(ItemsDto itemsData) throws Exception {
@@ -60,6 +85,20 @@ public class ItemServiceImpl implements ItemService {
         String barCode = itemsData.getBarCode ();
         String internalCode = itemsData.getInternalCode ();
         String description = itemsData.getDescription ();
+
+        ArrayList<Object> booleanList = new ArrayList<>();
+        List<Items> itemsFoundByItemName = itemRepository.findByItemName(itemName);
+
+        for (Items items : itemsFoundByItemName) {
+            boolean alreadyExists = Objects.equals(items.itemType, itemType)
+                    && Objects.equals(items.productBrand, productBrand)
+                    && Objects.equals(items.captionPacking, captionPacking);
+
+            booleanList.add(alreadyExists);
+        }
+
+        boolean alreadyExists = booleanList.contains(true);
+        if (alreadyExists) throw new RepositoryException(itemAlreadyExists);
 
         itemValidator (
                 itemName,
@@ -131,6 +170,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void deleteItemData(UUID itemId) throws Exception {
+
         boolean existsById = itemRepository.existsById(itemId);
         if (!existsById) throw new RepositoryException(itemNotFound);
 
