@@ -1,7 +1,5 @@
 package com.api.payments.validations;
 
-import org.sonatype.aether.RepositoryException;
-
 public class UserValidator {
 
     public static void userValidator(String userName, String email, String password) throws Exception {
@@ -10,8 +8,9 @@ public class UserValidator {
         boolean emailIsValid = Patterns.emailValidate (email);
         boolean passwIsValid = Patterns.passwValidate(password);
 
-        if (!nameIsValid) throw new RepositoryException(UserValidatorMessages.userNameInvalid);
-        if (!emailIsValid) throw new RepositoryException (UserValidatorMessages.userEmailInvalid);
-        if (!passwIsValid) throw new RepositoryException (UserValidatorMessages.userPasswInvalid);
+        if (!nameIsValid) throw new ExceptionInInitializerError (UserValidatorMessages.userNameInvalid);
+        if (!emailIsValid) throw new ExceptionInInitializerError (UserValidatorMessages.userEmailInvalid);
+        if (!passwIsValid) throw new ExceptionInInitializerError (UserValidatorMessages.userPasswInvalid);
+
     }
 }
