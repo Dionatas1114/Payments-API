@@ -7,4 +7,5 @@ import java.util.UUID;
 public interface UserConfigurationsRepository extends JpaRepository<UserConfigurations, UUID>{
 
     UserConfigurations findByUserId(UUID userId);
+
 }
