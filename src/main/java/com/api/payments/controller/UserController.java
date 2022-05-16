@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @PostMapping(path = {"api/users"})
-    public ResponseEntity createUser(@Validated @RequestBody UsersDto usersData) {
+    public ResponseEntity<UsersDto> createUser(@Validated @RequestBody UsersDto usersData) {
 
         ResponseEntity result;
 
