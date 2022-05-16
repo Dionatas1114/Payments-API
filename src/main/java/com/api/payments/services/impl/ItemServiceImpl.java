@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 import static com.api.payments.messages.ItemMessages.*;
-import static com.api.payments.validations.ItemValidator.itemValidator;
+import static com.api.payments.validations.ItemValidator.*;
 
 @Service
 @AllArgsConstructor
@@ -26,10 +26,9 @@ public class ItemServiceImpl implements ItemService {
         List<Items> itemsList = itemRepository.findAll();
         List<ItemsDto> itemsDtoList = new ArrayList<>();
 
-        boolean itemsListEmpty = itemsList.isEmpty();
-        if (itemsListEmpty) throw new RepositoryException(itemsEmpty);
+        if (itemsList.isEmpty()) throw new RepositoryException(itemsEmpty);
 
-        for(Items items : itemsList) itemsDtoList.add(convertToDto(items));
+        itemsList.forEach(items -> itemsDtoList.add(convertToDto(items)));
 
         return itemsDtoList;
     }
@@ -37,6 +36,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemsDto findItemById(UUID itemId) throws RepositoryException {
         Optional<Items> itemFind = itemRepository.findById(itemId);
+
         if (itemFind.isEmpty()) throw new RepositoryException(itemNotFound);
 
         return convertToDto(itemFind.get());
@@ -76,15 +76,7 @@ public class ItemServiceImpl implements ItemService {
         String itemName = itemsData.getItemName ();
         String itemType = itemsData.getItemType ();
         String productBrand = itemsData.getProductBrand ();
-        String category = itemsData.getCategory ();
-        String manufacturer = itemsData.getManufacturer ();
         String captionPacking = itemsData.getCaptionPacking ();
-        double totalPrice = itemsData.getTotalPrice ();
-        double unitaryPrice = itemsData.getUnitaryPrice ();
-        double discountPrice = itemsData.getDiscountPrice ();
-        String barCode = itemsData.getBarCode ();
-        String internalCode = itemsData.getInternalCode ();
-        String description = itemsData.getDescription ();
 
         ArrayList<Object> booleanList = new ArrayList<>();
         List<Items> itemsFoundByItemName = itemRepository.findByItemName(itemName);
@@ -100,20 +92,7 @@ public class ItemServiceImpl implements ItemService {
         boolean alreadyExists = booleanList.contains(true);
         if (alreadyExists) throw new RepositoryException(itemAlreadyExists);
 
-        itemValidator (
-                itemName,
-                itemType,
-                productBrand,
-                category,
-                manufacturer,
-                captionPacking,
-                totalPrice,
-                unitaryPrice,
-                discountPrice,
-                barCode,
-                internalCode,
-                description
-        );
+        itemValidate(itemsData);
 
         Items items = convertFromDto(itemsData);
 
@@ -130,33 +109,7 @@ public class ItemServiceImpl implements ItemService {
         boolean existsById = itemRepository.existsById(itemId);
         if (!existsById) throw new RepositoryException(itemNotFound);
 
-        String itemName = itemsData.getItemName ();
-        String itemType = itemsData.getItemType ();
-        String productBrand = itemsData.getProductBrand ();
-        String category = itemsData.getCategory ();
-        String manufacturer = itemsData.getManufacturer ();
-        String captionPacking = itemsData.getCaptionPacking ();
-        double totalPrice = itemsData.getTotalPrice ();
-        double unitaryPrice = itemsData.getUnitaryPrice ();
-        double discountPrice = itemsData.getDiscountPrice ();
-        String barCode = itemsData.getBarCode ();
-        String internalCode = itemsData.getInternalCode ();
-        String description = itemsData.getDescription ();
-
-        itemValidator (
-                itemName,
-                itemType,
-                productBrand,
-                category,
-                manufacturer,
-                captionPacking,
-                totalPrice,
-                unitaryPrice,
-                discountPrice,
-                barCode,
-                internalCode,
-                description
-        );
+        itemValidate(itemsData);
 
         Items items = convertFromDto(itemsData);
 
@@ -190,5 +143,35 @@ public class ItemServiceImpl implements ItemService {
     private Items convertFromDto(ItemsDto itemsData) {
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(itemsData, Items.class);
+    }
+
+    private void itemValidate(ItemsDto itemsData){
+        String itemName = itemsData.getItemName ();
+        String itemType = itemsData.getItemType ();
+        String productBrand = itemsData.getProductBrand ();
+        String category = itemsData.getCategory ();
+        String manufacturer = itemsData.getManufacturer ();
+        String captionPacking = itemsData.getCaptionPacking ();
+        double totalPrice = itemsData.getTotalPrice ();
+        double unitaryPrice = itemsData.getUnitaryPrice ();
+        double discountPrice = itemsData.getDiscountPrice ();
+        String barCode = itemsData.getBarCode ();
+        String internalCode = itemsData.getInternalCode ();
+        String description = itemsData.getDescription ();
+
+        itemValidator (
+                itemName,
+                itemType,
+                productBrand,
+                category,
+                manufacturer,
+                captionPacking,
+                totalPrice,
+                unitaryPrice,
+                discountPrice,
+                barCode,
+                internalCode,
+                description
+        );
     }
 }
