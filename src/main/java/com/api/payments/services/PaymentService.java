@@ -1,54 +1,24 @@
 package com.api.payments.services;
 
+import com.api.payments.dto.PaymentsDto;
 import com.api.payments.entity.Payments;
-import com.api.payments.repository.PaymentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.sonatype.aether.RepositoryException;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
-import static com.api.payments.validations.PaymentValidator.paymentValidator;
+import java.util.List;
+import java.util.UUID;
 
 @Service
-public class PaymentService {
+public interface PaymentService {
 
-    @Autowired
-    public PaymentRepository paymentRepository;
-
-    public void savePaymentData (Payments paymentsData) throws Exception {
-
-        String debtorFullName = paymentsData.getDebtorFullName ();
-        String debtorLastName = paymentsData.getDebtorLastName ();
-        String paymentMethod = paymentsData.getPaymentMethod ();
-        Boolean paymentStatus = paymentsData.getPaymentStatus ();
-        LocalDate paymentDate = paymentsData.getPaymentDate ();
-        LocalDate expirationDate = paymentsData.getExpirationDate ();
-        String currency = paymentsData.getCurrency ();
-        double interest = paymentsData.getInterest ();
-        double fine = paymentsData.getFine ();
-        double increasedValue = paymentsData.getIncreasedValue ();
-        double discPayAdvance = paymentsData.getDiscPayAdvance ();
-        double originalValue = paymentsData.getOriginalValue ();
-        double total = paymentsData.getTotal ();
-        String description = paymentsData.getDescription ();
-        String messageText = paymentsData.getMessageText ();
-
-        paymentValidator(
-                debtorFullName,
-                debtorLastName,
-                paymentMethod,
-                paymentStatus,
-                paymentDate,
-                expirationDate,
-                currency,
-                interest,
-                fine,
-                increasedValue,
-                discPayAdvance,
-                originalValue,
-                total,
-                description,
-                messageText
-        );
-
-        paymentRepository.save (paymentsData);
-    }
+    List<PaymentsDto> findAllPayments() throws Exception;
+    PaymentsDto findPaymentById(UUID paymentId) throws Exception;
+    List<PaymentsDto> findPaymentsByExpirationDate(LocalDate expirationDate) throws Exception;
+    List<PaymentsDto> findByDebtorFullName(String debtorFullName) throws RepositoryException;
+    List<PaymentsDto> findByPaymentStatus(boolean paymentStatus) throws RepositoryException;
+    List<PaymentsDto> findByPaymentMethod(String paymentMethod) throws RepositoryException;
+    void savePaymentData (PaymentsDto paymentsData) throws Exception;
+    void updatePayment(UUID paymentId, PaymentsDto paymentsData) throws Exception;
+    void deletePayment(UUID paymentId) throws Exception;
 }
