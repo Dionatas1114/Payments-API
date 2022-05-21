@@ -82,7 +82,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public void savePaymentData(PaymentsDto paymentsData) {
 
-        paymentValidate(paymentsData);
+        paymentValidator(paymentsData);
 
         paymentRepository.save (convertFromDto(paymentsData));
     }
@@ -92,7 +92,7 @@ public class PaymentServiceImpl implements PaymentService {
 
         if (!paymentRepository.existsById(paymentId)) throw new RepositoryException(paymentNotFound);
 
-        paymentValidate(paymentsData);
+        paymentValidator(paymentsData);
 
         paymentsData.setId(paymentId);
         savePaymentData (paymentsData);
@@ -125,41 +125,5 @@ public class PaymentServiceImpl implements PaymentService {
         paymentsFound.forEach(payments -> paymentsDtoList.add(convertToDto(payments)));
 
         return paymentsDtoList;
-    }
-
-    private void paymentValidate(PaymentsDto paymentsData){
-        String debtorFullName = paymentsData.getDebtorFullName ();
-        String debtorLastName = paymentsData.getDebtorLastName ();
-        String paymentMethod = paymentsData.getPaymentMethod ();
-        Boolean paymentStatus = paymentsData.getPaymentStatus ();
-        LocalDate paymentDate = paymentsData.getPaymentDate ();
-        LocalDate expirationDate = paymentsData.getExpirationDate ();
-        String currency = paymentsData.getCurrency ();
-        double interest = paymentsData.getInterest ();
-        double fine = paymentsData.getFine ();
-        double increasedValue = paymentsData.getIncreasedValue ();
-        double discPayAdvance = paymentsData.getDiscPayAdvance ();
-        double originalValue = paymentsData.getOriginalValue ();
-        double total = paymentsData.getTotal ();
-        String description = paymentsData.getDescription ();
-        String messageText = paymentsData.getMessageText ();
-
-        paymentValidator(
-                debtorFullName,
-                debtorLastName,
-                paymentMethod,
-                paymentStatus,
-                paymentDate,
-                expirationDate,
-                currency,
-                interest,
-                fine,
-                increasedValue,
-                discPayAdvance,
-                originalValue,
-                total,
-                description,
-                messageText
-        );
     }
 }

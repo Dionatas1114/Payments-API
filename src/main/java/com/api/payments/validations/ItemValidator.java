@@ -1,24 +1,25 @@
 package com.api.payments.validations;
 
+import com.api.payments.dto.ItemsDto;
 import org.hibernate.service.spi.ServiceException;
 
 public class ItemValidator {
 
-    public static void itemValidator(
-            String itemName,
-            String itemType,
-            String productBrand,
-            String category,
-            String manufacturer,
-            String captionPacking,
-            double totalPrice,
-            double unitaryPrice,
-            double discountPrice,
-            String barCode,
-            String internalCode,
-            String description
-    )
+    public static void itemValidator(ItemsDto itemsData)
             throws ServiceException {
+
+        String itemName = itemsData.getItemName ();
+        String itemType = itemsData.getItemType ();
+        String productBrand = itemsData.getProductBrand ();
+        String category = itemsData.getCategory ();
+        String manufacturer = itemsData.getManufacturer ();
+        String captionPacking = itemsData.getCaptionPacking ();
+        double totalPrice = itemsData.getTotalPrice ();
+        double unitaryPrice = itemsData.getUnitaryPrice ();
+        double discountPrice = itemsData.getDiscountPrice ();
+        String barCode = itemsData.getBarCode ();
+        String internalCode = itemsData.getInternalCode ();
+        String description = itemsData.getDescription ();
 
         if (itemName == null) throw new ServiceException(ItemValidatorMessages.itemNameInvalid);
         if (itemType == null) throw new ServiceException (ItemValidatorMessages.itemTypeInvalid);

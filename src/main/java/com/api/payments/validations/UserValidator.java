@@ -4,7 +4,7 @@ import org.hibernate.service.spi.ServiceException;
 
 public class UserValidator {
 
-    public static void userValidator(String userName, String email, String password) throws Exception {
+    public static void userValidator(String userName, String email, String password) {
 
         boolean nameIsValid = Patterns.userNameValidate(userName);
         boolean emailIsValid = Patterns.emailValidate (email);

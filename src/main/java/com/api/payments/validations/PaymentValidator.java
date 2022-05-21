@@ -1,29 +1,30 @@
 package com.api.payments.validations;
 
+import com.api.payments.dto.PaymentsDto;
 import org.hibernate.service.spi.ServiceException;
 
 import java.time.LocalDate;
 
 public class PaymentValidator {
 
-    public static void paymentValidator(
-            String debtorFullName,
-            String debtorLastName,
-            String paymentMethod,
-            Boolean paymentStatus,
-            LocalDate expirationDate,
-            LocalDate paymentDate,
-            String currency,
-            double interest,
-            double fine,
-            double increasedValue,
-            double discPayAdvance,
-            double originalValue,
-            double total,
-            String description,
-            String messageText
-    )
+    public static void paymentValidator(PaymentsDto paymentsData)
             throws ServiceException {
+
+        String debtorFullName = paymentsData.getDebtorFullName ();
+        String debtorLastName = paymentsData.getDebtorLastName ();
+        String paymentMethod = paymentsData.getPaymentMethod ();
+        Boolean paymentStatus = paymentsData.getPaymentStatus ();
+        LocalDate paymentDate = paymentsData.getPaymentDate ();
+        LocalDate expirationDate = paymentsData.getExpirationDate ();
+        String currency = paymentsData.getCurrency ();
+        double interest = paymentsData.getInterest ();
+        double fine = paymentsData.getFine ();
+        double increasedValue = paymentsData.getIncreasedValue ();
+        double discPayAdvance = paymentsData.getDiscPayAdvance ();
+        double originalValue = paymentsData.getOriginalValue ();
+        double total = paymentsData.getTotal ();
+        String description = paymentsData.getDescription ();
+        String messageText = paymentsData.getMessageText ();
 
         if (debtorFullName == null) throw new ServiceException (PaymentValidatorMessages.debtorFullNameInvalid);
         if (debtorLastName == null) throw new ServiceException (PaymentValidatorMessages.debtorLastNameInvalid);

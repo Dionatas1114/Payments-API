@@ -30,7 +30,8 @@ public class ReceiptServiceImpl implements ReceiptService {
         List<ReceiptsDto> receiptsList = new ArrayList<>();
         List<Receipts> allReceiptsList = receiptRepository.findAll();
 
-        if (allReceiptsList.isEmpty()) throw new RepositoryException(receiptsEmpty);
+        if (allReceiptsList.isEmpty())
+            throw new RepositoryException(receiptsEmpty);
 
         allReceiptsList.forEach(receipt -> receiptsList.add(convertToDto(receipt)));
 
@@ -42,7 +43,8 @@ public class ReceiptServiceImpl implements ReceiptService {
 
         Optional<Receipts> receipt = receiptRepository.findById(receiptId);
 
-        if (receipt.isEmpty()) throw new RepositoryException(receiptNotFound);
+        if (receipt.isEmpty())
+            throw new RepositoryException(receiptNotFound);
 
         return convertToDto(receipt.get());
     }
@@ -82,9 +84,9 @@ public class ReceiptServiceImpl implements ReceiptService {
     @Override
     public void saveReceiptData(ReceiptsDto receiptsData) {
 
-        receiptValidate(receiptsData);
+        receiptValidator(receiptsData);
 
-        receiptRepository.save (converFromDto(receiptsData));
+        receiptRepository.save(converFromDto(receiptsData));
     }
 
     @Override
@@ -92,12 +94,13 @@ public class ReceiptServiceImpl implements ReceiptService {
 
         boolean receiptExists = receiptRepository.existsById(receiptId);
 
-        if (!receiptExists) throw new RepositoryException(receiptNotFound);
+        if (!receiptExists)
+            throw new RepositoryException(receiptNotFound);
 
-        receiptValidate(receiptsData);
+        receiptValidator(receiptsData);
 
         receiptsData.setId(receiptId);
-        saveReceiptData (receiptsData);
+        saveReceiptData(receiptsData);
     }
 
     @Override
@@ -105,7 +108,8 @@ public class ReceiptServiceImpl implements ReceiptService {
 
         boolean receiptExists = receiptRepository.existsById(receiptId);
 
-        if (!receiptExists) throw new RepositoryException(receiptNotFound);
+        if (!receiptExists)
+            throw new RepositoryException(receiptNotFound);
 
         receiptRepository.deleteById(receiptId);
     }
@@ -124,47 +128,11 @@ public class ReceiptServiceImpl implements ReceiptService {
 
         List<ReceiptsDto> receiptsList = new ArrayList<>();
 
-        if (receipts.isEmpty()) throw new RepositoryException(receiptNotFound);
+        if (receipts.isEmpty())
+            throw new RepositoryException(receiptNotFound);
 
         receipts.forEach(receipt -> receiptsList.add(convertToDto(receipt)));
 
         return receiptsList;
-    }
-
-    private void receiptValidate(ReceiptsDto receiptsData) {
-
-        String debtorFullName = receiptsData.getDebtorFullName ();
-        String debtorLastName = receiptsData.getDebtorLastName ();
-        String paymentMethod = receiptsData.getPaymentMethod ();
-        Boolean paymentStatus = receiptsData.getPaymentStatus ();
-        LocalDate paymentDate = receiptsData.getPaymentDate ();
-        LocalDate expirationDate = receiptsData.getExpirationDate ();
-        String currency = receiptsData.getCurrency ();
-        double interest = receiptsData.getInterest ();
-        double fine = receiptsData.getFine ();
-        double increasedValue = receiptsData.getIncreasedValue ();
-        double discPayAdvance = receiptsData.getDiscPayAdvance ();
-        double originalValue = receiptsData.getOriginalValue ();
-        double total = receiptsData.getTotal ();
-        String description = receiptsData.getDescription ();
-        String messageText = receiptsData.getMessageText ();
-
-        receiptValidator (
-                debtorFullName,
-                debtorLastName,
-                paymentMethod,
-                paymentStatus,
-                paymentDate,
-                expirationDate,
-                currency,
-                interest,
-                fine,
-                increasedValue,
-                discPayAdvance,
-                originalValue,
-                total,
-                description,
-                messageText
-        );
     }
 }
