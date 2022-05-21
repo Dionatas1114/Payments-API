@@ -19,12 +19,12 @@ import static com.api.payments.messages.ReceiptMessages.badRequest;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/")
+@RequestMapping("/api")
 public class ItemController extends BaseEntity {
 
     private ItemService itemService;
 
-    @GetMapping(path = {"api/items"})
+    @GetMapping(path = {"/items"})
     public ResponseEntity<List<ItemsDto>> findAllItems(){
 
         ResponseEntity result;
@@ -40,7 +40,7 @@ public class ItemController extends BaseEntity {
         return result;
     }
 
-    @GetMapping(path = {"api/items/{id}"})
+    @GetMapping(path = {"/items/{id}"})
     public ResponseEntity<ItemsDto> findItemById(@PathVariable("id") UUID itemId){
 
         ResponseEntity result;
@@ -56,7 +56,7 @@ public class ItemController extends BaseEntity {
         return result;
     }
 
-    @GetMapping(path = {"api/items/byItemName"})
+    @GetMapping(path = {"/items/byItemName"})
     public ResponseEntity<List<ItemsDto>> findByItemName(@RequestBody Items itemsData){
 
         ResponseEntity result;
@@ -76,8 +76,9 @@ public class ItemController extends BaseEntity {
         return result;
     }
 
-    @GetMapping(path = {"api/items/byItemType"})
-    public ResponseEntity<List<ItemsDto>> findItemsByItemType(@RequestBody ItemsDto itemsData){
+    @GetMapping(path = {"/items/byItemType"})
+    public ResponseEntity<List<ItemsDto>> findItemsByItemType(
+            @RequestBody ItemsDto itemsData){
 
         ResponseEntity result;
 
@@ -94,7 +95,7 @@ public class ItemController extends BaseEntity {
         return result;
     }
 
-    @PostMapping(path = {"api/items"})
+    @PostMapping(path = {"/items"})
     public ResponseEntity<ItemsDto> createItem(@RequestBody ItemsDto itemsData) {
 
         ResponseEntity result;
@@ -103,16 +104,18 @@ public class ItemController extends BaseEntity {
             itemService.saveItemData (itemsData);
             result = new ResponseEntity<>(itemsData, HttpStatus.CREATED);
         } catch (RepositoryException e) {
-            result = new ResponseEntity<>(itemNotCreated + e.getMessage(), HttpStatus.NOT_FOUND);
+            result = new ResponseEntity<>(
+                    itemNotCreated + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (ServiceException e) {
-            result = new ResponseEntity<>(itemNotCreated + e.getMessage(), HttpStatus.CONFLICT);
+            result = new ResponseEntity<>(
+                    itemNotCreated + e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e) {
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }
 
-    @PutMapping(path = {"api/items/{id}"})
+    @PutMapping(path = {"/items/{id}"})
     public ResponseEntity<String> updateItem(
             @PathVariable("id") UUID itemId, @RequestBody ItemsDto itemsData){
 
@@ -122,16 +125,18 @@ public class ItemController extends BaseEntity {
             itemService.updateItemData(itemId, itemsData);
             result = new ResponseEntity<>(itemDataUpdated, HttpStatus.OK);
         } catch (RepositoryException e){
-            result = new ResponseEntity<>(itemDataNotUpdated + e.getMessage(), HttpStatus.NOT_FOUND);
+            result = new ResponseEntity<>(
+                    itemDataNotUpdated + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (ServiceException e){
-            result = new ResponseEntity<>(itemDataNotUpdated + e.getMessage(), HttpStatus.CONFLICT);
+            result = new ResponseEntity<>(
+                    itemDataNotUpdated + e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e){
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }
 
-    @DeleteMapping(path = {"api/items/{id}"})
+    @DeleteMapping(path = {"/items/{id}"})
     public ResponseEntity<String> deleteItem(@PathVariable("id") UUID itemId) {
 
         ResponseEntity<String> result;
@@ -140,7 +145,8 @@ public class ItemController extends BaseEntity {
             itemService.deleteItemData(itemId);
             result = new ResponseEntity<>(itemDataDeleted, HttpStatus.OK);
         } catch (RepositoryException e) {
-            result = new ResponseEntity<>(itemDataNotDeleted + e.getMessage(), HttpStatus.NOT_FOUND);
+            result = new ResponseEntity<>(
+                    itemDataNotDeleted + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }

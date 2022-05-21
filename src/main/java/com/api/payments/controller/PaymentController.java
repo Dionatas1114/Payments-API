@@ -20,12 +20,12 @@ import static com.api.payments.messages.ReceiptMessages.badRequest;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/")
+@RequestMapping("api")
 public class PaymentController {
 
     private PaymentService paymentService;
 
-    @GetMapping(path = {"payments"})
+    @GetMapping(path = {"/payments"})
     public ResponseEntity<List<PaymentsDto>> findAllPayments(){
         ResponseEntity result;
 
@@ -40,8 +40,9 @@ public class PaymentController {
         return result;
     }
 
-    @GetMapping(path = {"payments/{id}"})
-    public ResponseEntity<PaymentsDto> findPaymentById(@PathVariable("id") UUID paymentId){
+    @GetMapping(path = {"/payments/{id}"})
+    public ResponseEntity<PaymentsDto> findPaymentById(
+            @PathVariable("id") UUID paymentId){
 
         ResponseEntity result;
 
@@ -56,14 +57,16 @@ public class PaymentController {
         return result;
     }
 
-    @GetMapping(path = {"payments/byExpirationDate/{expirationDate}"})
+    @GetMapping(path = {"/payments/byExpirationDate/{expirationDate}"})
     public ResponseEntity<List<PaymentsDto>> findPaymentsByExpirationDate(
-            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate expirationDate){
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate expirationDate){
 
         ResponseEntity result;
 
         try {
-            List<PaymentsDto> paymentsFound = paymentService.findPaymentsByExpirationDate(expirationDate);
+            List<PaymentsDto> paymentsFound =
+                    paymentService.findPaymentsByExpirationDate(expirationDate);
             result = new ResponseEntity<>(paymentsFound, HttpStatus.OK);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -73,13 +76,15 @@ public class PaymentController {
         return result;
     }
 
-    @GetMapping(path = {"payments/byDebtorFullName/{debtorFullName}"})
-    public ResponseEntity<PaymentsDto> findByDebtorFullName(@PathVariable String debtorFullName){
+    @GetMapping(path = {"/payments/byDebtorFullName/{debtorFullName}"})
+    public ResponseEntity<PaymentsDto> findByDebtorFullName(
+            @PathVariable String debtorFullName){
 
         ResponseEntity result;
 
         try {
-            List<PaymentsDto> paymentsFound = paymentService.findByDebtorFullName(debtorFullName);
+            List<PaymentsDto> paymentsFound =
+                    paymentService.findByDebtorFullName(debtorFullName);
             result = new ResponseEntity<>(paymentsFound, HttpStatus.OK);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -89,13 +94,15 @@ public class PaymentController {
         return result;
     }
 
-    @GetMapping(path = {"payments/byPaymentStatus/{paymentStatus}"})
-    public ResponseEntity<PaymentsDto> findByPaymentStatus(@PathVariable boolean paymentStatus){
+    @GetMapping(path = {"/payments/byPaymentStatus/{paymentStatus}"})
+    public ResponseEntity<PaymentsDto> findByPaymentStatus(
+            @PathVariable boolean paymentStatus){
 
         ResponseEntity result;
 
         try {
-            List<PaymentsDto> paymentsFound = paymentService.findByPaymentStatus(paymentStatus);
+            List<PaymentsDto> paymentsFound =
+                    paymentService.findByPaymentStatus(paymentStatus);
             result = new ResponseEntity<>(paymentsFound, HttpStatus.OK);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -105,13 +112,15 @@ public class PaymentController {
         return result;
     }
 
-    @GetMapping(path = {"payments/byPaymentMethod/{paymentMethod}"})
-    public ResponseEntity<PaymentsDto> findByPaymentMethod(@PathVariable String paymentMethod){
+    @GetMapping(path = {"/payments/byPaymentMethod/{paymentMethod}"})
+    public ResponseEntity<PaymentsDto> findByPaymentMethod(
+            @PathVariable String paymentMethod){
 
         ResponseEntity result;
 
         try {
-            List<PaymentsDto> paymentsFound = paymentService.findByPaymentMethod(paymentMethod);
+            List<PaymentsDto> paymentsFound =
+                    paymentService.findByPaymentMethod(paymentMethod);
             result = new ResponseEntity<>(paymentsFound, HttpStatus.OK);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -121,23 +130,27 @@ public class PaymentController {
         return result;
     }
 
-    @PostMapping(path = {"payments"})
-    public ResponseEntity<Payments> createPayment(@RequestBody PaymentsDto paymentsData) {
+    @PostMapping(path = {"/payments"})
+    public ResponseEntity<Payments> createPayment(
+            @RequestBody PaymentsDto paymentsData) {
         ResponseEntity result;
 
         try {
             paymentService.savePaymentData (paymentsData);
             result = new ResponseEntity<>(paymentCreated, HttpStatus.CREATED);
         } catch (ServiceException e){
-            result = new ResponseEntity<>(paymentNotCreated + e.getMessage(), HttpStatus.CONFLICT);
+            result = new ResponseEntity<>(
+                    paymentNotCreated + e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e) {
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }
 
-    @PutMapping(path = {"payments/{id}"})
-    public ResponseEntity<String> updatePayment(@PathVariable("id") UUID paymentId, @RequestBody PaymentsDto paymentsData){
+    @PutMapping(path = {"/payments/{id}"})
+    public ResponseEntity<String> updatePayment(
+            @PathVariable("id") UUID paymentId,
+            @RequestBody PaymentsDto paymentsData){
 
         ResponseEntity<String> result;
 
@@ -145,16 +158,18 @@ public class PaymentController {
             paymentService.updatePayment(paymentId, paymentsData);
             result = new ResponseEntity<>(paymentDataUpdated, HttpStatus.OK);
         } catch (RepositoryException e){
-            result = new ResponseEntity<>(paymentDataNotUpdated + e.getMessage(), HttpStatus.NOT_FOUND);
+            result = new ResponseEntity<>(
+                    paymentDataNotUpdated + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (ServiceException e){
-            result = new ResponseEntity<>(paymentDataNotUpdated + e.getMessage(), HttpStatus.CONFLICT);
+            result = new ResponseEntity<>(
+                    paymentDataNotUpdated + e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e){
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }
 
-    @DeleteMapping(path = {"payments/{id}"})
+    @DeleteMapping(path = {"/payments/{id}"})
     public ResponseEntity<String> deletePayment(@PathVariable("id") UUID paymentId) {
 
         ResponseEntity<String> result;
@@ -163,7 +178,8 @@ public class PaymentController {
             paymentService.deletePayment(paymentId);
             result = new ResponseEntity<>(paymentDataDeleted, HttpStatus.OK);
         } catch (RepositoryException e) {
-            result = new ResponseEntity<>(paymentDataNotDeleted + e.getMessage(), HttpStatus.NOT_FOUND);
+            result = new ResponseEntity<>(
+                    paymentDataNotDeleted + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
