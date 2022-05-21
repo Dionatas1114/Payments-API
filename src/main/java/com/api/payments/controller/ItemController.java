@@ -2,7 +2,6 @@ package com.api.payments.controller;
 
 import com.api.payments.dto.ItemsDto;
 import com.api.payments.entity.BaseEntity;
-import com.api.payments.entity.Items;
 import com.api.payments.services.ItemService;
 import lombok.AllArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
@@ -41,7 +40,8 @@ public class ItemController extends BaseEntity {
     }
 
     @GetMapping(path = {"/items/{id}"})
-    public ResponseEntity<ItemsDto> findItemById(@PathVariable("id") UUID itemId){
+    public ResponseEntity<ItemsDto> findItemById(
+            @PathVariable("id") UUID itemId){
 
         ResponseEntity result;
 
@@ -57,7 +57,8 @@ public class ItemController extends BaseEntity {
     }
 
     @GetMapping(path = {"/items/byItemName"})
-    public ResponseEntity<List<ItemsDto>> findByItemName(@RequestBody ItemsDto itemsData){
+    public ResponseEntity<List<ItemsDto>> findByItemName(
+            @RequestBody ItemsDto itemsData){
 
         ResponseEntity result;
 
