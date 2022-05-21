@@ -137,7 +137,7 @@ public class ReceiptController {
 
         try {
             receiptService.saveReceiptData (receiptsData);
-            result = new ResponseEntity<>(receiptsData, HttpStatus.CREATED);
+            result = new ResponseEntity<>(receiptCreated, HttpStatus.CREATED);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(
                     receiptNotCreated + e.getMessage(), HttpStatus.NOT_FOUND);

@@ -45,8 +45,8 @@ public class UserController {
         ResponseEntity result;
 
         try {
-            UsersDto userFind = userService.findOneUser(userId);
-            result = new ResponseEntity<>(userFind, HttpStatus.OK);
+            UsersDto user = userService.findOneUser(userId);
+            result = new ResponseEntity<>(user, HttpStatus.OK);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
