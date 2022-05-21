@@ -1,8 +1,6 @@
 package com.api.payments.controller;
 
 import com.api.payments.dto.ReceiptsDto;
-import com.api.payments.entity.Receipts;
-import com.api.payments.repository.ReceiptRepository;
 import com.api.payments.services.ReceiptService;
 import lombok.AllArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
@@ -20,13 +18,12 @@ import static com.api.payments.messages.ReceiptMessages.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/")
+@RequestMapping("/api")
 public class ReceiptController {
 
-    private ReceiptRepository receiptRepository;
     private ReceiptService receiptService;
 
-    @GetMapping(path = {"api/receipts"})
+    @GetMapping(path = {"/receipts"})
     public ResponseEntity<List<ReceiptsDto>> findAllReceipts(){
 
         ResponseEntity result;
@@ -42,8 +39,9 @@ public class ReceiptController {
         return result;
     }
 
-    @GetMapping(path = {"api/receipts/{id}"})
-    public ResponseEntity<ReceiptsDto> findReceiptById(@PathVariable("id") UUID receiptId){
+    @GetMapping(path = {"/receipts/{id}"})
+    public ResponseEntity<ReceiptsDto> findReceiptById(
+            @PathVariable("id") UUID receiptId){
 
         ResponseEntity result;
 
@@ -58,14 +56,15 @@ public class ReceiptController {
         return result;
     }
 
-    @GetMapping(path = {"api/receipts/byDebtorFullName/{debtorFullName}"})
+    @GetMapping(path = {"/receipts/byDebtorFullName/{debtorFullName}"})
     public ResponseEntity<ReceiptsDto> findByDebtorFullName(
             @PathVariable String debtorFullName){
 
         ResponseEntity result;
 
         try {
-            List<ReceiptsDto> receipts = receiptService.findByDebtorFullName(debtorFullName);
+            List<ReceiptsDto> receipts =
+                    receiptService.findByDebtorFullName(debtorFullName);
             result = new ResponseEntity<>(receipts, HttpStatus.OK);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -75,14 +74,15 @@ public class ReceiptController {
         return result;
     }
 
-    @GetMapping(path = {"api/receipts/byPaymentStatus/{paymentStatus}"})
+    @GetMapping(path = {"/receipts/byPaymentStatus/{paymentStatus}"})
     public ResponseEntity<ReceiptsDto> findByPaymentStatus(
             @PathVariable boolean paymentStatus){
 
         ResponseEntity result;
 
         try {
-            List<ReceiptsDto> receipts = receiptService.findByPaymentStatus(paymentStatus);
+            List<ReceiptsDto> receipts =
+                    receiptService.findByPaymentStatus(paymentStatus);
             result = new ResponseEntity<>(receipts, HttpStatus.OK);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -92,14 +92,15 @@ public class ReceiptController {
         return result;
     }
 
-    @GetMapping(path = {"api/receipts/byPaymentMethod/{paymentMethod}"})
+    @GetMapping(path = {"/receipts/byPaymentMethod/{paymentMethod}"})
     public ResponseEntity<ReceiptsDto> findByPaymentMethod(
             @PathVariable String paymentMethod){
 
         ResponseEntity result;
 
         try {
-            List<ReceiptsDto> receipts = receiptService.findByPaymentMethod(paymentMethod);
+            List<ReceiptsDto> receipts =
+                    receiptService.findByPaymentMethod(paymentMethod);
             result = new ResponseEntity<>(receipts, HttpStatus.OK);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -109,14 +110,16 @@ public class ReceiptController {
         return result;
     }
 
-    @GetMapping(path = {"api/receipts/byExpirationDate/{expirationDate}"})
+    @GetMapping(path = {"/receipts/byExpirationDate/{expirationDate}"})
     public ResponseEntity<ReceiptsDto> findReceiptsByExpirationDate(
-            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate expirationDate){
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate expirationDate){
 
         ResponseEntity result;
 
         try {
-            List<ReceiptsDto> receipts = receiptService.findByExpirationDate(expirationDate);
+            List<ReceiptsDto> receipts =
+                    receiptService.findByExpirationDate(expirationDate);
             result = new ResponseEntity<>(receipts, HttpStatus.OK);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -126,8 +129,9 @@ public class ReceiptController {
         return result;
     }
 
-    @PostMapping(path = {"api/receipts"})
-    public ResponseEntity<ReceiptsDto> createReceipt(@RequestBody ReceiptsDto receiptsData) {
+    @PostMapping(path = {"/receipts"})
+    public ResponseEntity<ReceiptsDto> createReceipt(
+            @RequestBody ReceiptsDto receiptsData) {
 
         ResponseEntity result;
 
@@ -135,17 +139,21 @@ public class ReceiptController {
             receiptService.saveReceiptData (receiptsData);
             result = new ResponseEntity<>(receiptsData, HttpStatus.CREATED);
         } catch (RepositoryException e){
-            result = new ResponseEntity<>(receiptNotCreated + e.getMessage(), HttpStatus.NOT_FOUND);
+            result = new ResponseEntity<>(
+                    receiptNotCreated + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (ServiceException e) {
-            result = new ResponseEntity<>(receiptNotCreated + e.getMessage(), HttpStatus.CONFLICT);
+            result = new ResponseEntity<>(
+                    receiptNotCreated + e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e) {
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }
 
-    @PutMapping(path = {"api/receipts/{id}"})
-    public ResponseEntity<String> updateReceipt(@PathVariable("id") UUID receiptId, @RequestBody ReceiptsDto receiptsData){
+    @PutMapping(path = {"/receipts/{id}"})
+    public ResponseEntity<String> updateReceipt(
+            @PathVariable("id") UUID receiptId,
+            @RequestBody ReceiptsDto receiptsData){
 
         ResponseEntity<String> result;
 
@@ -153,16 +161,18 @@ public class ReceiptController {
             receiptService.updateReceipt(receiptId, receiptsData);
             result = new ResponseEntity<>(receiptDataUpdated, HttpStatus.OK);
         } catch (RepositoryException e) {
-            result = new ResponseEntity<>(receiptDataNotUpdated + e.getMessage(), HttpStatus.NOT_FOUND);
+            result = new ResponseEntity<>(
+                    receiptDataNotUpdated + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (ServiceException e) {
-            result = new ResponseEntity<>(receiptDataNotUpdated + e.getMessage(), HttpStatus.CONFLICT);
+            result = new ResponseEntity<>(
+                    receiptDataNotUpdated + e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e){
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }
 
-    @DeleteMapping(path = {"api/receipts/{id}"})
+    @DeleteMapping(path = {"/receipts/{id}"})
     public ResponseEntity<String> deleteReceiptId(@PathVariable("id") UUID receiptId) {
 
         ResponseEntity<String> result;
@@ -171,7 +181,8 @@ public class ReceiptController {
             receiptService.deleteReceiptId(receiptId);
             result = new ResponseEntity<>(receiptDataDeleted, HttpStatus.OK);
         } catch (RepositoryException e) {
-            result = new ResponseEntity<>(receiptDataNotDeleted + e.getMessage(), HttpStatus.NOT_FOUND);
+            result = new ResponseEntity<>(
+                    receiptDataNotDeleted + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }

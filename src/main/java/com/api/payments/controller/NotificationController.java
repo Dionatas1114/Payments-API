@@ -14,19 +14,19 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/")
+@RequestMapping("/api")
 public class NotificationController {
 
     PaymentRepository paymentRepository;
     ReceiptRepository receiptRepository;
 
-    @GetMapping(path = "/api/notifications/currentPayments")
+    @GetMapping(path = "/notifications/currentPayments")
     public List<Payments> getPaymentNotification(){
         LocalDate actualDate = LocalDate.now();
         return paymentRepository.findByExpirationDate(actualDate);
     }
 
-    @GetMapping(path = "/api/notifications/currentReceipts")
+    @GetMapping(path = "/notifications/currentReceipts")
     public List<Receipts> getReceiptNotification(){
         LocalDate actualDate = LocalDate.now();
         return receiptRepository.findByExpirationDate(actualDate);
