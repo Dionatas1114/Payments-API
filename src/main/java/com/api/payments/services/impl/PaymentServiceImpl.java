@@ -40,73 +40,51 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public PaymentsDto findPaymentById(UUID paymentId) throws Exception {
 
-        Optional<Payments> paymentFind = paymentRepository.findById(paymentId);
+        Optional<Payments> payment = paymentRepository.findById(paymentId);
 
-        if (paymentFind.isEmpty()) throw new RepositoryException(paymentNotFound);
+        if (payment.isEmpty()) throw new RepositoryException(paymentNotFound);
 
-        return convertToDto(paymentFind.get());
+        return convertToDto(payment.get());
     }
 
     @Override
     public List<PaymentsDto> findPaymentsByExpirationDate(LocalDate expirationDate) throws Exception {
 
-        List<PaymentsDto> paymentsDtoList = new ArrayList<>();
-        List<Payments> paymentsFound = paymentRepository.findByExpirationDate(expirationDate);
+        List<Payments> paymentsList = paymentRepository.findByExpirationDate(expirationDate);
 
-        if (paymentsFound.isEmpty()) throw new RepositoryException(paymentNotFound);
-
-        paymentsFound.forEach(payments -> paymentsDtoList.add(convertToDto(payments)));
-
-        return paymentsDtoList;
+        return convertToDtoList(paymentsList);
     }
 
     @Override
     public List<PaymentsDto> findByDebtorFullName(String debtorFullName) throws RepositoryException {
 
-        List<PaymentsDto> paymentsDtoList = new ArrayList<>();
         List<Payments> paymentsList = paymentRepository.findByDebtorFullName(debtorFullName);
 
-        if (paymentsList.isEmpty()) throw new RepositoryException(paymentNotFound);
-
-        paymentsList.forEach(debtor -> paymentsDtoList.add(convertToDto(debtor)));
-
-        return paymentsDtoList;
+        return convertToDtoList(paymentsList);
     }
 
     @Override
     public List<PaymentsDto> findByPaymentStatus(boolean paymentStatus) throws RepositoryException {
 
-        List<PaymentsDto> paymentsDtoList = new ArrayList<>();
         List<Payments> paymentsList = paymentRepository.findByPaymentStatus(paymentStatus);
 
-        if (paymentsList.isEmpty()) throw new RepositoryException(paymentNotFound);
-
-        paymentsList.forEach(debtor -> paymentsDtoList.add(convertToDto(debtor)));
-
-        return paymentsDtoList;
+        return convertToDtoList(paymentsList);
     }
 
     @Override
     public List<PaymentsDto> findByPaymentMethod(String paymentMethod) throws RepositoryException {
 
-        List<PaymentsDto> paymentsDtoList = new ArrayList<>();
         List<Payments> paymentsList = paymentRepository.findByPaymentMethod(paymentMethod);
 
-        if (paymentsList.isEmpty()) throw new RepositoryException(paymentNotFound);
-
-        paymentsList.forEach(debtor -> paymentsDtoList.add(convertToDto(debtor)));
-
-        return paymentsDtoList;
+        return convertToDtoList(paymentsList);
     }
 
     @Override
     public void savePaymentData(PaymentsDto paymentsData) {
 
-        paymentValidate(paymentsData);
+        paymentValidator(paymentsData);
 
-        Payments payments = convertFromDto(paymentsData);
-
-        paymentRepository.save (payments);
+        paymentRepository.save (convertFromDto(paymentsData));
     }
 
     @Override
@@ -114,7 +92,7 @@ public class PaymentServiceImpl implements PaymentService {
 
         if (!paymentRepository.existsById(paymentId)) throw new RepositoryException(paymentNotFound);
 
-        paymentValidate(paymentsData);
+        paymentValidator(paymentsData);
 
         paymentsData.setId(paymentId);
         savePaymentData (paymentsData);
@@ -138,39 +116,14 @@ public class PaymentServiceImpl implements PaymentService {
         return modelMapper.map(payments, Payments.class);
     }
 
-    private void paymentValidate(PaymentsDto paymentsData){
-        String debtorFullName = paymentsData.getDebtorFullName ();
-        String debtorLastName = paymentsData.getDebtorLastName ();
-        String paymentMethod = paymentsData.getPaymentMethod ();
-        Boolean paymentStatus = paymentsData.getPaymentStatus ();
-        LocalDate paymentDate = paymentsData.getPaymentDate ();
-        LocalDate expirationDate = paymentsData.getExpirationDate ();
-        String currency = paymentsData.getCurrency ();
-        double interest = paymentsData.getInterest ();
-        double fine = paymentsData.getFine ();
-        double increasedValue = paymentsData.getIncreasedValue ();
-        double discPayAdvance = paymentsData.getDiscPayAdvance ();
-        double originalValue = paymentsData.getOriginalValue ();
-        double total = paymentsData.getTotal ();
-        String description = paymentsData.getDescription ();
-        String messageText = paymentsData.getMessageText ();
+    private List<PaymentsDto> convertToDtoList(List<Payments> paymentsFound) throws RepositoryException {
 
-        paymentValidator(
-                debtorFullName,
-                debtorLastName,
-                paymentMethod,
-                paymentStatus,
-                paymentDate,
-                expirationDate,
-                currency,
-                interest,
-                fine,
-                increasedValue,
-                discPayAdvance,
-                originalValue,
-                total,
-                description,
-                messageText
-        );
+        List<PaymentsDto> paymentsDtoList = new ArrayList<>();
+
+        if (paymentsFound.isEmpty()) throw new RepositoryException(paymentNotFound);
+
+        paymentsFound.forEach(payments -> paymentsDtoList.add(convertToDto(payments)));
+
+        return paymentsDtoList;
     }
 }

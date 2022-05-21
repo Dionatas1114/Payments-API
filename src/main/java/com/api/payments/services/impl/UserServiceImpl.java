@@ -7,6 +7,7 @@ import com.api.payments.repository.UserConfigurationsRepository;
 import com.api.payments.repository.UserRepository;
 import com.api.payments.services.UserService;
 import lombok.AllArgsConstructor;
+import org.hibernate.service.spi.ServiceException;
 import org.modelmapper.ModelMapper;
 import org.sonatype.aether.RepositoryException;
 import org.springframework.stereotype.Service;
@@ -65,9 +66,9 @@ public class UserServiceImpl implements UserService {
             boolean userEmailAlreadyExists = Objects.equals(byEmail.email, email);
 
             if (userNameAlreadyExists)
-                throw new ExceptionInInitializerError(userNameAlreadyRegistered);
+                throw new ServiceException(userNameAlreadyRegistered);
             if (userEmailAlreadyExists)
-                throw new ExceptionInInitializerError(userEmailAlreadyRegistered);
+                throw new ServiceException(userEmailAlreadyRegistered);
         }
 
         userValidator(userName, email, password);
@@ -110,10 +111,10 @@ public class UserServiceImpl implements UserService {
         for (Users users : usersList) {
 
             if (Objects.equals(users.getName(), userName) && users.getId() != userId)
-                throw new ExceptionInInitializerError(userNameAlreadyRegistered);
+                throw new ServiceException(userNameAlreadyRegistered);
 
             if (Objects.equals(users.getEmail(), email) && users.getId() != userId)
-                throw new ExceptionInInitializerError(userNameAlreadyRegistered);
+                throw new ServiceException(userNameAlreadyRegistered);
         }
 
         userValidator(userName, email, password);

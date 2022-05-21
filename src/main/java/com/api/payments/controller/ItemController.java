@@ -3,9 +3,9 @@ package com.api.payments.controller;
 import com.api.payments.dto.ItemsDto;
 import com.api.payments.entity.BaseEntity;
 import com.api.payments.entity.Items;
-import com.api.payments.repository.ItemRepository;
 import com.api.payments.services.ItemService;
 import lombok.AllArgsConstructor;
+import org.hibernate.service.spi.ServiceException;
 import org.sonatype.aether.RepositoryException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,13 +15,13 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.api.payments.messages.ItemMessages.*;
+import static com.api.payments.messages.ReceiptMessages.badRequest;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/")
 public class ItemController extends BaseEntity {
 
-    private ItemRepository itemRepository;
     private ItemService itemService;
 
     @GetMapping(path = {"api/items"})
@@ -35,7 +35,7 @@ public class ItemController extends BaseEntity {
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }
@@ -51,7 +51,7 @@ public class ItemController extends BaseEntity {
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }
@@ -68,16 +68,16 @@ public class ItemController extends BaseEntity {
             result = new ResponseEntity<>(itemsFound, HttpStatus.OK);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (ExceptionInInitializerError e){
+        } catch (ServiceException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e){
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }
 
     @GetMapping(path = {"api/items/byItemType"})
-    public ResponseEntity<List<ItemsDto>> findItemsByItemType(@RequestBody Items itemsData){
+    public ResponseEntity<List<ItemsDto>> findItemsByItemType(@RequestBody ItemsDto itemsData){
 
         ResponseEntity result;
 
@@ -89,7 +89,7 @@ public class ItemController extends BaseEntity {
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }
@@ -103,9 +103,11 @@ public class ItemController extends BaseEntity {
             itemService.saveItemData (itemsData);
             result = new ResponseEntity<>(itemsData, HttpStatus.CREATED);
         } catch (RepositoryException e) {
+            result = new ResponseEntity<>(itemNotCreated + e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (ServiceException e) {
             result = new ResponseEntity<>(itemNotCreated + e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e) {
-            result = new ResponseEntity<>(itemNotCreated + e.getMessage(), HttpStatus.BAD_REQUEST);
+            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }
@@ -121,10 +123,10 @@ public class ItemController extends BaseEntity {
             result = new ResponseEntity<>(itemDataUpdated, HttpStatus.OK);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(itemDataNotUpdated + e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (ExceptionInInitializerError e){
+        } catch (ServiceException e){
             result = new ResponseEntity<>(itemDataNotUpdated + e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e){
-            result = new ResponseEntity<>(itemDataNotUpdated + e.getMessage(), HttpStatus.BAD_REQUEST);
+            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }
@@ -140,7 +142,7 @@ public class ItemController extends BaseEntity {
         } catch (RepositoryException e) {
             result = new ResponseEntity<>(itemDataNotDeleted + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            result = new ResponseEntity<>(itemDataNotDeleted + e.getMessage(), HttpStatus.BAD_REQUEST);
+            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }

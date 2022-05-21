@@ -11,5 +11,6 @@ public interface PaymentMessages {
     String paymentNotCreated = "Não foi possível cadastrar o pagamento. ";
     String paymentDataNotUpdated = "Não foi possível atualizar os dados do pagamento. ";
     String paymentDataNotDeleted = "Não foi possível deletar os dados do pagamento. ";
+    String badRequest = "Não foi possível realizar esta operação. ";
 
 }

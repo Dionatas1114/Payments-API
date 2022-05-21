@@ -12,4 +12,5 @@ public interface ItemMessages {
     String itemAlreadyExists = "Item já cadastrado, tente inserir outros dados. ";
     String itemDataNotUpdated = "Não foi possível atualizar os dados do item. ";
     String itemDataNotDeleted = "Não foi possível deletar os dados do item. ";
+    String badRequest = "Não foi possível realizar esta operação. ";
 }
