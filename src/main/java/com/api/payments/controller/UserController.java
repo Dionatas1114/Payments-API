@@ -17,12 +17,12 @@ import static com.api.payments.messages.UserMessages.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/")
+@RequestMapping("/api")
 public class UserController {
 
     private UserService userService;
 
-    @GetMapping(path = {"api/users"})
+    @GetMapping(path = {"/users"})
     public ResponseEntity<List<UsersDto>> findAllUsers(){
 
         ResponseEntity result;
@@ -38,8 +38,9 @@ public class UserController {
         return result;
     }
 
-    @GetMapping(path = {"api/users/{id}"})
-    public ResponseEntity<UsersDto> findUser(@PathVariable("id") UUID userId){
+    @GetMapping(path = {"/users/{id}"})
+    public ResponseEntity<UsersDto> findUser(
+            @PathVariable("id") UUID userId){
 
         ResponseEntity result;
 
@@ -54,8 +55,9 @@ public class UserController {
         return result;
     }
 
-    @PostMapping(path = {"api/users"})
-    public ResponseEntity<UsersDto> createUser(@Validated @RequestBody UsersDto usersData) {
+    @PostMapping(path = {"/users"})
+    public ResponseEntity<UsersDto> createUser(
+            @Validated @RequestBody UsersDto usersData) {
 
         ResponseEntity result;
 
@@ -63,15 +65,18 @@ public class UserController {
             userService.saveUserData (usersData);
             result = new ResponseEntity<>(userCreated, HttpStatus.CREATED);
         } catch (ServiceException e) {
-            result = new ResponseEntity<>(userNotCreated + e.getMessage(), HttpStatus.CONFLICT);
+            result = new ResponseEntity<>(
+                    userNotCreated + e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e) {
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }
 
-    @PutMapping(path = {"api/users/{id}"})
-    public ResponseEntity<String> updateUser(@Validated @PathVariable("id") UUID userId, @RequestBody UsersDto usersData){
+    @PutMapping(path = {"/users/{id}"})
+    public ResponseEntity<String> updateUser(
+            @Validated @PathVariable("id") UUID userId,
+            @RequestBody UsersDto usersData){
 
         ResponseEntity<String> result;
         
@@ -79,16 +84,18 @@ public class UserController {
             userService.updateUserData (usersData, userId);
             result = new ResponseEntity<>(userDataUpdated, HttpStatus.OK);
         } catch (RepositoryException e){
-            result = new ResponseEntity<>(userDataNotUpdated + e.getMessage(), HttpStatus.NOT_FOUND);
+            result = new ResponseEntity<>(
+                    userDataNotUpdated + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (ServiceException e){
-            result = new ResponseEntity<>(userDataNotUpdated + e.getMessage(), HttpStatus.CONFLICT);
+            result = new ResponseEntity<>(
+                    userDataNotUpdated + e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e){
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }
 
-    @DeleteMapping(path = {"api/users/{id}"})
+    @DeleteMapping(path = {"/users/{id}"})
     public ResponseEntity<String> deleteUser(@PathVariable("id") UUID userId) {
 
         ResponseEntity<String> result;
@@ -97,7 +104,8 @@ public class UserController {
             userService.deleteUserData(userId);
             result = new ResponseEntity<>(userDataDeleted, HttpStatus.OK);
         } catch (RepositoryException re) {
-            result = new ResponseEntity<>(userDataNotDeleted + re.getMessage(), HttpStatus.NOT_FOUND);
+            result = new ResponseEntity<>(
+                    userDataNotDeleted + re.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }

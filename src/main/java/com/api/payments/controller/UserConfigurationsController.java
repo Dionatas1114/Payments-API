@@ -1,7 +1,6 @@
 package com.api.payments.controller;
 
 import com.api.payments.dto.UserConfigurationsDto;
-import com.api.payments.repository.UserConfigurationsRepository;
 import com.api.payments.services.UserConfigurationsService;
 import lombok.AllArgsConstructor;
 import org.sonatype.aether.RepositoryException;
@@ -15,18 +14,19 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/")
+@RequestMapping("/api")
 public class UserConfigurationsController {
 
-    UserConfigurationsRepository userConfigurationsRepository;
     UserConfigurationsService userConfigurationsService;
 
-    @GetMapping(path = {"api/usersConfigurations"})
+    @GetMapping(path = {"/usersConfigurations"})
     public ResponseEntity<List<UserConfigurationsDto>> findAllUsers(){
         ResponseEntity result;
 
         try {
-            result = new ResponseEntity<>(userConfigurationsService.findUserConfigurations(), HttpStatus.OK);
+            List<UserConfigurationsDto> userConfigurations =
+                    userConfigurationsService.findUserConfigurations();
+            result = new ResponseEntity<>(userConfigurations, HttpStatus.OK);
         } catch (RepositoryException e) {
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e) {
