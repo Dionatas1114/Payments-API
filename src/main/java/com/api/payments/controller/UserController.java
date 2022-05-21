@@ -3,6 +3,7 @@ package com.api.payments.controller;
 import com.api.payments.dto.UsersDto;
 import com.api.payments.services.UserService;
 import lombok.AllArgsConstructor;
+import org.hibernate.service.spi.ServiceException;
 import org.sonatype.aether.RepositoryException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class UserController {
         } catch (RepositoryException e) {
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }
@@ -48,7 +49,7 @@ public class UserController {
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }
@@ -61,10 +62,10 @@ public class UserController {
         try {
             userService.saveUserData (usersData);
             result = new ResponseEntity<>(userCreated, HttpStatus.CREATED);
-        } catch (ExceptionInInitializerError e) {
+        } catch (ServiceException e) {
             result = new ResponseEntity<>(userNotCreated + e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e) {
-            result = new ResponseEntity<>(userNotCreated + e.getMessage(), HttpStatus.BAD_REQUEST);
+            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }
@@ -79,10 +80,10 @@ public class UserController {
             result = new ResponseEntity<>(userDataUpdated, HttpStatus.OK);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(userDataNotUpdated + e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (ExceptionInInitializerError e){
+        } catch (ServiceException e){
             result = new ResponseEntity<>(userDataNotUpdated + e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e){
-            result = new ResponseEntity<>(userDataNotUpdated + e.getMessage(), HttpStatus.BAD_REQUEST);
+            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }
@@ -98,7 +99,7 @@ public class UserController {
         } catch (RepositoryException re) {
             result = new ResponseEntity<>(userDataNotDeleted + re.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            result = new ResponseEntity<>(userDataNotDeleted + e.getMessage(), HttpStatus.BAD_REQUEST);
+            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }

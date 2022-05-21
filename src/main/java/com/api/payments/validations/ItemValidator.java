@@ -1,34 +1,37 @@
 package com.api.payments.validations;
 
+import com.api.payments.dto.ItemsDto;
+import org.hibernate.service.spi.ServiceException;
+
 public class ItemValidator {
 
-    public static void itemValidator(
-            String itemName,
-            String itemType,
-            String productBrand,
-            String category,
-            String manufacturer,
-            String captionPacking,
-            double totalPrice,
-            double unitaryPrice,
-            double discountPrice,
-            String barCode,
-            String internalCode,
-            String description
-    )
-            throws ExceptionInInitializerError {
+    public static void itemValidator(ItemsDto itemsData)
+            throws ServiceException {
 
-        if (itemName == null) throw new ExceptionInInitializerError (ItemValidatorMessages.itemNameInvalid);
-        if (itemType == null) throw new ExceptionInInitializerError (ItemValidatorMessages.itemTypeInvalid);
-        if (productBrand == null) throw new ExceptionInInitializerError (ItemValidatorMessages.productBrandInvalid);
-        if (category == null) throw new ExceptionInInitializerError (ItemValidatorMessages.categoryInvalid);
-        if (manufacturer == null) throw new ExceptionInInitializerError (ItemValidatorMessages.manufacturerInvalid);
-        if (captionPacking == null) throw new ExceptionInInitializerError (ItemValidatorMessages.captionPackingInvalid);
-        if (totalPrice == 0) throw new ExceptionInInitializerError (ItemValidatorMessages.totalPriceInvalid);
-        if (unitaryPrice == 0) throw new ExceptionInInitializerError (ItemValidatorMessages.unitaryPriceInvalid);
-        if (discountPrice == 0) throw new ExceptionInInitializerError (ItemValidatorMessages.discountPriceInvalid);
-        if (barCode == null) throw new ExceptionInInitializerError (ItemValidatorMessages.barCodeInvalid);
-        if (internalCode == null) throw new ExceptionInInitializerError (ItemValidatorMessages.internalCodeInvalid);
-        if (description == null) throw new ExceptionInInitializerError (ItemValidatorMessages.descriptionInvalid);
+        String itemName = itemsData.getItemName ();
+        String itemType = itemsData.getItemType ();
+        String productBrand = itemsData.getProductBrand ();
+        String category = itemsData.getCategory ();
+        String manufacturer = itemsData.getManufacturer ();
+        String captionPacking = itemsData.getCaptionPacking ();
+        double totalPrice = itemsData.getTotalPrice ();
+        double unitaryPrice = itemsData.getUnitaryPrice ();
+        double discountPrice = itemsData.getDiscountPrice ();
+        String barCode = itemsData.getBarCode ();
+        String internalCode = itemsData.getInternalCode ();
+        String description = itemsData.getDescription ();
+
+        if (itemName == null) throw new ServiceException(ItemValidatorMessages.itemNameInvalid);
+        if (itemType == null) throw new ServiceException (ItemValidatorMessages.itemTypeInvalid);
+        if (productBrand == null) throw new ServiceException (ItemValidatorMessages.productBrandInvalid);
+        if (category == null) throw new ServiceException (ItemValidatorMessages.categoryInvalid);
+        if (manufacturer == null) throw new ServiceException (ItemValidatorMessages.manufacturerInvalid);
+        if (captionPacking == null) throw new ServiceException (ItemValidatorMessages.captionPackingInvalid);
+        if (totalPrice == 0) throw new ServiceException (ItemValidatorMessages.totalPriceInvalid);
+        if (unitaryPrice == 0) throw new ServiceException (ItemValidatorMessages.unitaryPriceInvalid);
+        if (discountPrice == 0) throw new ServiceException (ItemValidatorMessages.discountPriceInvalid);
+        if (barCode == null) throw new ServiceException (ItemValidatorMessages.barCodeInvalid);
+        if (internalCode == null) throw new ServiceException (ItemValidatorMessages.internalCodeInvalid);
+        if (description == null) throw new ServiceException (ItemValidatorMessages.descriptionInvalid);
     }
 }

@@ -11,5 +11,6 @@ public interface ReceiptMessages {
     String receiptNotCreated = "Não foi possível cadastrar o recebimento. ";
     String receiptDataNotUpdated = "Não foi possível atualizar os dados do recebimento. ";
     String receiptDataNotDeleted = "Não foi possível deletar os dados do recebimento. ";
+    String badRequest = "Não foi possível realizar esta operação. ";
 
 }

@@ -1,7 +1,6 @@
 package com.api.payments.services;
 
 import com.api.payments.dto.PaymentsDto;
-import com.api.payments.entity.Payments;
 import org.sonatype.aether.RepositoryException;
 import org.springframework.stereotype.Service;
 
@@ -21,4 +20,5 @@ public interface PaymentService {
     void savePaymentData (PaymentsDto paymentsData) throws Exception;
     void updatePayment(UUID paymentId, PaymentsDto paymentsData) throws Exception;
     void deletePayment(UUID paymentId) throws Exception;
+
 }

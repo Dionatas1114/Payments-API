@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 import static com.api.payments.messages.ItemMessages.*;
-import static com.api.payments.validations.ItemValidator.*;
+import static com.api.payments.validations.ItemValidator.itemValidator;
 
 @Service
 @AllArgsConstructor
@@ -26,7 +26,8 @@ public class ItemServiceImpl implements ItemService {
         List<Items> itemsList = itemRepository.findAll();
         List<ItemsDto> itemsDtoList = new ArrayList<>();
 
-        if (itemsList.isEmpty()) throw new RepositoryException(itemsEmpty);
+        if (itemsList.isEmpty())
+            throw new RepositoryException(itemsEmpty);
 
         itemsList.forEach(items -> itemsDtoList.add(convertToDto(items)));
 
@@ -37,7 +38,8 @@ public class ItemServiceImpl implements ItemService {
     public ItemsDto findItemById(UUID itemId) throws RepositoryException {
         Optional<Items> itemFind = itemRepository.findById(itemId);
 
-        if (itemFind.isEmpty()) throw new RepositoryException(itemNotFound);
+        if (itemFind.isEmpty())
+            throw new RepositoryException(itemNotFound);
 
         return convertToDto(itemFind.get());
     }
@@ -45,14 +47,16 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemsDto> findByItemName(String itemName) throws Exception {
 
-        //validar itemName
+        //TODO validar itemName
         List<ItemsDto> itemsDtoList = new ArrayList<>();
         List<Items> itemsFound = itemRepository.findByItemName(itemName);
 
         boolean itemsListEmpty = itemsFound.isEmpty();
-        if (itemsListEmpty) throw new RepositoryException(itemNotFound);
+        if (itemsListEmpty)
+            throw new RepositoryException(itemNotFound);
 
-        for(Items items : itemsFound) itemsDtoList.add(convertToDto(items));
+        for (Items items : itemsFound)
+            itemsDtoList.add(convertToDto(items));
 
         return itemsDtoList;
     }
@@ -64,19 +68,21 @@ public class ItemServiceImpl implements ItemService {
         List<Items> itemsList = itemRepository.findByItemType(itemType);
 
         boolean itemsListEmpty = itemsList.isEmpty();
-        if (itemsListEmpty) throw new RepositoryException(itemsEmpty);
+        if (itemsListEmpty)
+            throw new RepositoryException(itemsEmpty);
 
-        for (Items items : itemsList) itemsDtoList.add(convertToDto(items));
+        for (Items items : itemsList)
+            itemsDtoList.add(convertToDto(items));
 
         return itemsDtoList;
     }
 
     public void saveItemData(ItemsDto itemsData) throws Exception {
 
-        String itemName = itemsData.getItemName ();
-        String itemType = itemsData.getItemType ();
-        String productBrand = itemsData.getProductBrand ();
-        String captionPacking = itemsData.getCaptionPacking ();
+        String itemName = itemsData.getItemName();
+        String itemType = itemsData.getItemType();
+        String productBrand = itemsData.getProductBrand();
+        String captionPacking = itemsData.getCaptionPacking();
 
         ArrayList<Object> booleanList = new ArrayList<>();
         List<Items> itemsFoundByItemName = itemRepository.findByItemName(itemName);
@@ -90,15 +96,16 @@ public class ItemServiceImpl implements ItemService {
         }
 
         boolean alreadyExists = booleanList.contains(true);
-        if (alreadyExists) throw new RepositoryException(itemAlreadyExists);
+        if (alreadyExists)
+            throw new RepositoryException(itemAlreadyExists);
 
-        itemValidate(itemsData);
+        itemValidator(itemsData);
 
         Items items = convertFromDto(itemsData);
 
         try {
-            itemRepository.save (items);
-        } catch (Exception e){
+            itemRepository.save(items);
+        } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
     }
@@ -107,16 +114,17 @@ public class ItemServiceImpl implements ItemService {
     public void updateItemData(UUID itemId, ItemsDto itemsData) throws Exception {
 
         boolean existsById = itemRepository.existsById(itemId);
-        if (!existsById) throw new RepositoryException(itemNotFound);
+        if (!existsById)
+            throw new RepositoryException(itemNotFound);
 
-        itemValidate(itemsData);
+        itemValidator(itemsData);
 
         Items items = convertFromDto(itemsData);
 
         try {
             items.setId(itemId);
-            itemRepository.save (items);
-        } catch (Exception e){
+            itemRepository.save(items);
+        } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
     }
@@ -125,7 +133,8 @@ public class ItemServiceImpl implements ItemService {
     public void deleteItemData(UUID itemId) throws Exception {
 
         boolean existsById = itemRepository.existsById(itemId);
-        if (!existsById) throw new RepositoryException(itemNotFound);
+        if (!existsById)
+            throw new RepositoryException(itemNotFound);
 
         try {
             itemRepository.deleteById(itemId);
@@ -143,35 +152,5 @@ public class ItemServiceImpl implements ItemService {
     private Items convertFromDto(ItemsDto itemsData) {
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(itemsData, Items.class);
-    }
-
-    private void itemValidate(ItemsDto itemsData){
-        String itemName = itemsData.getItemName ();
-        String itemType = itemsData.getItemType ();
-        String productBrand = itemsData.getProductBrand ();
-        String category = itemsData.getCategory ();
-        String manufacturer = itemsData.getManufacturer ();
-        String captionPacking = itemsData.getCaptionPacking ();
-        double totalPrice = itemsData.getTotalPrice ();
-        double unitaryPrice = itemsData.getUnitaryPrice ();
-        double discountPrice = itemsData.getDiscountPrice ();
-        String barCode = itemsData.getBarCode ();
-        String internalCode = itemsData.getInternalCode ();
-        String description = itemsData.getDescription ();
-
-        itemValidator (
-                itemName,
-                itemType,
-                productBrand,
-                category,
-                manufacturer,
-                captionPacking,
-                totalPrice,
-                unitaryPrice,
-                discountPrice,
-                barCode,
-                internalCode,
-                description
-        );
     }
 }
