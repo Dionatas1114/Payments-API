@@ -4,6 +4,7 @@ import com.api.payments.dto.PaymentsDto;
 import com.api.payments.entity.Payments;
 import com.api.payments.services.PaymentService;
 import lombok.AllArgsConstructor;
+import org.hibernate.service.spi.ServiceException;
 import org.sonatype.aether.RepositoryException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.api.payments.messages.PaymentMessages.*;
+import static com.api.payments.messages.ReceiptMessages.badRequest;
 
 @RestController
 @AllArgsConstructor
@@ -33,7 +35,7 @@ public class PaymentController {
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }
@@ -49,7 +51,7 @@ public class PaymentController {
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }catch (Exception e){
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }
@@ -66,7 +68,7 @@ public class PaymentController {
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }
@@ -82,7 +84,7 @@ public class PaymentController {
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }catch (Exception e){
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }
@@ -98,7 +100,7 @@ public class PaymentController {
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }catch (Exception e){
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }
@@ -114,7 +116,7 @@ public class PaymentController {
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }catch (Exception e){
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }
@@ -126,8 +128,10 @@ public class PaymentController {
         try {
             paymentService.savePaymentData (paymentsData);
             result = new ResponseEntity<>(paymentCreated, HttpStatus.CREATED);
+        } catch (ServiceException e){
+            result = new ResponseEntity<>(paymentNotCreated + e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e) {
-            result = new ResponseEntity<>(paymentNotCreated, HttpStatus.BAD_REQUEST);
+            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }
@@ -141,9 +145,11 @@ public class PaymentController {
             paymentService.updatePayment(paymentId, paymentsData);
             result = new ResponseEntity<>(paymentDataUpdated, HttpStatus.OK);
         } catch (RepositoryException e){
-            result = new ResponseEntity<>(paymentNotFound, HttpStatus.NOT_FOUND);
+            result = new ResponseEntity<>(paymentDataNotUpdated + e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (ServiceException e){
+            result = new ResponseEntity<>(paymentDataNotUpdated + e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e){
-            result = new ResponseEntity<>(paymentDataNotUpdated, HttpStatus.BAD_REQUEST);
+            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }
@@ -156,8 +162,10 @@ public class PaymentController {
         try {
             paymentService.deletePayment(paymentId);
             result = new ResponseEntity<>(paymentDataDeleted, HttpStatus.OK);
+        } catch (RepositoryException e) {
+            result = new ResponseEntity<>(paymentDataNotDeleted + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            result = new ResponseEntity<>(paymentDataNotDeleted, HttpStatus.BAD_REQUEST);
+            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
     }

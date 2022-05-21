@@ -1,5 +1,7 @@
 package com.api.payments.validations;
 
+import org.hibernate.service.spi.ServiceException;
+
 public class ItemValidator {
 
     public static void itemValidator(
@@ -16,19 +18,19 @@ public class ItemValidator {
             String internalCode,
             String description
     )
-            throws ExceptionInInitializerError {
+            throws ServiceException {
 
-        if (itemName == null) throw new ExceptionInInitializerError (ItemValidatorMessages.itemNameInvalid);
-        if (itemType == null) throw new ExceptionInInitializerError (ItemValidatorMessages.itemTypeInvalid);
-        if (productBrand == null) throw new ExceptionInInitializerError (ItemValidatorMessages.productBrandInvalid);
-        if (category == null) throw new ExceptionInInitializerError (ItemValidatorMessages.categoryInvalid);
-        if (manufacturer == null) throw new ExceptionInInitializerError (ItemValidatorMessages.manufacturerInvalid);
-        if (captionPacking == null) throw new ExceptionInInitializerError (ItemValidatorMessages.captionPackingInvalid);
-        if (totalPrice == 0) throw new ExceptionInInitializerError (ItemValidatorMessages.totalPriceInvalid);
-        if (unitaryPrice == 0) throw new ExceptionInInitializerError (ItemValidatorMessages.unitaryPriceInvalid);
-        if (discountPrice == 0) throw new ExceptionInInitializerError (ItemValidatorMessages.discountPriceInvalid);
-        if (barCode == null) throw new ExceptionInInitializerError (ItemValidatorMessages.barCodeInvalid);
-        if (internalCode == null) throw new ExceptionInInitializerError (ItemValidatorMessages.internalCodeInvalid);
-        if (description == null) throw new ExceptionInInitializerError (ItemValidatorMessages.descriptionInvalid);
+        if (itemName == null) throw new ServiceException(ItemValidatorMessages.itemNameInvalid);
+        if (itemType == null) throw new ServiceException (ItemValidatorMessages.itemTypeInvalid);
+        if (productBrand == null) throw new ServiceException (ItemValidatorMessages.productBrandInvalid);
+        if (category == null) throw new ServiceException (ItemValidatorMessages.categoryInvalid);
+        if (manufacturer == null) throw new ServiceException (ItemValidatorMessages.manufacturerInvalid);
+        if (captionPacking == null) throw new ServiceException (ItemValidatorMessages.captionPackingInvalid);
+        if (totalPrice == 0) throw new ServiceException (ItemValidatorMessages.totalPriceInvalid);
+        if (unitaryPrice == 0) throw new ServiceException (ItemValidatorMessages.unitaryPriceInvalid);
+        if (discountPrice == 0) throw new ServiceException (ItemValidatorMessages.discountPriceInvalid);
+        if (barCode == null) throw new ServiceException (ItemValidatorMessages.barCodeInvalid);
+        if (internalCode == null) throw new ServiceException (ItemValidatorMessages.internalCodeInvalid);
+        if (description == null) throw new ServiceException (ItemValidatorMessages.descriptionInvalid);
     }
 }

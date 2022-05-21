@@ -13,5 +13,6 @@ public interface UserMessages {
     String userEmailAlreadyRegistered = "Já existe um usuário cadastrado com este email, tente inserir outros dados. ";
     String userDataNotUpdated = "Não foi possível atualizar os dados do usuário. ";
     String userDataNotDeleted = "Não foi possível deletar os dados do usuário. ";
+    String badRequest = "Não foi possível realizar esta operação. ";
 
 }

@@ -40,11 +40,11 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public PaymentsDto findPaymentById(UUID paymentId) throws Exception {
 
-        Optional<Payments> paymentFind = paymentRepository.findById(paymentId);
+        Optional<Payments> payment = paymentRepository.findById(paymentId);
 
-        if (paymentFind.isEmpty()) throw new RepositoryException(paymentNotFound);
+        if (payment.isEmpty()) throw new RepositoryException(paymentNotFound);
 
-        return convertToDto(paymentFind.get());
+        return convertToDto(payment.get());
     }
 
     @Override

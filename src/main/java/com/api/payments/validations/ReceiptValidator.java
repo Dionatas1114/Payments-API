@@ -1,5 +1,7 @@
 package com.api.payments.validations;
 
+import org.hibernate.service.spi.ServiceException;
+
 import java.time.LocalDate;
 
 public class ReceiptValidator {
@@ -21,22 +23,22 @@ public class ReceiptValidator {
             String description,
             String messageText
     )
-            throws ExceptionInInitializerError {
+            throws ServiceException {
 
-        if (debtorFullName == null) throw new ExceptionInInitializerError (ReceiptValidatorMessages.debtorFullNameInvalid);
-        if (debtorLastName == null) throw new ExceptionInInitializerError (ReceiptValidatorMessages.debtorLastNameInvalid);
-        if (paymentMethod == null) throw new ExceptionInInitializerError (ReceiptValidatorMessages.paymentMethodInvalid);
-        if (paymentStatus == null) throw new ExceptionInInitializerError (ReceiptValidatorMessages.paymentStatusInvalid);
-        if (paymentDate == null) throw new ExceptionInInitializerError (ReceiptValidatorMessages.paymentDateInvalid);
-        if (expirationDate == null) throw new ExceptionInInitializerError (ReceiptValidatorMessages.expirationDateInvalid);
-        if (currency == null) throw new ExceptionInInitializerError (ReceiptValidatorMessages.currencyInvalid);
-//        if (interest == 0) throw new ExceptionInInitializerError (ReceiptValidatorMessages.interestInvalid);
-//        if (fine == 0) throw new ExceptionInInitializerError (ReceiptValidatorMessages.fineInvalid);
-//        if (increasedValue == 0) throw new ExceptionInInitializerError (ReceiptValidatorMessages.increasedValueInvalid);
-//        if (discPayAdvance == 0) throw new ExceptionInInitializerError (ReceiptValidatorMessages.discPayAdvanceInvalid);
-//        if (originalValue == 0) throw new ExceptionInInitializerError (ReceiptValidatorMessages.originalValueInvalid);
-//        if (total == 0) throw new ExceptionInInitializerError (ReceiptValidatorMessages.totalInvalid);
-        if (description == null) throw new ExceptionInInitializerError (ReceiptValidatorMessages.descriptionInvalid);
-        if (messageText == null) throw new ExceptionInInitializerError (ReceiptValidatorMessages.messageTextInvalid);
+        if (debtorFullName == null) throw new ServiceException (ReceiptValidatorMessages.debtorFullNameInvalid);
+        if (debtorLastName == null) throw new ServiceException (ReceiptValidatorMessages.debtorLastNameInvalid);
+        if (paymentMethod == null) throw new ServiceException(ReceiptValidatorMessages.paymentMethodInvalid);
+        if (paymentStatus == null) throw new ServiceException (ReceiptValidatorMessages.paymentStatusInvalid);
+        if (paymentDate == null) throw new ServiceException (ReceiptValidatorMessages.paymentDateInvalid);
+        if (expirationDate == null) throw new ServiceException (ReceiptValidatorMessages.expirationDateInvalid);
+        if (currency == null) throw new ServiceException (ReceiptValidatorMessages.currencyInvalid);
+//        if (interest == 0) throw new ServiceException (ReceiptValidatorMessages.interestInvalid);
+//        if (fine == 0) throw new ServiceException (ReceiptValidatorMessages.fineInvalid);
+//        if (increasedValue == 0) throw new ServiceException (ReceiptValidatorMessages.increasedValueInvalid);
+//        if (discPayAdvance == 0) throw new ServiceException (ReceiptValidatorMessages.discPayAdvanceInvalid);
+//        if (originalValue == 0) throw new ServiceException (ReceiptValidatorMessages.originalValueInvalid);
+//        if (total == 0) throw new ServiceException (ReceiptValidatorMessages.totalInvalid);
+        if (description == null) throw new ServiceException (ReceiptValidatorMessages.descriptionInvalid);
+        if (messageText == null) throw new ServiceException (ReceiptValidatorMessages.messageTextInvalid);
     }
 }

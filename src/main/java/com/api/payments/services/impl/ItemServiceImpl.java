@@ -45,7 +45,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemsDto> findByItemName(String itemName) throws Exception {
 
-        //validar itemName
+        //TODO validar itemName
         List<ItemsDto> itemsDtoList = new ArrayList<>();
         List<Items> itemsFound = itemRepository.findByItemName(itemName);
 
