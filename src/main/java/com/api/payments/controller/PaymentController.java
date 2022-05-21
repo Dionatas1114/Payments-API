@@ -65,9 +65,9 @@ public class PaymentController {
         ResponseEntity result;
 
         try {
-            List<PaymentsDto> paymentsFound =
+            List<PaymentsDto> payments =
                     paymentService.findPaymentsByExpirationDate(expirationDate);
-            result = new ResponseEntity<>(paymentsFound, HttpStatus.OK);
+            result = new ResponseEntity<>(payments, HttpStatus.OK);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
@@ -83,9 +83,9 @@ public class PaymentController {
         ResponseEntity result;
 
         try {
-            List<PaymentsDto> paymentsFound =
+            List<PaymentsDto> payments =
                     paymentService.findByDebtorFullName(debtorFullName);
-            result = new ResponseEntity<>(paymentsFound, HttpStatus.OK);
+            result = new ResponseEntity<>(payments, HttpStatus.OK);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }catch (Exception e){
@@ -101,9 +101,9 @@ public class PaymentController {
         ResponseEntity result;
 
         try {
-            List<PaymentsDto> paymentsFound =
+            List<PaymentsDto> payments =
                     paymentService.findByPaymentStatus(paymentStatus);
-            result = new ResponseEntity<>(paymentsFound, HttpStatus.OK);
+            result = new ResponseEntity<>(payments, HttpStatus.OK);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }catch (Exception e){
@@ -119,9 +119,9 @@ public class PaymentController {
         ResponseEntity result;
 
         try {
-            List<PaymentsDto> paymentsFound =
+            List<PaymentsDto> payments =
                     paymentService.findByPaymentMethod(paymentMethod);
-            result = new ResponseEntity<>(paymentsFound, HttpStatus.OK);
+            result = new ResponseEntity<>(payments, HttpStatus.OK);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }catch (Exception e){

@@ -28,7 +28,7 @@ public class UserConfigurationsController {
                     userConfigurationsService.findUserConfigurations();
             result = new ResponseEntity<>(userConfigurations, HttpStatus.OK);
         } catch (RepositoryException e) {
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+            result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

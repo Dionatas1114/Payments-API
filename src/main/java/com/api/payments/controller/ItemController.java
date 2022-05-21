@@ -57,15 +57,15 @@ public class ItemController extends BaseEntity {
     }
 
     @GetMapping(path = {"/items/byItemName"})
-    public ResponseEntity<List<ItemsDto>> findByItemName(@RequestBody Items itemsData){
+    public ResponseEntity<List<ItemsDto>> findByItemName(@RequestBody ItemsDto itemsData){
 
         ResponseEntity result;
 
         String itemName = itemsData.itemName;
 
         try {
-            List<ItemsDto> itemsFound = itemService.findByItemName(itemName);
-            result = new ResponseEntity<>(itemsFound, HttpStatus.OK);
+            List<ItemsDto> items = itemService.findByItemName(itemName);
+            result = new ResponseEntity<>(items, HttpStatus.OK);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (ServiceException e){
@@ -85,8 +85,8 @@ public class ItemController extends BaseEntity {
         String itemType = itemsData.itemType;
 
         try {
-            List<ItemsDto> itemsFound = itemService.findItemsByItemType(itemType);
-            result = new ResponseEntity<>(itemsFound, HttpStatus.OK);
+            List<ItemsDto> items = itemService.findItemsByItemType(itemType);
+            result = new ResponseEntity<>(items, HttpStatus.OK);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
@@ -102,7 +102,7 @@ public class ItemController extends BaseEntity {
 
         try {
             itemService.saveItemData (itemsData);
-            result = new ResponseEntity<>(itemsData, HttpStatus.CREATED);
+            result = new ResponseEntity<>(itemCreated, HttpStatus.CREATED);
         } catch (RepositoryException e) {
             result = new ResponseEntity<>(
                     itemNotCreated + e.getMessage(), HttpStatus.NOT_FOUND);
