@@ -50,53 +50,33 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public List<PaymentsDto> findPaymentsByExpirationDate(LocalDate expirationDate) throws Exception {
 
-        List<PaymentsDto> paymentsDtoList = new ArrayList<>();
-        List<Payments> paymentsFound = paymentRepository.findByExpirationDate(expirationDate);
+        List<Payments> paymentsList = paymentRepository.findByExpirationDate(expirationDate);
 
-        if (paymentsFound.isEmpty()) throw new RepositoryException(paymentNotFound);
-
-        paymentsFound.forEach(payments -> paymentsDtoList.add(convertToDto(payments)));
-
-        return paymentsDtoList;
+        return convertToDtoList(paymentsList);
     }
 
     @Override
     public List<PaymentsDto> findByDebtorFullName(String debtorFullName) throws RepositoryException {
 
-        List<PaymentsDto> paymentsDtoList = new ArrayList<>();
         List<Payments> paymentsList = paymentRepository.findByDebtorFullName(debtorFullName);
 
-        if (paymentsList.isEmpty()) throw new RepositoryException(paymentNotFound);
-
-        paymentsList.forEach(debtor -> paymentsDtoList.add(convertToDto(debtor)));
-
-        return paymentsDtoList;
+        return convertToDtoList(paymentsList);
     }
 
     @Override
     public List<PaymentsDto> findByPaymentStatus(boolean paymentStatus) throws RepositoryException {
 
-        List<PaymentsDto> paymentsDtoList = new ArrayList<>();
         List<Payments> paymentsList = paymentRepository.findByPaymentStatus(paymentStatus);
 
-        if (paymentsList.isEmpty()) throw new RepositoryException(paymentNotFound);
-
-        paymentsList.forEach(debtor -> paymentsDtoList.add(convertToDto(debtor)));
-
-        return paymentsDtoList;
+        return convertToDtoList(paymentsList);
     }
 
     @Override
     public List<PaymentsDto> findByPaymentMethod(String paymentMethod) throws RepositoryException {
 
-        List<PaymentsDto> paymentsDtoList = new ArrayList<>();
         List<Payments> paymentsList = paymentRepository.findByPaymentMethod(paymentMethod);
 
-        if (paymentsList.isEmpty()) throw new RepositoryException(paymentNotFound);
-
-        paymentsList.forEach(debtor -> paymentsDtoList.add(convertToDto(debtor)));
-
-        return paymentsDtoList;
+        return convertToDtoList(paymentsList);
     }
 
     @Override
@@ -104,9 +84,7 @@ public class PaymentServiceImpl implements PaymentService {
 
         paymentValidate(paymentsData);
 
-        Payments payments = convertFromDto(paymentsData);
-
-        paymentRepository.save (payments);
+        paymentRepository.save (convertFromDto(paymentsData));
     }
 
     @Override
@@ -136,6 +114,17 @@ public class PaymentServiceImpl implements PaymentService {
     private Payments convertFromDto(PaymentsDto payments) {
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(payments, Payments.class);
+    }
+
+    private List<PaymentsDto> convertToDtoList(List<Payments> paymentsFound) throws RepositoryException {
+
+        List<PaymentsDto> paymentsDtoList = new ArrayList<>();
+
+        if (paymentsFound.isEmpty()) throw new RepositoryException(paymentNotFound);
+
+        paymentsFound.forEach(payments -> paymentsDtoList.add(convertToDto(payments)));
+
+        return paymentsDtoList;
     }
 
     private void paymentValidate(PaymentsDto paymentsData){
