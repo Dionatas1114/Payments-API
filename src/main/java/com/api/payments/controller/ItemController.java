@@ -56,13 +56,11 @@ public class ItemController extends BaseEntity {
         return result;
     }
 
-    @GetMapping(path = {"/items/byItemName"})
+    @GetMapping(path = {"/items/byItemName/{itemName}"})
     public ResponseEntity<List<ItemsDto>> findByItemName(
-            @RequestBody ItemsDto itemsData){
+            @PathVariable String itemName){
 
         ResponseEntity result;
-
-        String itemName = itemsData.itemName;
 
         try {
             List<ItemsDto> items = itemService.findByItemName(itemName);
@@ -77,13 +75,11 @@ public class ItemController extends BaseEntity {
         return result;
     }
 
-    @GetMapping(path = {"/items/byItemType"})
+    @GetMapping(path = {"/items/byItemType/{itemType}"})
     public ResponseEntity<List<ItemsDto>> findItemsByItemType(
-            @RequestBody ItemsDto itemsData){
+            @PathVariable String itemType){
 
         ResponseEntity result;
-
-        String itemType = itemsData.itemType;
 
         try {
             List<ItemsDto> items = itemService.findItemsByItemType(itemType);

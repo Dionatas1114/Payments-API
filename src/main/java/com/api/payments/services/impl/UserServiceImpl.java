@@ -42,13 +42,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UsersDto findOneUser(UUID userId) throws RepositoryException {
+    public UsersDto findUserById(UUID userId) throws RepositoryException {
 
-        Optional<Users> userFind = userRepository.findById(userId);
-        if (userFind.isEmpty())
+        Optional<Users> user = userRepository.findById(userId);
+        if (user.isEmpty())
             throw new RepositoryException(userNotFound);
 
-        return convertToDto(userFind.get());
+        return convertToDto(user.get());
     }
 
     @Transactional
