@@ -21,8 +21,8 @@ public class ItemValidator {
         String internalCode = itemsData.getInternalCode ();
         String description = itemsData.getDescription ();
 
-        if (itemName == null) throw new ServiceException(ItemValidatorMessages.itemNameInvalid);
-        if (itemType == null) throw new ServiceException (ItemValidatorMessages.itemTypeInvalid);
+        itemNameValidator(itemName);
+        itemTypeValidator(itemType);
         if (productBrand == null) throw new ServiceException (ItemValidatorMessages.productBrandInvalid);
         if (category == null) throw new ServiceException (ItemValidatorMessages.categoryInvalid);
         if (manufacturer == null) throw new ServiceException (ItemValidatorMessages.manufacturerInvalid);
@@ -33,5 +33,13 @@ public class ItemValidator {
         if (barCode == null) throw new ServiceException (ItemValidatorMessages.barCodeInvalid);
         if (internalCode == null) throw new ServiceException (ItemValidatorMessages.internalCodeInvalid);
         if (description == null) throw new ServiceException (ItemValidatorMessages.descriptionInvalid);
+    }
+
+    public static void itemTypeValidator(String itemType) {
+        if (itemType == null) throw new ServiceException (ItemValidatorMessages.itemTypeInvalid);
+    }
+
+    public static void itemNameValidator(String itemName) {
+        if (itemName == null) throw new ServiceException(ItemValidatorMessages.itemNameInvalid);
     }
 }

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 import static com.api.payments.messages.ItemMessages.*;
-import static com.api.payments.validations.ItemValidator.itemValidator;
+import static com.api.payments.validations.ItemValidator.*;
 
 @Service
 @AllArgsConstructor
@@ -47,7 +47,8 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemsDto> findByItemName(String itemName) throws Exception {
 
-        //TODO validar itemName
+        itemNameValidator(itemName);
+
         List<ItemsDto> itemsDtoList = new ArrayList<>();
         List<Items> itemsByItemName = itemRepository.findByItemName(itemName);
 
@@ -63,6 +64,8 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemsDto> findItemsByItemType(String itemType) throws Exception {
+
+        itemTypeValidator(itemType);
 
         List<ItemsDto> itemsDtoList = new ArrayList<>();
         List<Items> itemsList = itemRepository.findByItemType(itemType);
