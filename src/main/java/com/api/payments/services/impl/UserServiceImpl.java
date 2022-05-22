@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.sonatype.aether.RepositoryException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 import static com.api.payments.messages.UserMessages.*;
@@ -50,6 +51,7 @@ public class UserServiceImpl implements UserService {
         return convertToDto(userFind.get());
     }
 
+    @Transactional
     @Override
     public void saveUserData(UsersDto userDto) throws Exception {
 
@@ -93,6 +95,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Transactional
     @Override
     public void updateUserData(UsersDto userDto, UUID userId) throws Exception {
         UserConfigurations userConfigurations = new UserConfigurations();
@@ -142,6 +145,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Transactional
     @Override
     public void deleteUserData(UUID userId) throws Exception {
 
@@ -149,12 +153,7 @@ public class UserServiceImpl implements UserService {
         if (!exists)
             throw new RepositoryException(userNotFound);
 
-        try {
-            userRepository.deleteById(userId);
-        } catch (
-                Exception e) {
-            throw new Exception(e.getMessage());
-        }
+        userRepository.deleteById(userId);
     }
 
     private UsersDto convertToDto(Users user) {

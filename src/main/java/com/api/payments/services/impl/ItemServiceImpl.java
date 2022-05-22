@@ -103,11 +103,7 @@ public class ItemServiceImpl implements ItemService {
 
         Items items = convertFromDto(itemsData);
 
-        try {
-            itemRepository.save(items);
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
+        itemRepository.save(items);
     }
 
     @Override
@@ -121,12 +117,8 @@ public class ItemServiceImpl implements ItemService {
 
         Items items = convertFromDto(itemsData);
 
-        try {
-            items.setId(itemId);
-            itemRepository.save(items);
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
+        items.setId(itemId);
+        itemRepository.save(items);
     }
 
     @Override
@@ -136,12 +128,7 @@ public class ItemServiceImpl implements ItemService {
         if (!existsById)
             throw new RepositoryException(itemNotFound);
 
-        try {
-            itemRepository.deleteById(itemId);
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
-
+        itemRepository.deleteById(itemId);
     }
 
     private ItemsDto convertToDto(Items items) {
