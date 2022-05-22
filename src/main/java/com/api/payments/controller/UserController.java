@@ -39,13 +39,13 @@ public class UserController {
     }
 
     @GetMapping(path = {"/users/{id}"})
-    public ResponseEntity<UsersDto> findUser(
+    public ResponseEntity<UsersDto> findUserById(
             @PathVariable("id") UUID userId){
 
         ResponseEntity result;
 
         try {
-            UsersDto user = userService.findOneUser(userId);
+            UsersDto user = userService.findUserById(userId);
             result = new ResponseEntity<>(user, HttpStatus.OK);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);

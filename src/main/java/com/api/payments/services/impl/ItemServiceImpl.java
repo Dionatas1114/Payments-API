@@ -36,12 +36,12 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemsDto findItemById(UUID itemId) throws RepositoryException {
-        Optional<Items> itemFind = itemRepository.findById(itemId);
+        Optional<Items> item = itemRepository.findById(itemId);
 
-        if (itemFind.isEmpty())
+        if (item.isEmpty())
             throw new RepositoryException(itemNotFound);
 
-        return convertToDto(itemFind.get());
+        return convertToDto(item.get());
     }
 
     @Override
@@ -49,13 +49,13 @@ public class ItemServiceImpl implements ItemService {
 
         //TODO validar itemName
         List<ItemsDto> itemsDtoList = new ArrayList<>();
-        List<Items> itemsFound = itemRepository.findByItemName(itemName);
+        List<Items> itemsByItemName = itemRepository.findByItemName(itemName);
 
-        boolean itemsListEmpty = itemsFound.isEmpty();
+        boolean itemsListEmpty = itemsByItemName.isEmpty();
         if (itemsListEmpty)
             throw new RepositoryException(itemNotFound);
 
-        for (Items items : itemsFound)
+        for (Items items : itemsByItemName)
             itemsDtoList.add(convertToDto(items));
 
         return itemsDtoList;
@@ -85,9 +85,9 @@ public class ItemServiceImpl implements ItemService {
         String captionPacking = itemsData.getCaptionPacking();
 
         ArrayList<Object> booleanList = new ArrayList<>();
-        List<Items> itemsFoundByItemName = itemRepository.findByItemName(itemName);
+        List<Items> itemsByItemName = itemRepository.findByItemName(itemName);
 
-        for (Items items : itemsFoundByItemName) {
+        for (Items items : itemsByItemName) {
             boolean alreadyExists = Objects.equals(items.itemType, itemType)
                     && Objects.equals(items.productBrand, productBrand)
                     && Objects.equals(items.captionPacking, captionPacking);
