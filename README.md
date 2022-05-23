@@ -9,7 +9,7 @@ the Crud methods
 
 **NOTE**: This API is Maven and required Java SE JDK 11 (We use 11.0.9). Install the Maven dependencies and run.
 
-## Tecnologias utilizadas:
+## Technologies:
 * Spring Boot (last version),
 * Maven (2.6.3),
 * JPA (ORM),
