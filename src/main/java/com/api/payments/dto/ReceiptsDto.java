@@ -1,11 +1,13 @@
 package com.api.payments.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
+@Builder
 public class ReceiptsDto {
 
     public UUID id;
