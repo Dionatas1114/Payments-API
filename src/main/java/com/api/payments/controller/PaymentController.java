@@ -3,6 +3,9 @@ package com.api.payments.controller;
 import com.api.payments.dto.PaymentsDto;
 import com.api.payments.entity.Payments;
 import com.api.payments.services.PaymentService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
 import org.sonatype.aether.RepositoryException;
@@ -21,10 +24,25 @@ import static com.api.payments.messages.ReceiptMessages.badRequest;
 @RestController
 @AllArgsConstructor
 @RequestMapping("api")
+@CrossOrigin("*")
 public class PaymentController {
 
     private PaymentService paymentService;
 
+    @ApiOperation(
+            value = "Returns Data from all Payments",
+            notes = "This Request Returns all Payment Data from the Database",
+            tags = {"Payments"})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            code = 200,
+                            message = "Returns All Payment Data",
+                            response = PaymentsDto.class),
+                    @ApiResponse(code = 400, message = "Bad Request"),
+                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 404, message = "No Registered Payment")
+            })
     @GetMapping(path = {"/payments"})
     public ResponseEntity<List<PaymentsDto>> findAllPayments(){
         ResponseEntity result;
@@ -40,6 +58,20 @@ public class PaymentController {
         return result;
     }
 
+    @ApiOperation(
+            value = "Returns Payment Data by Id",
+            notes = "This Request Returns Payment Data from the Database",
+            tags = {"Payments"})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            code = 200,
+                            message = "Returns Payment Data",
+                            response = PaymentsDto.class),
+                    @ApiResponse(code = 400, message = "Bad Request"),
+                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 404, message = "Payment Not Found")
+            })
     @GetMapping(path = {"/payments/{id}"})
     public ResponseEntity<PaymentsDto> findPaymentById(
             @PathVariable("id") UUID paymentId){
@@ -57,6 +89,20 @@ public class PaymentController {
         return result;
     }
 
+    @ApiOperation(
+            value = "Returns Payments Data by Expiration Date",
+            notes = "This Request Returns Payments Data from the Database",
+            tags = {"Payments"})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            code = 200,
+                            message = "Returns Payments Data",
+                            response = PaymentsDto.class),
+                    @ApiResponse(code = 400, message = "Bad Request"),
+                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 404, message = "Payment Not Found")
+            })
     @GetMapping(path = {"/payments/byExpirationDate/{expirationDate}"})
     public ResponseEntity<List<PaymentsDto>> findPaymentsByExpirationDate(
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -76,6 +122,20 @@ public class PaymentController {
         return result;
     }
 
+    @ApiOperation(
+            value = "Returns Payments Data by Debtor Full Name",
+            notes = "This Request Returns Payments Data from the Database",
+            tags = {"Payments"})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            code = 200,
+                            message = "Returns Payments Data",
+                            response = PaymentsDto.class),
+                    @ApiResponse(code = 400, message = "Bad Request"),
+                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 404, message = "Payment Not Found")
+            })
     @GetMapping(path = {"/payments/byDebtorFullName/{debtorFullName}"})
     public ResponseEntity<PaymentsDto> findByDebtorFullName(
             @PathVariable String debtorFullName){
@@ -94,6 +154,20 @@ public class PaymentController {
         return result;
     }
 
+    @ApiOperation(
+            value = "Returns Payments Data by Payment Status",
+            notes = "This Request Returns Payments Data from the Database",
+            tags = {"Payments"})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            code = 200,
+                            message = "Returns Payments Data",
+                            response = PaymentsDto.class),
+                    @ApiResponse(code = 400, message = "Bad Request"),
+                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 404, message = "Payment Not Found")
+            })
     @GetMapping(path = {"/payments/byPaymentStatus/{paymentStatus}"})
     public ResponseEntity<PaymentsDto> findByPaymentStatus(
             @PathVariable boolean paymentStatus){
@@ -112,6 +186,20 @@ public class PaymentController {
         return result;
     }
 
+    @ApiOperation(
+            value = "Returns Payments Data by Payment Method",
+            notes = "This Request Returns Payments Data from the Database",
+            tags = {"Payments"})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            code = 200,
+                            message = "Returns Payments Data",
+                            response = PaymentsDto.class),
+                    @ApiResponse(code = 400, message = "Bad Request"),
+                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 404, message = "Payment Not Found")
+            })
     @GetMapping(path = {"/payments/byPaymentMethod/{paymentMethod}"})
     public ResponseEntity<PaymentsDto> findByPaymentMethod(
             @PathVariable String paymentMethod){
@@ -130,6 +218,20 @@ public class PaymentController {
         return result;
     }
 
+    @ApiOperation(
+            value = "Register Payment Data",
+            notes = "This Request Register Payment Data in the Database",
+            tags = {"Payments"})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            code = 201,
+                            message = "Register Payment Data",
+                            response = PaymentsDto.class),
+                    @ApiResponse(code = 400, message = "Bad Request"),
+                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 409, message = "Conflict")
+            })
     @PostMapping(path = {"/payments"})
     public ResponseEntity<Payments> createPayment(
             @RequestBody PaymentsDto paymentsData) {
@@ -147,6 +249,21 @@ public class PaymentController {
         return result;
     }
 
+    @ApiOperation(
+            value = "Update Payment Data",
+            notes = "This Request Update Payment Data in the Database",
+            tags = {"Payments"})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            code = 200,
+                            message = "Update Payment Data",
+                            response = PaymentsDto.class),
+                    @ApiResponse(code = 400, message = "Bad Request"),
+                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 404, message = "Payment Not Found"),
+                    @ApiResponse(code = 409, message = "Conflict")
+            })
     @PutMapping(path = {"/payments/{id}"})
     public ResponseEntity<String> updatePayment(
             @PathVariable("id") UUID paymentId,
@@ -169,6 +286,20 @@ public class PaymentController {
         return result;
     }
 
+    @ApiOperation(
+            value = "Delete Payment Data",
+            notes = "This Request Delete Payment Data in the Database",
+            tags = {"Payments"})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            code = 200,
+                            message = "Delete Payment Data",
+                            response = PaymentsDto.class),
+                    @ApiResponse(code = 400, message = "Bad Request"),
+                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 404, message = "Payment Not Found")
+            })
     @DeleteMapping(path = {"/payments/{id}"})
     public ResponseEntity<String> deletePayment(@PathVariable("id") UUID paymentId) {
 

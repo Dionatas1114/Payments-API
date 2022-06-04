@@ -28,13 +28,13 @@ public class UserController {
 
     @ApiOperation(
             value = "Returns Data from all Users",
-            notes = "This Request Data from all Users in the Database",
+            notes = "This Request Returns all User Data from the Database",
             tags = {"Users"})
     @ApiResponses(
             value = {
                     @ApiResponse(
                             code = 200,
-                            message = "Return All Users",
+                            message = "Return All User Data",
                             response = UsersDto.class),
                     @ApiResponse(code = 400, message = "Bad Request"),
                     @ApiResponse(code = 401, message = "Unauthorized Access"),
@@ -57,18 +57,18 @@ public class UserController {
     }
 
     @ApiOperation(
-            value = "Return User Data by Id",
-            notes = "This Request Return User Data in the Database",
+            value = "Returns User Data by Id",
+            notes = "This Request Returns User Data from the Database",
             tags = {"Users"})
     @ApiResponses(
             value = {
                     @ApiResponse(
                             code = 200,
-                            message = "Return User Data",
+                            message = "Returns User Data",
                             response = UsersDto.class),
                     @ApiResponse(code = 400, message = "Bad Request"),
                     @ApiResponse(code = 401, message = "Unauthorized Access"),
-                    @ApiResponse(code = 404, message = "No Registered User")
+                    @ApiResponse(code = 404, message = "User Not Found")
             })
     @GetMapping(path = {"/users/{id}"})
     public ResponseEntity<UsersDto> findUserById(
@@ -99,7 +99,6 @@ public class UserController {
                             response = void.class),
                     @ApiResponse(code = 400, message = "Bad Request"),
                     @ApiResponse(code = 401, message = "Unauthorized Access"),
-                    @ApiResponse(code = 404, message = "No Registered User"),
                     @ApiResponse(code = 409, message = "Conflict")
             })
     @PostMapping(path = {"/users"})
@@ -132,7 +131,7 @@ public class UserController {
                             response = void.class),
                     @ApiResponse(code = 400, message = "Bad Request"),
                     @ApiResponse(code = 401, message = "Unauthorized Access"),
-                    @ApiResponse(code = 404, message = "No Registered User"),
+                    @ApiResponse(code = 404, message = "User Not Found"),
                     @ApiResponse(code = 409, message = "Conflict")
             })
     @PutMapping(path = {"/users/{id}"})
@@ -169,7 +168,7 @@ public class UserController {
                             response = void.class),
                     @ApiResponse(code = 400, message = "Bad Request"),
                     @ApiResponse(code = 401, message = "Unauthorized Access"),
-                    @ApiResponse(code = 404, message = "No Registered User")
+                    @ApiResponse(code = 404, message = "User Not Found")
             })
     @DeleteMapping(path = {"/users/{id}"})
     public ResponseEntity<String> deleteUser(@PathVariable("id") UUID userId) {

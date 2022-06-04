@@ -3,6 +3,9 @@ package com.api.payments.controller;
 import com.api.payments.dto.ItemsDto;
 import com.api.payments.entity.BaseEntity;
 import com.api.payments.services.ItemService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
 import org.sonatype.aether.RepositoryException;
@@ -19,10 +22,25 @@ import static com.api.payments.messages.ReceiptMessages.badRequest;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api")
+@CrossOrigin("*")
 public class ItemController extends BaseEntity {
 
     private ItemService itemService;
 
+    @ApiOperation(
+            value = "Returns Data from all Items",
+            notes = "This Request Returns all Item Data from the Database",
+            tags = {"Items"})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            code = 200,
+                            message = "Return All Item Data",
+                            response = ItemsDto.class),
+                    @ApiResponse(code = 400, message = "Bad Request"),
+                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 404, message = "No Registered Items")
+            })
     @GetMapping(path = {"/items"})
     public ResponseEntity<List<ItemsDto>> findAllItems(){
 
@@ -39,6 +57,20 @@ public class ItemController extends BaseEntity {
         return result;
     }
 
+    @ApiOperation(
+            value = "Return Item Data by Id",
+            notes = "This Request Return Item Data from the Database",
+            tags = {"Items"})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            code = 200,
+                            message = "Return Item Data",
+                            response = ItemsDto.class),
+                    @ApiResponse(code = 400, message = "Bad Request"),
+                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 404, message = "Item Not Found")
+            })
     @GetMapping(path = {"/items/{id}"})
     public ResponseEntity<ItemsDto> findItemById(
             @PathVariable("id") UUID itemId){
@@ -56,6 +88,20 @@ public class ItemController extends BaseEntity {
         return result;
     }
 
+    @ApiOperation(
+            value = "Return Item Data by Item Name",
+            notes = "This Request Return Item Data from the Database",
+            tags = {"Items"})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            code = 200,
+                            message = "Return Item Data",
+                            response = ItemsDto.class),
+                    @ApiResponse(code = 400, message = "Bad Request"),
+                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 404, message = "Item Not Found")
+            })
     @GetMapping(path = {"/items/byItemName/{itemName}"})
     public ResponseEntity<List<ItemsDto>> findByItemName(
             @PathVariable String itemName){
@@ -75,6 +121,20 @@ public class ItemController extends BaseEntity {
         return result;
     }
 
+    @ApiOperation(
+            value = "Return Item Data by Item Type",
+            notes = "This Request Return Item Data from the Database",
+            tags = {"Items"})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            code = 200,
+                            message = "Return Item Data",
+                            response = ItemsDto.class),
+                    @ApiResponse(code = 400, message = "Bad Request"),
+                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 404, message = "Item Not Found")
+            })
     @GetMapping(path = {"/items/byItemType/{itemType}"})
     public ResponseEntity<List<ItemsDto>> findItemsByItemType(
             @PathVariable String itemType){
@@ -92,6 +152,20 @@ public class ItemController extends BaseEntity {
         return result;
     }
 
+    @ApiOperation(
+            value = "Register Item Data",
+            notes = "This Request Register Item Data in the Database",
+            tags = {"Items"})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            code = 200,
+                            message = "Register Item Data",
+                            response = ItemsDto.class),
+                    @ApiResponse(code = 400, message = "Bad Request"),
+                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 409, message = "Conflict")
+            })
     @PostMapping(path = {"/items"})
     public ResponseEntity<ItemsDto> createItem(@RequestBody ItemsDto itemsData) {
 
@@ -112,6 +186,21 @@ public class ItemController extends BaseEntity {
         return result;
     }
 
+    @ApiOperation(
+            value = "Update Item Data",
+            notes = "This Request Update Item Data in the Database",
+            tags = {"Items"})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            code = 200,
+                            message = "Update Item Data",
+                            response = ItemsDto.class),
+                    @ApiResponse(code = 400, message = "Bad Request"),
+                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 404, message = "Item Not Found"),
+                    @ApiResponse(code = 409, message = "Conflict")
+            })
     @PutMapping(path = {"/items/{id}"})
     public ResponseEntity<String> updateItem(
             @PathVariable("id") UUID itemId, @RequestBody ItemsDto itemsData){
@@ -133,6 +222,20 @@ public class ItemController extends BaseEntity {
         return result;
     }
 
+    @ApiOperation(
+            value = "Delete Item Data",
+            notes = "This Request Delete Item Data in the Database",
+            tags = {"Items"})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            code = 200,
+                            message = "Delete Item Data",
+                            response = ItemsDto.class),
+                    @ApiResponse(code = 400, message = "Bad Request"),
+                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 404, message = "Item Not Found")
+            })
     @DeleteMapping(path = {"/items/{id}"})
     public ResponseEntity<String> deleteItem(@PathVariable("id") UUID itemId) {
 
