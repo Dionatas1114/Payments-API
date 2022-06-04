@@ -1,12 +1,12 @@
 package com.api.payments.dto;
 
-import com.api.payments.entity.UserConfigurations;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.util.UUID;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class UsersDto {
 
