@@ -62,15 +62,21 @@ public class UserServiceImpl implements UserService {
         if (userRepository.count() != 0) {
 
             Users byName = userRepository.findByName(userName);
-            boolean userNameAlreadyExists = Objects.equals(byName.name, userName);
-
             Users byEmail = userRepository.findByEmail(email);
-            boolean userEmailAlreadyExists = Objects.equals(byEmail.email, email);
 
-            if (userNameAlreadyExists)
-                throw new ServiceException(userNameAlreadyRegistered);
-            if (userEmailAlreadyExists)
-                throw new ServiceException(userEmailAlreadyRegistered);
+            if (byName != null) {
+                boolean userNameAlreadyExists =
+                        Objects.equals(byName.name, userName);
+                if (userNameAlreadyExists)
+                    throw new ServiceException(userNameAlreadyRegistered);
+            }
+
+            if (byEmail != null) {
+                boolean userEmailAlreadyExists =
+                        Objects.equals(byEmail.email, email);
+                if (userEmailAlreadyExists)
+                    throw new ServiceException(userEmailAlreadyRegistered);
+            }
         }
 
         userValidator(userName, email, password);
@@ -111,13 +117,15 @@ public class UserServiceImpl implements UserService {
 
         List<Users> usersList = userRepository.findAll();
 
-        for (Users users : usersList) {
+        if (!usersList.isEmpty()) {
+            for (Users users : usersList) {
 
-            if (Objects.equals(users.getName(), userName) && users.getId() != userId)
-                throw new ServiceException(userNameAlreadyRegistered);
+                if (Objects.equals(users.getName(), userName) && users.getId() != userId)
+                    throw new ServiceException(userNameAlreadyRegistered);
 
-            if (Objects.equals(users.getEmail(), email) && users.getId() != userId)
-                throw new ServiceException(userNameAlreadyRegistered);
+                if (Objects.equals(users.getEmail(), email) && users.getId() != userId)
+                    throw new ServiceException(userNameAlreadyRegistered);
+            }
         }
 
         userValidator(userName, email, password);
