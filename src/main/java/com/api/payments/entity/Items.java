@@ -1,39 +1,57 @@
 package com.api.payments.entity;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "items")
+@Table(name = "ITEMS")
 @EqualsAndHashCode(callSuper = true)
 public class Items extends BaseEntity {
 
+    @ApiModelProperty(notes = "Nome do item")
     @Column(nullable = false, length = 50)
     public String itemName;
 
+    @ApiModelProperty(notes = "Tipo do item: product or service")
     @Column(nullable = false, length = 50)
-    public String itemType;  //product or service
+    public String itemType;
 
+    @ApiModelProperty(notes = "Marca do item")
     public String productBrand;
-    public String category = "Other";
-    public String manufacturer = "Uninformed"; //fabricante
-    public String captionPacking; //KG, L
 
+    @ApiModelProperty(notes = "Categoria do item: Other (def)")
+    public String itemCategory = "Other";
+
+    @ApiModelProperty(notes = "Fabricante do item: Uninformed (def)")
+    public String manufacturer = "Uninformed";
+
+    @ApiModelProperty(notes = "Unidade de medida da Embalagem do item")
+    public String captionPacking;
+
+    @ApiModelProperty(notes = "Preço total do item")
     @Column(nullable = false)
     public double totalPrice;
-    public double unitaryPrice;
-    public double discountPrice = 0.00; //if wholesale (atacado)
 
+    @ApiModelProperty(notes = "Preço unitário do item")
+    public double unitaryPrice;
+
+    @ApiModelProperty(notes = "Valor do desconto do item caso seja atacado (wholesale): 0.00 (def)")
+    public double discountPrice = 0.00;
+
+    @ApiModelProperty(notes = "Código de barra do item")
     @Column(nullable = false)
     public String barCode;
 
+    @ApiModelProperty(notes = "Código interno do item")
     @Column(nullable = false)
     public String internalCode;
 
+    @ApiModelProperty(notes = "Descrição do item")
     @Column(length = 100)
-    public String description;
+    public String itemDescription;
 
     public String getItemName() {
         return itemName;
@@ -59,12 +77,12 @@ public class Items extends BaseEntity {
         this.productBrand = productBrand;
     }
 
-    public String getCategory() {
-        return category;
+    public String getItemCategory() {
+        return itemCategory;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setItemCategory(String itemCategory) {
+        this.itemCategory = itemCategory;
     }
 
     public String getManufacturer() {
@@ -123,11 +141,11 @@ public class Items extends BaseEntity {
         this.internalCode = internalCode;
     }
 
-    public String getDescription() {
-        return description;
+    public String getItemDescription() {
+        return itemDescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setItemDescription(String itemDescription) {
+        this.itemDescription = itemDescription;
     }
 }
