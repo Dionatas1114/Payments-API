@@ -1,16 +1,18 @@
 package com.api.payments.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "user_configurations")
+@Table(name = "USER_CONFIGURATIONS")
 @EqualsAndHashCode(callSuper = true)
 public class UserConfigurations extends BaseEntity{
 
+    @ApiModelProperty(notes = "Identificador do Usuário")
     @JoinColumn(name = "user_id")
     @OneToOne(
             fetch = FetchType.LAZY,
@@ -19,6 +21,7 @@ public class UserConfigurations extends BaseEntity{
     @JsonIgnore
     public Users user;
 
+    @ApiModelProperty(notes = "Notificações Ativadas para este Usuário")
     public boolean hasNotifications;
 
     public Users getUser() {

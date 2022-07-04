@@ -1,5 +1,6 @@
 package com.api.payments.entity;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -7,40 +8,65 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "receipts")
+@Table(name = "RECEIPTS")
 @EqualsAndHashCode(callSuper = true)
 public class Receipts extends BaseEntity {
 
+    @ApiModelProperty(notes = "Nome Completo do Devedor")
     @Column(nullable = false, length = 50)
     public String debtorFullName;
 
+    @ApiModelProperty(notes = "Sobrenome do Devedor")
     @Column(nullable = false, length = 15)
     public String debtorLastName;
 
+    @ApiModelProperty(notes = "Método de Pagamento")
     @Column(nullable = false)
     public String paymentMethod;
 
+    @ApiModelProperty(notes = "Status de Pagamento")
     @Column(nullable = false)
     public Boolean paymentStatus;
 
+    @ApiModelProperty(notes = "Data de Expiração do Recebimento")
     @Column(nullable = false)
     public LocalDate expirationDate;
+
+    @ApiModelProperty(notes = "Data do Pagamento")
     public LocalDate paymentDate;
 
+    @ApiModelProperty(notes = "Frequência da transação: unique (def) - [unique, daily, weekly, monthly or yearly]")
     @Column(nullable = false, length = 10)
-    public String receiptType = "unique"; //unique daily weekly monthly and yearly
-    public String currency = "BRL"; //R$
+    public String transactionFrequency = "unique";
+
+    @ApiModelProperty(notes = "Moeda Utilizada no Recebimento: BRL/R$ (def)")
+    public String currency = "BRL";
+
+    @ApiModelProperty(notes = "Valor dos Juros: 0.00 (def)")
     public double interest = 0.00;
+
+    @ApiModelProperty(notes = "Valor das Multas: 0.00 (def)")
     public double fine = 0.00;
+
+    @ApiModelProperty(notes = "Valor Resultante de Juros e Multas: 0.00 (def)")
     public double increasedValue = 0.00;
+
+    @ApiModelProperty(notes = "Valor do Desconto por Pagamento Adiantado: 0.00 (def)")
     public double discPayAdvance = 0.00;
 
+    @ApiModelProperty(notes = "Valor Original do Recebimento")
     @Column(nullable = false)
     public double originalValue;
-    public double total;
 
+    @ApiModelProperty(notes = "Valor Total do Recebimento")
+    @Column(nullable = false)
+    public double amount;
+
+    @ApiModelProperty(notes = "Descrição do Recebimento")
     @Column(length = 50)
     public String description;
+
+    @ApiModelProperty(notes = "Mensagem de texto do Recebimento")
     public String messageText;
 
     public String getDebtorFullName() {
@@ -91,12 +117,12 @@ public class Receipts extends BaseEntity {
         this.paymentDate = paymentDate;
     }
 
-    public String getReceiptType() {
-        return receiptType;
+    public String getTransactionFrequency() {
+        return transactionFrequency;
     }
 
-    public void setReceiptType(String receiptType) {
-        this.receiptType = receiptType;
+    public void setTransactionFrequency(String transactionFrequency) {
+        this.transactionFrequency = transactionFrequency;
     }
 
     public String getCurrency() {
@@ -147,12 +173,12 @@ public class Receipts extends BaseEntity {
         this.originalValue = originalValue;
     }
 
-    public double getTotal() {
-        return total;
+    public double getAmount() {
+        return amount;
     }
 
-    public void setTotal(double total) {
-        this.total = total;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
     public String getDescription() {
