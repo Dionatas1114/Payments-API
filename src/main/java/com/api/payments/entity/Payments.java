@@ -1,47 +1,74 @@
 package com.api.payments.entity;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "payments")
+@Table(name = "PAYMENTS")
 @EqualsAndHashCode(callSuper = true)
 public class Payments extends BaseEntity {
 
+    @ApiModelProperty(notes = "Nome Completo do Devedor")
     @Column(nullable = false, length = 50)
     public String debtorFullName;
 
+    @ApiModelProperty(notes = "Sobrenome do Devedor")
     @Column(nullable = false, length = 15)
     public String debtorLastName;
 
+    @ApiModelProperty(notes = "Método de Pagamento")
     @Column(nullable = false)
     public String paymentMethod;
 
+    @ApiModelProperty(notes = "Status de Pagamento")
     @Column(nullable = false)
     public Boolean paymentStatus;
 
+    @ApiModelProperty(notes = "Data de Expiração do Pagamento")
     @Column(nullable = false)
     public LocalDate expirationDate;
+
+    @ApiModelProperty(notes = "Data do Pagamento")
+    @Column(nullable = false)
     public LocalDate paymentDate;
 
+    @ApiModelProperty(notes = "Frequência da transação: unique, daily, weekly, monthly or yearly")
     @Column(nullable = false, length = 10)
-    public String paymentType = "unique"; //unique daily weekly monthly and yearly
-    public String currency = "BRL"; //R$
+    public String transactionFrequency = "unique";
+
+    @ApiModelProperty(notes = "Moeda Utilizada do Pagamento: BRL/R$ (def)")
+    public String currency = "BRL";
+
+    @ApiModelProperty(notes = "Valor dos Juros: 0.00 (def)")
     public double interest = 0.00;
+
+    @ApiModelProperty(notes = "Valor das Multas: 0.00 (def)")
     public double fine = 0.00;
+
+    @ApiModelProperty(notes = "Valor Resultante de Juros e Multas: 0.00 (def)")
     public double increasedValue = 0.00;
+
+    @ApiModelProperty(notes = "Valor do Desconto por Pagamento Adiantado: 0.00 (def)")
     public double discPayAdvance = 0.00;
 
+    @ApiModelProperty(notes = "Valor Original do Pagamento")
     @Column(nullable = false)
     public double originalValue;
-    public double total;
 
+    @ApiModelProperty(notes = "Valor Total do Pagamento")
+    @Column(nullable = false)
+    public double amount;
+
+    @ApiModelProperty(notes = "Descrição do Pagamento")
     @Column(length = 50)
     public String description;
+
+    @ApiModelProperty(notes = "Mensagem de texto do Pagamento")
+    @Column(length = 50)
     public String messageText;
 
     public String getDebtorFullName() {
@@ -92,12 +119,12 @@ public class Payments extends BaseEntity {
         this.paymentDate = paymentDate;
     }
 
-    public String getPaymentType() {
-        return paymentType;
+    public String getTransactionFrequency() {
+        return transactionFrequency;
     }
 
-    public void setPaymentType(String paymentType) {
-        this.paymentType = paymentType;
+    public void setTransactionFrequency(String transactionFrequency) {
+        this.transactionFrequency = transactionFrequency;
     }
 
     public String getCurrency() {
@@ -148,12 +175,12 @@ public class Payments extends BaseEntity {
         this.originalValue = originalValue;
     }
 
-    public double getTotal() {
-        return total;
+    public double getAmount() {
+        return amount;
     }
 
-    public void setTotal(double total) {
-        this.total = total;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
     public String getDescription() {

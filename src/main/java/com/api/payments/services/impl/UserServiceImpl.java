@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
 
             if (byName != null) {
                 boolean userNameAlreadyExists =
-                        Objects.equals(byName.name, userName);
+                        Objects.equals(byName.userName, userName);
                 if (userNameAlreadyExists)
                     throw new ServiceException(userNameAlreadyRegistered);
             }
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
         try {
             Users users = new Users();
 
-            users.setName(userName);
+            users.setUserName(userName);
             users.setEmail(email);
             users.setPassword(password);
 
@@ -120,7 +120,7 @@ public class UserServiceImpl implements UserService {
         if (!usersList.isEmpty()) {
             for (Users users : usersList) {
 
-                if (Objects.equals(users.getName(), userName) && users.getId() != userId)
+                if (Objects.equals(users.getUserName(), userName) && users.getId() != userId)
                     throw new ServiceException(userNameAlreadyRegistered);
 
                 if (Objects.equals(users.getEmail(), email) && users.getId() != userId)
@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
             Users users = new Users();
 
             users.setId(userId);
-            users.setName(userName);
+            users.setUserName(userName);
             users.setEmail(email);
             users.setPassword(password);
 
