@@ -4,9 +4,9 @@ import lombok.*;
 
 import java.util.UUID;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @Builder
 public class UsersDto {
 

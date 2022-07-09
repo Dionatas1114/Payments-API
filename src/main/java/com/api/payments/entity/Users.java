@@ -16,7 +16,7 @@ public class Users extends BaseEntity{
 
     @ApiModelProperty(notes = "Nome do Usuário")
     @Column(nullable = false, length = 50)
-    public String userName;
+    public String name;
 
     @ApiModelProperty(notes = "Email do Usuário")
     @Column(nullable = false, length = 30)
@@ -32,12 +32,12 @@ public class Users extends BaseEntity{
             cascade = CascadeType.ALL)
     public UserConfigurations userConfigurations;
 
-    public String getUserName() {
-        return userName;
+    public String getName() {
+        return name;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
