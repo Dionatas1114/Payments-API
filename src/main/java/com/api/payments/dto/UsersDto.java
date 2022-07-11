@@ -2,7 +2,7 @@ package com.api.payments.dto;
 
 import lombok.*;
 
-import java.util.UUID;
+import java.util.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,6 +14,7 @@ public class UsersDto {
     public String name;
     public String email;
     public String password;
+    public String phone;
     public UserConfigurationsDto userConfigurations;
 
 }

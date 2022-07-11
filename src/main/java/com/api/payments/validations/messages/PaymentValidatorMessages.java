@@ -1,6 +1,6 @@
-package com.api.payments.validations;
+package com.api.payments.validations.messages;
 
-public interface ReceiptValidatorMessages {
+public interface PaymentValidatorMessages {
 
     String debtorFullNameInvalid = "Nome do completo do devedor está ausente ou é inválido";
     String debtorLastNameInvalid = "Sobrenome do devedor está ausente ou é inválido";

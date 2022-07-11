@@ -1,6 +1,7 @@
-package com.api.payments.validations;
+package com.api.payments.validations.validators;
 
 import com.api.payments.dto.PaymentsDto;
+import com.api.payments.validations.messages.PaymentValidatorMessages;
 import org.hibernate.service.spi.ServiceException;
 
 import java.time.LocalDate;

@@ -15,5 +15,6 @@ public class UserConfigurationsDto {
 
     public UUID id;
     public boolean hasNotifications;
+    public String language;
 
 }

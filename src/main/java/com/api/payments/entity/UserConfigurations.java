@@ -24,6 +24,9 @@ public class UserConfigurations extends BaseEntity{
     @ApiModelProperty(notes = "Notificações Ativadas para este Usuário")
     public boolean hasNotifications;
 
+    @ApiModelProperty(notes = "Idioma do Usuário")
+    public String language = "pt_BR";
+
     public Users getUser() {
         return user;
     }
@@ -38,5 +41,13 @@ public class UserConfigurations extends BaseEntity{
 
     public void setHasNotifications(boolean hasNotifications) {
         this.hasNotifications = hasNotifications;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 }

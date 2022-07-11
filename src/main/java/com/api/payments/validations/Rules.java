@@ -13,5 +13,6 @@ public class Rules {
 
     public static int passwMinLength = 6;
     public static int passwMaxLength = 30;
+    public static int phoneLength = 13;
 
 }

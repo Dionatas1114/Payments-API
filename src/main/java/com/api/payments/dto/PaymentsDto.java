@@ -21,8 +21,8 @@ public class PaymentsDto {
     public Boolean paymentStatus;
     public LocalDate expirationDate;
     public LocalDate paymentDate;
-    public String paymentType; //unique daily weekly monthly and yearly
-    public String currency; //R$
+    public String transactionFrequency;
+    public String currency;
     public double interest;
     public double fine;
     public double increasedValue;
