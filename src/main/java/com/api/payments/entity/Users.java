@@ -26,6 +26,10 @@ public class Users extends BaseEntity{
     @Column(nullable = false, length = 30)
     public String password;
 
+    @ApiModelProperty(notes = "Telefone do Usuário")
+    @Column(nullable = false, length = 30)
+    public String phone;
+
     @ApiModelProperty(notes = "Configurações do Usuário")
     @OneToOne(
             mappedBy = "user",
@@ -54,6 +58,14 @@ public class Users extends BaseEntity{
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public UserConfigurations getUserConfigurations() {

@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static com.api.payments.messages.PaymentMessages.*;
-import static com.api.payments.validations.PaymentValidator.paymentValidator;
+import static com.api.payments.validations.validators.PaymentValidator.paymentValidator;
 
 @Service
 @AllArgsConstructor

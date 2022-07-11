@@ -1,6 +1,7 @@
-package com.api.payments.validations;
+package com.api.payments.validations.validators;
 
 import com.api.payments.dto.ItemsDto;
+import com.api.payments.validations.messages.ItemValidatorMessages;
 import org.hibernate.service.spi.ServiceException;
 
 public class ItemValidator {
