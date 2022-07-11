@@ -1,4 +1,4 @@
-package com.api.payments.validations;
+package com.api.payments.validations.messages;
 
 public interface ItemValidatorMessages {
 

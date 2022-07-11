@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static com.api.payments.messages.ReceiptMessages.*;
-import static com.api.payments.validations.ReceiptValidator.receiptValidator;
+import static com.api.payments.validations.validators.ReceiptValidator.receiptValidator;
 
 @Service
 @AllArgsConstructor

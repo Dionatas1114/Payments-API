@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 import static com.api.payments.messages.ItemMessages.*;
-import static com.api.payments.validations.ItemValidator.*;
+import static com.api.payments.validations.validators.ItemValidator.*;
 
 @Service
 @AllArgsConstructor

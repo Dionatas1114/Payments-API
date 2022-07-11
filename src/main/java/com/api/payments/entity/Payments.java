@@ -1,9 +1,15 @@
 package com.api.payments.entity;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
-import javax.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -124,7 +130,9 @@ public class Payments extends BaseEntity {
     }
 
     public void setTransactionFrequency(String transactionFrequency) {
-        this.transactionFrequency = transactionFrequency;
+        this.transactionFrequency = !(transactionFrequency == null
+                | Objects.equals(transactionFrequency, ""))
+                ? transactionFrequency : "unique";
     }
 
     public String getCurrency() {

@@ -16,7 +16,7 @@ import javax.transaction.Transactional;
 import java.util.*;
 
 import static com.api.payments.messages.UserMessages.*;
-import static com.api.payments.validations.UserValidator.userValidator;
+import static com.api.payments.validations.validators.UserValidator.userValidator;
 
 @Service
 @AllArgsConstructor
@@ -58,11 +58,13 @@ public class UserServiceImpl implements UserService {
         String userName = userDto.getName();
         String email = userDto.getEmail();
         String password = userDto.getPassword();
+        String phone = userDto.getPhone();
 
         if (userRepository.count() != 0) {
 
             Users byName = userRepository.findByName(userName);
             Users byEmail = userRepository.findByEmail(email);
+            Users byPhone = userRepository.findByPhone(phone);
 
             if (byName != null) {
                 boolean userNameAlreadyExists =
@@ -77,9 +79,16 @@ public class UserServiceImpl implements UserService {
                 if (userEmailAlreadyExists)
                     throw new ServiceException(userEmailAlreadyRegistered);
             }
+
+            if (byPhone != null) {
+                boolean userPhoneAlreadyExists =
+                        Objects.equals(byPhone.phone, phone);
+                if (userPhoneAlreadyExists)
+                    throw new ServiceException(userPhoneAlreadyRegistered);
+            }
         }
 
-        userValidator(userName, email, password);
+        userValidator(userName, email, password, phone);
 
         try {
             Users users = new Users();
@@ -87,11 +96,13 @@ public class UserServiceImpl implements UserService {
             users.setName(userName);
             users.setEmail(email);
             users.setPassword(password);
+            users.setPhone(phone);
 
             Users userDataSaved = userRepository.save(users);
 
             UserConfigurations userConfigurations = new UserConfigurations();
-            userConfigurations.setHasNotifications(userDto.getUserConfigurations().hasNotifications);
+            userConfigurations.setHasNotifications(userDto.getUserConfigurations().isHasNotifications());
+            userConfigurations.setLanguage(userDto.getUserConfigurations().getLanguage());
             userConfigurations.setUser(userDataSaved);
             userConfigurationsRepository.save(userConfigurations);
 
@@ -109,7 +120,9 @@ public class UserServiceImpl implements UserService {
         String userName = userDto.getName();
         String email = userDto.getEmail();
         String password = userDto.getPassword();
-        boolean hasNotifications = userDto.getUserConfigurations().hasNotifications;
+        String phone = userDto.getPhone();
+        boolean hasNotifications = userDto.getUserConfigurations().isHasNotifications();
+        String language = userDto.getUserConfigurations().getLanguage();
 
         Optional<Users> user = userRepository.findById(userId);
         if (user.isEmpty())
@@ -124,11 +137,14 @@ public class UserServiceImpl implements UserService {
                     throw new ServiceException(userNameAlreadyRegistered);
 
                 if (Objects.equals(users.getEmail(), email) && users.getId() != userId)
-                    throw new ServiceException(userNameAlreadyRegistered);
+                    throw new ServiceException(userEmailAlreadyRegistered);
+
+                if (Objects.equals(users.getPhone(), phone) && users.getId() != userId)
+                    throw new ServiceException(userPhoneAlreadyRegistered);
             }
         }
 
-        userValidator(userName, email, password);
+        userValidator(userName, email, password, phone);
 
         try {
             UserConfigurations userConfiguration = userConfigurationsRepository.findByUserId(userId);
@@ -138,12 +154,14 @@ public class UserServiceImpl implements UserService {
             users.setName(userName);
             users.setEmail(email);
             users.setPassword(password);
+            users.setPhone(phone);
 
             userRepository.save(users);
 
             UUID userConfigurationId = userConfiguration.getId();
             userConfigurations.setId(userConfigurationId);
             userConfigurations.setHasNotifications(hasNotifications);
+            userConfigurations.setLanguage(language);
             userConfigurations.setUser(users);
 
             userConfigurationsRepository.save(userConfigurations);
