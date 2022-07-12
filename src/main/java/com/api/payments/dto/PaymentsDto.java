@@ -31,5 +31,6 @@ public class PaymentsDto {
     public double total;
     public String description;
     public String messageText;
+    public UsersDto user;
 
 }

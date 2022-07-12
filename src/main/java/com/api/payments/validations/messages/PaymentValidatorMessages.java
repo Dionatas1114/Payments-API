@@ -17,5 +17,6 @@ public interface PaymentValidatorMessages {
     String totalInvalid = "Valor total está ausente ou é inválido";
     String descriptionInvalid = "Descrição está ausente ou é inválido";
     String messageTextInvalid = "Mensagem está ausente ou é inválido";
+    String userIdInvalid = "O Id do usário está ausente ou é inválido";
 
 }
