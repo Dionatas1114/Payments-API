@@ -5,6 +5,7 @@ import com.api.payments.validations.messages.PaymentValidatorMessages;
 import org.hibernate.service.spi.ServiceException;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 public class PaymentValidator {
 
@@ -26,6 +27,7 @@ public class PaymentValidator {
         double total = paymentsData.getTotal ();
         String description = paymentsData.getDescription ();
         String messageText = paymentsData.getMessageText ();
+        UUID userId = paymentsData.getUser().getId();
 
         if (debtorFullName == null) throw new ServiceException (PaymentValidatorMessages.debtorFullNameInvalid);
         if (debtorLastName == null) throw new ServiceException (PaymentValidatorMessages.debtorLastNameInvalid);
@@ -42,5 +44,6 @@ public class PaymentValidator {
 //        if (total == 0) throw new ServiceException (PaymentValidatorMessages.totalInvalid);
         if (description == null) throw new ServiceException (PaymentValidatorMessages.descriptionInvalid);
         if (messageText == null) throw new ServiceException (PaymentValidatorMessages.messageTextInvalid);
+        if (userId == null) throw new ServiceException (PaymentValidatorMessages.userIdInvalid);
     }
 }
