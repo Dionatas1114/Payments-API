@@ -5,9 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -76,6 +74,11 @@ public class Payments extends BaseEntity {
     @ApiModelProperty(notes = "Mensagem de texto do Pagamento")
     @Column(length = 50)
     public String messageText;
+
+    @ApiModelProperty(notes = "Usuário do pagamento")
+    @JoinColumn(name = "user_id")
+    @ManyToOne
+    private Users user;
 
     public String getDebtorFullName() {
         return debtorFullName;
@@ -205,5 +208,13 @@ public class Payments extends BaseEntity {
 
     public void setMessageText(String messageText) {
         this.messageText = messageText;
+    }
+
+    public Users getUser() {
+        return user;
+    }
+
+    public void setUser(Users user) {
+        this.user = user;
     }
 }

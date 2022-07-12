@@ -21,8 +21,8 @@ public class ReceiptsDto {
     public Boolean paymentStatus;
     public LocalDate expirationDate;
     public LocalDate paymentDate;
-    public String receiptType; //unique daily weekly monthly and yearly
-    public String currency; //R$
+    public String receiptType;
+    public String currency;
     public double interest;
     public double fine;
     public double increasedValue;
