@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.api.payments.messages.UserMessages.usersEmpty;
+import static com.api.payments.messages.UserMessages.noUserDataRegistered;
 
 @Service
 @AllArgsConstructor
@@ -26,7 +26,7 @@ public class UserConfigurationsServiceImpl implements UserConfigurationsService 
         List<UserConfigurationsDto> userConfigurationsDtoList = new ArrayList<>();
         List<UserConfigurations> allUserConfigurations = userConfigurationsRepository.findAll();
 
-        if (allUserConfigurations.isEmpty()) throw new RepositoryException(usersEmpty);
+        if (allUserConfigurations.isEmpty()) throw new RepositoryException(noUserDataRegistered);
 
         for (UserConfigurations userConfigurations : allUserConfigurations) {
             userConfigurationsDtoList.add(convertToDto(userConfigurations));

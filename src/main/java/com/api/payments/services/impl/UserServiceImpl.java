@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
         boolean usersListEmpty = usersList.isEmpty();
         if (usersListEmpty)
-            throw new RepositoryException(usersEmpty);
+            throw new RepositoryException(noUserDataRegistered);
 
         for (Users user : usersList)
             usersDtoList.add(convertToDto(user));
@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
         Optional<Users> user = userRepository.findById(userId);
         if (user.isEmpty())
-            throw new RepositoryException(userNotFound);
+            throw new RepositoryException(userDataNotFound);
 
         return convertToDto(user.get());
     }
@@ -126,7 +126,7 @@ public class UserServiceImpl implements UserService {
 
         Optional<Users> user = userRepository.findById(userId);
         if (user.isEmpty())
-            throw new RepositoryException(userNotFound);
+            throw new RepositoryException(userDataNotFound);
 
         List<Users> usersList = userRepository.findAll();
 
@@ -177,7 +177,7 @@ public class UserServiceImpl implements UserService {
 
         boolean exists = userRepository.existsById(userId);
         if (!exists)
-            throw new RepositoryException(userNotFound);
+            throw new RepositoryException(userDataNotFound);
 
         userRepository.deleteById(userId);
     }

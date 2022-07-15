@@ -239,13 +239,13 @@ public class ReceiptController {
 
         try {
             receiptService.saveReceiptData (receiptsData);
-            result = new ResponseEntity<>(receiptCreated, HttpStatus.CREATED);
+            result = new ResponseEntity<>(receiptDataInserted, HttpStatus.CREATED);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(
-                    receiptNotCreated + e.getMessage(), HttpStatus.NOT_FOUND);
+                    receiptDataNotInserted + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (ServiceException e) {
             result = new ResponseEntity<>(
-                    receiptNotCreated + e.getMessage(), HttpStatus.CONFLICT);
+                    receiptDataNotInserted + e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e) {
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }

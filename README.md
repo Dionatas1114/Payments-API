@@ -3,7 +3,7 @@
 ## Description
 
 This is a Payments/Receipts API created as an exercise to apply what I learned from Java technology with Spring Boot Framework.
-Basically with this api it is possible to manipulate user data, payments, receipts and items according to the CRUD methods of a Rest API.
+Basically with this api it is possible to manipulate user data, payments, receipts and products according to the CRUD methods of a Rest API.
 
 the Crud methods
 
