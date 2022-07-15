@@ -109,10 +109,10 @@ public class UserController {
 
         try {
             userService.saveUserData (usersData);
-            result = new ResponseEntity<>(userCreated, HttpStatus.CREATED);
+            result = new ResponseEntity<>(userDataInserted, HttpStatus.CREATED);
         } catch (ServiceException e) {
             result = new ResponseEntity<>(
-                    userNotCreated + e.getMessage(), HttpStatus.CONFLICT);
+                    userDataNotInserted + e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e) {
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }

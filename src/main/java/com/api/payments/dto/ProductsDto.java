@@ -11,20 +11,20 @@ import java.util.UUID;
 @NoArgsConstructor
 @Data
 @Builder
-public class ItemsDto {
+public class ProductsDto {
 
     public UUID id;
     public String itemName;
-    public String itemType;  //product or service
+    public String itemType;
     public String productBrand;
-    public String category;
-    public String manufacturer; //fabricante
-    public String captionPacking; //KG, L
+    public String itemCategory;
+    public String manufacturer;
+    public String captionPacking;
     public double totalPrice;
     public double unitaryPrice;
-    public double discountPrice; //if wholesale (atacado)
+    public double discountPrice;
     public String barCode;
     public String internalCode;
-    public String description;
+    public String itemDescription;
 
 }

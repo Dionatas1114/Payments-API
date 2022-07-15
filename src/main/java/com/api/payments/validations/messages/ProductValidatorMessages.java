@@ -1,6 +1,6 @@
 package com.api.payments.validations.messages;
 
-public interface ItemValidatorMessages {
+public interface ProductValidatorMessages {
 
     String itemNameInvalid = "Nome do item está ausente ou é inválido";
     String itemTypeInvalid = "Tipo do item está ausente ou é inválido";

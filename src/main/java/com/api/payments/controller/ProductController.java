@@ -1,8 +1,8 @@
 package com.api.payments.controller;
 
-import com.api.payments.dto.ItemsDto;
+import com.api.payments.dto.ProductsDto;
 import com.api.payments.entity.BaseEntity;
-import com.api.payments.services.ItemService;
+import com.api.payments.services.ProductService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -16,39 +16,38 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-import static com.api.payments.messages.ItemMessages.*;
-import static com.api.payments.messages.ReceiptMessages.badRequest;
+import static com.api.payments.messages.ProductMessages.*;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api")
 @CrossOrigin("*")
-public class ItemController extends BaseEntity {
+public class ProductController extends BaseEntity {
 
-    private ItemService itemService;
+    private ProductService productService;
 
     @ApiOperation(
-            value = "Returns Data from all Items",
-            notes = "This Request Returns all Item Data from the Database",
-            tags = {"Items"})
+            value = "Returns Data from all Products",
+            notes = "This Request Returns all Product Data from the Database",
+            tags = {"Products"})
     @ApiResponses(
             value = {
                     @ApiResponse(
                             code = 200,
-                            message = "Return All Item Data",
-                            response = ItemsDto.class),
+                            message = "Return All Product Data",
+                            response = ProductsDto.class),
                     @ApiResponse(code = 400, message = "Bad Request"),
                     @ApiResponse(code = 401, message = "Unauthorized Access"),
-                    @ApiResponse(code = 404, message = "No Registered Items")
+                    @ApiResponse(code = 404, message = "No Registered Products")
             })
-    @GetMapping(path = {"/items"})
-    public ResponseEntity<List<ItemsDto>> findAllItems(){
+    @GetMapping(path = {"/products"})
+    public ResponseEntity<List<ProductsDto>> findAllProducts(){
 
         ResponseEntity result;
 
         try {
-            List<ItemsDto> allItems = itemService.findAllItems();
-            result = new ResponseEntity<>(allItems, HttpStatus.OK);
+            List<ProductsDto> allProducts = productService.findAllProducts();
+            result = new ResponseEntity<>(allProducts, HttpStatus.OK);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
@@ -58,28 +57,28 @@ public class ItemController extends BaseEntity {
     }
 
     @ApiOperation(
-            value = "Return Item Data by Id",
-            notes = "This Request Return Item Data from the Database",
-            tags = {"Items"})
+            value = "Return Product Data by Id",
+            notes = "This Request Return Product Data from the Database",
+            tags = {"Products"})
     @ApiResponses(
             value = {
                     @ApiResponse(
                             code = 200,
-                            message = "Return Item Data",
-                            response = ItemsDto.class),
+                            message = "Return Product Data",
+                            response = ProductsDto.class),
                     @ApiResponse(code = 400, message = "Bad Request"),
                     @ApiResponse(code = 401, message = "Unauthorized Access"),
-                    @ApiResponse(code = 404, message = "Item Not Found")
+                    @ApiResponse(code = 404, message = "Product Not Found")
             })
-    @GetMapping(path = {"/items/{id}"})
-    public ResponseEntity<ItemsDto> findItemById(
-            @PathVariable("id") UUID itemId){
+    @GetMapping(path = {"/products/{id}"})
+    public ResponseEntity<ProductsDto> findProductsById(
+            @PathVariable("id") UUID productId){
 
         ResponseEntity result;
 
         try {
-            ItemsDto item = itemService.findItemById(itemId);
-            result = new ResponseEntity<>(item, HttpStatus.OK);
+            ProductsDto product = productService.findProductById(productId);
+            result = new ResponseEntity<>(product, HttpStatus.OK);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
@@ -89,28 +88,28 @@ public class ItemController extends BaseEntity {
     }
 
     @ApiOperation(
-            value = "Return Item Data by Item Name",
-            notes = "This Request Return Item Data from the Database",
-            tags = {"Items"})
+            value = "Return Product Data by Item Name",
+            notes = "This Request Return Product Data from the Database",
+            tags = {"Products"})
     @ApiResponses(
             value = {
                     @ApiResponse(
                             code = 200,
-                            message = "Return Item Data",
-                            response = ItemsDto.class),
+                            message = "Return Product Data",
+                            response = ProductsDto.class),
                     @ApiResponse(code = 400, message = "Bad Request"),
                     @ApiResponse(code = 401, message = "Unauthorized Access"),
-                    @ApiResponse(code = 404, message = "Item Not Found")
+                    @ApiResponse(code = 404, message = "Product Not Found")
             })
-    @GetMapping(path = {"/items/byItemName/{itemName}"})
-    public ResponseEntity<List<ItemsDto>> findByItemName(
+    @GetMapping(path = {"/products/byItemName/{itemName}"})
+    public ResponseEntity<List<ProductsDto>> findByItemName(
             @PathVariable String itemName){
 
         ResponseEntity result;
 
         try {
-            List<ItemsDto> items = itemService.findByItemName(itemName);
-            result = new ResponseEntity<>(items, HttpStatus.OK);
+            List<ProductsDto> products = productService.findByItemName(itemName);
+            result = new ResponseEntity<>(products, HttpStatus.OK);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (ServiceException e){
@@ -122,28 +121,28 @@ public class ItemController extends BaseEntity {
     }
 
     @ApiOperation(
-            value = "Return Item Data by Item Type",
-            notes = "This Request Return Item Data from the Database",
-            tags = {"Items"})
+            value = "Return Product Data by Item Type",
+            notes = "This Request Return Product Data from the Database",
+            tags = {"Products"})
     @ApiResponses(
             value = {
                     @ApiResponse(
                             code = 200,
-                            message = "Return Item Data",
-                            response = ItemsDto.class),
+                            message = "Return Product Data",
+                            response = ProductsDto.class),
                     @ApiResponse(code = 400, message = "Bad Request"),
                     @ApiResponse(code = 401, message = "Unauthorized Access"),
-                    @ApiResponse(code = 404, message = "Item Not Found")
+                    @ApiResponse(code = 404, message = "Product Not Found")
             })
-    @GetMapping(path = {"/items/byItemType/{itemType}"})
-    public ResponseEntity<List<ItemsDto>> findItemsByItemType(
+    @GetMapping(path = {"/products/byItemType/{itemType}"})
+    public ResponseEntity<List<ProductsDto>> findProductsByItemType(
             @PathVariable String itemType){
 
         ResponseEntity result;
 
         try {
-            List<ItemsDto> items = itemService.findItemsByItemType(itemType);
-            result = new ResponseEntity<>(items, HttpStatus.OK);
+            List<ProductsDto> products = productService.findProductsByItemType(itemType);
+            result = new ResponseEntity<>(products, HttpStatus.OK);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
@@ -153,33 +152,33 @@ public class ItemController extends BaseEntity {
     }
 
     @ApiOperation(
-            value = "Register Item Data",
-            notes = "This Request Register Item Data in the Database",
-            tags = {"Items"})
+            value = "Register Product Data",
+            notes = "This Request Register Product Data in the Database",
+            tags = {"Products"})
     @ApiResponses(
             value = {
                     @ApiResponse(
                             code = 200,
-                            message = "Register Item Data",
-                            response = ItemsDto.class),
+                            message = "Register Product Data",
+                            response = ProductsDto.class),
                     @ApiResponse(code = 400, message = "Bad Request"),
                     @ApiResponse(code = 401, message = "Unauthorized Access"),
                     @ApiResponse(code = 409, message = "Conflict")
             })
-    @PostMapping(path = {"/items"})
-    public ResponseEntity<ItemsDto> createItem(@RequestBody ItemsDto itemsData) {
+    @PostMapping(path = {"/products"})
+    public ResponseEntity<ProductsDto> createProduct(@RequestBody ProductsDto productsData) {
 
         ResponseEntity result;
 
         try {
-            itemService.saveItemData (itemsData);
-            result = new ResponseEntity<>(itemCreated, HttpStatus.CREATED);
+            productService.saveProductData(productsData);
+            result = new ResponseEntity<>(productDataInserted, HttpStatus.CREATED);
         } catch (RepositoryException e) {
             result = new ResponseEntity<>(
-                    itemNotCreated + e.getMessage(), HttpStatus.NOT_FOUND);
+                    productDataNotInserted + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (ServiceException e) {
             result = new ResponseEntity<>(
-                    itemNotCreated + e.getMessage(), HttpStatus.CONFLICT);
+                    productDataNotInserted + e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e) {
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
@@ -187,35 +186,35 @@ public class ItemController extends BaseEntity {
     }
 
     @ApiOperation(
-            value = "Update Item Data",
-            notes = "This Request Update Item Data in the Database",
-            tags = {"Items"})
+            value = "Update Product Data",
+            notes = "This Request Update Product Data in the Database",
+            tags = {"Products"})
     @ApiResponses(
             value = {
                     @ApiResponse(
                             code = 200,
-                            message = "Update Item Data",
-                            response = ItemsDto.class),
+                            message = "Update Product Data",
+                            response = ProductsDto.class),
                     @ApiResponse(code = 400, message = "Bad Request"),
                     @ApiResponse(code = 401, message = "Unauthorized Access"),
-                    @ApiResponse(code = 404, message = "Item Not Found"),
+                    @ApiResponse(code = 404, message = "Product Not Found"),
                     @ApiResponse(code = 409, message = "Conflict")
             })
-    @PutMapping(path = {"/items/{id}"})
-    public ResponseEntity<String> updateItem(
-            @PathVariable("id") UUID itemId, @RequestBody ItemsDto itemsData){
+    @PutMapping(path = {"/products/{id}"})
+    public ResponseEntity<String> updateProduct(
+            @PathVariable("id") UUID productId, @RequestBody ProductsDto productsData){
 
         ResponseEntity<String> result;
 
         try {
-            itemService.updateItemData(itemId, itemsData);
-            result = new ResponseEntity<>(itemDataUpdated, HttpStatus.OK);
+            productService.updateProductData(productId, productsData);
+            result = new ResponseEntity<>(productDataUpdated, HttpStatus.OK);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(
-                    itemDataNotUpdated + e.getMessage(), HttpStatus.NOT_FOUND);
+                    productDataNotUpdated + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (ServiceException e){
             result = new ResponseEntity<>(
-                    itemDataNotUpdated + e.getMessage(), HttpStatus.CONFLICT);
+                    productDataNotUpdated + e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e){
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
@@ -223,30 +222,30 @@ public class ItemController extends BaseEntity {
     }
 
     @ApiOperation(
-            value = "Delete Item Data",
-            notes = "This Request Delete Item Data in the Database",
-            tags = {"Items"})
+            value = "Delete Product Data",
+            notes = "This Request Delete Product Data in the Database",
+            tags = {"Products"})
     @ApiResponses(
             value = {
                     @ApiResponse(
                             code = 200,
-                            message = "Delete Item Data",
-                            response = ItemsDto.class),
+                            message = "Delete Product Data",
+                            response = ProductsDto.class),
                     @ApiResponse(code = 400, message = "Bad Request"),
                     @ApiResponse(code = 401, message = "Unauthorized Access"),
-                    @ApiResponse(code = 404, message = "Item Not Found")
+                    @ApiResponse(code = 404, message = "Product Not Found")
             })
-    @DeleteMapping(path = {"/items/{id}"})
-    public ResponseEntity<String> deleteItem(@PathVariable("id") UUID itemId) {
+    @DeleteMapping(path = {"/products/{id}"})
+    public ResponseEntity<String> deleteProduct(@PathVariable("id") UUID productId) {
 
         ResponseEntity<String> result;
 
         try {
-            itemService.deleteItemData(itemId);
-            result = new ResponseEntity<>(itemDataDeleted, HttpStatus.OK);
+            productService.deleteProductData(productId);
+            result = new ResponseEntity<>(productDataDeleted, HttpStatus.OK);
         } catch (RepositoryException e) {
             result = new ResponseEntity<>(
-                    itemDataNotDeleted + e.getMessage(), HttpStatus.NOT_FOUND);
+                    productDataNotDeleted + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
