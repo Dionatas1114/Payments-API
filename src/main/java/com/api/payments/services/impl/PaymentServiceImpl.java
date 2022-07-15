@@ -30,7 +30,7 @@ public class PaymentServiceImpl implements PaymentService {
         List<PaymentsDto> paymentsDtoList = new ArrayList<>();
         List<Payments> allPayments = paymentRepository.findAll();
 
-        if (allPayments.isEmpty()) throw new RepositoryException(paymentsEmpty);
+        if (allPayments.isEmpty()) throw new RepositoryException(noPaymentDaraRegistered);
 
         allPayments.forEach(payment -> paymentsDtoList.add(convertToDto(payment)));
 
@@ -42,7 +42,7 @@ public class PaymentServiceImpl implements PaymentService {
 
         Optional<Payments> payment = paymentRepository.findById(paymentId);
 
-        if (payment.isEmpty()) throw new RepositoryException(paymentNotFound);
+        if (payment.isEmpty()) throw new RepositoryException(paymentDataNotFound);
 
         return convertToDto(payment.get());
     }
@@ -90,7 +90,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public void updatePayment(UUID paymentId, PaymentsDto paymentsData) throws Exception {
 
-        if (!paymentRepository.existsById(paymentId)) throw new RepositoryException(paymentNotFound);
+        if (!paymentRepository.existsById(paymentId)) throw new RepositoryException(paymentDataNotFound);
 
         paymentValidator(paymentsData);
 
@@ -101,7 +101,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public void deletePayment(UUID paymentId) throws Exception {
 
-        if (!paymentRepository.existsById(paymentId)) throw new RepositoryException(paymentNotFound);
+        if (!paymentRepository.existsById(paymentId)) throw new RepositoryException(paymentDataNotFound);
 
         paymentRepository.deleteById(paymentId);
     }
@@ -120,7 +120,7 @@ public class PaymentServiceImpl implements PaymentService {
 
         List<PaymentsDto> paymentsDtoList = new ArrayList<>();
 
-        if (paymentsFound.isEmpty()) throw new RepositoryException(paymentNotFound);
+        if (paymentsFound.isEmpty()) throw new RepositoryException(paymentDataNotFound);
 
         paymentsFound.forEach(payments -> paymentsDtoList.add(convertToDto(payments)));
 

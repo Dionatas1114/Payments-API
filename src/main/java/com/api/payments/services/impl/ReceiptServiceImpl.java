@@ -31,7 +31,7 @@ public class ReceiptServiceImpl implements ReceiptService {
         List<Receipts> allReceiptsList = receiptRepository.findAll();
 
         if (allReceiptsList.isEmpty())
-            throw new RepositoryException(receiptsEmpty);
+            throw new RepositoryException(noReceiptDataRegistered);
 
         allReceiptsList.forEach(receipt -> receiptsList.add(convertToDto(receipt)));
 
@@ -44,7 +44,7 @@ public class ReceiptServiceImpl implements ReceiptService {
         Optional<Receipts> receipt = receiptRepository.findById(receiptId);
 
         if (receipt.isEmpty())
-            throw new RepositoryException(receiptNotFound);
+            throw new RepositoryException(receiptDataNotFound);
 
         return convertToDto(receipt.get());
     }
@@ -95,7 +95,7 @@ public class ReceiptServiceImpl implements ReceiptService {
         boolean receiptExists = receiptRepository.existsById(receiptId);
 
         if (!receiptExists)
-            throw new RepositoryException(receiptNotFound);
+            throw new RepositoryException(receiptDataNotFound);
 
         receiptValidator(receiptsData);
 
@@ -109,7 +109,7 @@ public class ReceiptServiceImpl implements ReceiptService {
         boolean receiptExists = receiptRepository.existsById(receiptId);
 
         if (!receiptExists)
-            throw new RepositoryException(receiptNotFound);
+            throw new RepositoryException(receiptDataNotFound);
 
         receiptRepository.deleteById(receiptId);
     }
@@ -129,7 +129,7 @@ public class ReceiptServiceImpl implements ReceiptService {
         List<ReceiptsDto> receiptsList = new ArrayList<>();
 
         if (receipts.isEmpty())
-            throw new RepositoryException(receiptNotFound);
+            throw new RepositoryException(receiptDataNotFound);
 
         receipts.forEach(receipt -> receiptsList.add(convertToDto(receipt)));
 

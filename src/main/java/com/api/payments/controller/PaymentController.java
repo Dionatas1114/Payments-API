@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.api.payments.messages.PaymentMessages.*;
-import static com.api.payments.messages.ReceiptMessages.badRequest;
 
 @RestController
 @AllArgsConstructor
@@ -239,10 +238,10 @@ public class PaymentController {
 
         try {
             paymentService.savePaymentData (paymentsData);
-            result = new ResponseEntity<>(paymentCreated, HttpStatus.CREATED);
+            result = new ResponseEntity<>(paymentDataInserted, HttpStatus.CREATED);
         } catch (ServiceException e){
             result = new ResponseEntity<>(
-                    paymentNotCreated + e.getMessage(), HttpStatus.CONFLICT);
+                    paymentDataNotInserted + e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e) {
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
