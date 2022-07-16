@@ -1,5 +1,6 @@
 package com.api.payments.config;
 
+import com.api.payments.config.utils.CheckEnvVars;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
