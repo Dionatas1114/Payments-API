@@ -1,4 +1,4 @@
-package com.api.payments.config;
+package com.api.payments.config.utils;
 
 import com.api.payments.utils.Log;
 
