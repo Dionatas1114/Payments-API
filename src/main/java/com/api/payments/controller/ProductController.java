@@ -1,7 +1,6 @@
 package com.api.payments.controller;
 
 import com.api.payments.dto.ProductsDto;
-import com.api.payments.entity.BaseEntity;
 import com.api.payments.services.ProductService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -22,7 +21,7 @@ import static com.api.payments.messages.ProductMessages.*;
 @AllArgsConstructor
 @RequestMapping("/api")
 @CrossOrigin("*")
-public class ProductController extends BaseEntity {
+public class ProductController {
 
     private ProductService productService;
 
@@ -114,37 +113,6 @@ public class ProductController extends BaseEntity {
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (ServiceException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-        } catch (Exception e){
-            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
-        }
-        return result;
-    }
-
-    @ApiOperation(
-            value = "Return Product Data by Item Type",
-            notes = "This Request Return Product Data from the Database",
-            tags = {"Products"})
-    @ApiResponses(
-            value = {
-                    @ApiResponse(
-                            code = 200,
-                            message = "Return Product Data",
-                            response = ProductsDto.class),
-                    @ApiResponse(code = 400, message = "Bad Request"),
-                    @ApiResponse(code = 401, message = "Unauthorized Access"),
-                    @ApiResponse(code = 404, message = "Product Not Found")
-            })
-    @GetMapping(path = {"/products/byItemType/{itemType}"})
-    public ResponseEntity<List<ProductsDto>> findProductsByItemType(
-            @PathVariable String itemType){
-
-        ResponseEntity result;
-
-        try {
-            List<ProductsDto> products = productService.findProductsByItemType(itemType);
-            result = new ResponseEntity<>(products, HttpStatus.OK);
-        } catch (RepositoryException e){
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }

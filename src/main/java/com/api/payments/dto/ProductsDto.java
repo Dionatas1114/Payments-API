@@ -15,7 +15,6 @@ public class ProductsDto {
 
     public UUID id;
     public String itemName;
-    public String itemType;
     public String productBrand;
     public String itemCategory;
     public String manufacturer;
