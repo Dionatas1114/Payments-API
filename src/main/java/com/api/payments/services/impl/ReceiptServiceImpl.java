@@ -31,7 +31,7 @@ public class ReceiptServiceImpl implements ReceiptService {
         List<Receipts> allReceiptsList = receiptRepository.findAll();
 
         if (allReceiptsList.isEmpty())
-            throw new RepositoryException(receiptsEmpty);
+            throw new RepositoryException(noReceiptDataRegistered);
 
         allReceiptsList.forEach(receipt -> receiptsList.add(convertToDto(receipt)));
 
@@ -44,7 +44,7 @@ public class ReceiptServiceImpl implements ReceiptService {
         Optional<Receipts> receipt = receiptRepository.findById(receiptId);
 
         if (receipt.isEmpty())
-            throw new RepositoryException(receiptNotFound);
+            throw new RepositoryException(receiptDataNotFound);
 
         return convertToDto(receipt.get());
     }
@@ -86,7 +86,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 
         receiptValidator(receiptsData);
 
-        receiptRepository.save(converFromDto(receiptsData));
+        receiptRepository.save(convertFromDto(receiptsData));
     }
 
     @Override
@@ -95,7 +95,7 @@ public class ReceiptServiceImpl implements ReceiptService {
         boolean receiptExists = receiptRepository.existsById(receiptId);
 
         if (!receiptExists)
-            throw new RepositoryException(receiptNotFound);
+            throw new RepositoryException(receiptDataNotFound);
 
         receiptValidator(receiptsData);
 
@@ -109,19 +109,17 @@ public class ReceiptServiceImpl implements ReceiptService {
         boolean receiptExists = receiptRepository.existsById(receiptId);
 
         if (!receiptExists)
-            throw new RepositoryException(receiptNotFound);
+            throw new RepositoryException(receiptDataNotFound);
 
         receiptRepository.deleteById(receiptId);
     }
 
     private ReceiptsDto convertToDto(Receipts receipts) {
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(receipts, ReceiptsDto.class);
+        return new ModelMapper().map(receipts, ReceiptsDto.class);
     }
 
-    private Receipts converFromDto(ReceiptsDto receiptsData) {
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(receiptsData, Receipts.class);
+    private Receipts convertFromDto(ReceiptsDto receiptsData) {
+        return new ModelMapper().map(receiptsData, Receipts.class);
     }
 
     private List<ReceiptsDto> convertToDtoList(List<Receipts> receipts) throws RepositoryException {
@@ -129,7 +127,7 @@ public class ReceiptServiceImpl implements ReceiptService {
         List<ReceiptsDto> receiptsList = new ArrayList<>();
 
         if (receipts.isEmpty())
-            throw new RepositoryException(receiptNotFound);
+            throw new RepositoryException(receiptDataNotFound);
 
         receipts.forEach(receipt -> receiptsList.add(convertToDto(receipt)));
 

@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.api.payments.messages.PaymentMessages.*;
-import static com.api.payments.messages.ReceiptMessages.badRequest;
 
 @RestController
 @AllArgsConstructor
@@ -41,7 +40,7 @@ public class PaymentController {
                             response = PaymentsDto.class),
                     @ApiResponse(code = 400, message = "Bad Request"),
                     @ApiResponse(code = 401, message = "Unauthorized Access"),
-                    @ApiResponse(code = 404, message = "No Registered Payment")
+                    @ApiResponse(code = 404, message = "No Payments Registered")
             })
     @GetMapping(path = {"/payments"})
     public ResponseEntity<List<PaymentsDto>> findAllPayments(){
@@ -239,10 +238,10 @@ public class PaymentController {
 
         try {
             paymentService.savePaymentData (paymentsData);
-            result = new ResponseEntity<>(paymentCreated, HttpStatus.CREATED);
+            result = new ResponseEntity<>(paymentDataInserted, HttpStatus.CREATED);
         } catch (ServiceException e){
             result = new ResponseEntity<>(
-                    paymentNotCreated + e.getMessage(), HttpStatus.CONFLICT);
+                    paymentDataNotInserted + e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e) {
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }

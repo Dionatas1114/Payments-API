@@ -1,10 +1,12 @@
 package com.api.payments.validations.validators;
 
 import com.api.payments.dto.PaymentsDto;
-import com.api.payments.validations.messages.PaymentValidatorMessages;
 import org.hibernate.service.spi.ServiceException;
 
 import java.time.LocalDate;
+import java.util.UUID;
+
+import static com.api.payments.validations.messages.PaymentValidatorMessages.*;
 
 public class PaymentValidator {
 
@@ -26,21 +28,23 @@ public class PaymentValidator {
         double total = paymentsData.getTotal ();
         String description = paymentsData.getDescription ();
         String messageText = paymentsData.getMessageText ();
+        UUID userId = paymentsData.getUser().getId();
 
-        if (debtorFullName == null) throw new ServiceException (PaymentValidatorMessages.debtorFullNameInvalid);
-        if (debtorLastName == null) throw new ServiceException (PaymentValidatorMessages.debtorLastNameInvalid);
-        if (paymentMethod == null) throw new ServiceException (PaymentValidatorMessages.paymentMethodInvalid);
-        if (paymentStatus == null) throw new ServiceException (PaymentValidatorMessages.paymentStatusInvalid);
-        if (paymentDate == null) throw new ServiceException (PaymentValidatorMessages.paymentDateInvalid);
-        if (expirationDate == null) throw new ServiceException (PaymentValidatorMessages.expirationDateInvalid);
-        if (currency == null) throw new ServiceException(PaymentValidatorMessages.currencyInvalid);
-//        if (interest == 0) throw new ServiceException (PaymentValidatorMessages.interestInvalid);
-//        if (fine == 0) throw new ServiceException (PaymentValidatorMessages.fineInvalid);
-//        if (increasedValue == 0) throw new ServiceException (PaymentValidatorMessages.increasedValueInvalid);
-//        if (discPayAdvance == 0) throw new ServiceException (PaymentValidatorMessages.discPayAdvanceInvalid);
-//        if (originalValue == 0) throw new ServiceException (PaymentValidatorMessages.originalValueInvalid);
-//        if (total == 0) throw new ServiceException (PaymentValidatorMessages.totalInvalid);
-        if (description == null) throw new ServiceException (PaymentValidatorMessages.descriptionInvalid);
-        if (messageText == null) throw new ServiceException (PaymentValidatorMessages.messageTextInvalid);
+        if (debtorFullName == null) throw new ServiceException (debtorFullNameInvalid);
+        if (debtorLastName == null) throw new ServiceException (debtorLastNameInvalid);
+        if (paymentMethod == null) throw new ServiceException (paymentMethodInvalid);
+        if (paymentStatus == null) throw new ServiceException (paymentStatusInvalid);
+        if (paymentDate == null) throw new ServiceException (paymentDateInvalid);
+        if (expirationDate == null) throw new ServiceException (expirationDateInvalid);
+        if (currency == null) throw new ServiceException(currencyInvalid);
+//        if (interest == 0) throw new ServiceException (interestInvalid);
+//        if (fine == 0) throw new ServiceException (fineInvalid);
+//        if (increasedValue == 0) throw new ServiceException (increasedValueInvalid);
+//        if (discPayAdvance == 0) throw new ServiceException (discPayAdvanceInvalid);
+//        if (originalValue == 0) throw new ServiceException (originalValueInvalid);
+//        if (total == 0) throw new ServiceException (totalInvalid);
+        if (description == null) throw new ServiceException (descriptionInvalid);
+        if (messageText == null) throw new ServiceException (messageTextInvalid);
+        if (userId == null) throw new ServiceException (userIdInvalid);
     }
 }

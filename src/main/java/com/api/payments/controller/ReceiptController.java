@@ -39,7 +39,7 @@ public class ReceiptController {
                             response = ReceiptsDto.class),
                     @ApiResponse(code = 400, message = "Bad Request"),
                     @ApiResponse(code = 401, message = "Unauthorized Access"),
-                    @ApiResponse(code = 404, message = "No Registered Receipt")
+                    @ApiResponse(code = 404, message = "No Receipts Registered")
             })
     @GetMapping(path = {"/receipts"})
     public ResponseEntity<List<ReceiptsDto>> findAllReceipts(){
@@ -232,20 +232,16 @@ public class ReceiptController {
                     @ApiResponse(code = 409, message = "Conflict")
             })
     @PostMapping(path = {"/receipts"})
-    public ResponseEntity<ReceiptsDto> createReceipt(
-            @RequestBody ReceiptsDto receiptsData) {
+    public ResponseEntity<ReceiptsDto> createReceipt(@RequestBody ReceiptsDto receiptsData) {
 
         ResponseEntity result;
 
         try {
             receiptService.saveReceiptData (receiptsData);
-            result = new ResponseEntity<>(receiptCreated, HttpStatus.CREATED);
-        } catch (RepositoryException e){
-            result = new ResponseEntity<>(
-                    receiptNotCreated + e.getMessage(), HttpStatus.NOT_FOUND);
+            result = new ResponseEntity<>(receiptDataInserted, HttpStatus.CREATED);
         } catch (ServiceException e) {
             result = new ResponseEntity<>(
-                    receiptNotCreated + e.getMessage(), HttpStatus.CONFLICT);
+                    receiptDataNotInserted + e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e) {
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
