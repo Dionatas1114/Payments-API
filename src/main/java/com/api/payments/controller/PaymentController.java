@@ -40,7 +40,7 @@ public class PaymentController {
                             response = PaymentsDto.class),
                     @ApiResponse(code = 400, message = "Bad Request"),
                     @ApiResponse(code = 401, message = "Unauthorized Access"),
-                    @ApiResponse(code = 404, message = "No Registered Payment")
+                    @ApiResponse(code = 404, message = "No Payments Registered")
             })
     @GetMapping(path = {"/payments"})
     public ResponseEntity<List<PaymentsDto>> findAllPayments(){

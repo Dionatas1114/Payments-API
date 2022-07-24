@@ -183,7 +183,6 @@ public class UserServiceImpl implements UserService {
     }
 
     private UsersDto convertToDto(Users user) {
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(user, UsersDto.class);
+        return new ModelMapper().map(user, UsersDto.class);
     }
 }

@@ -35,7 +35,6 @@ public class UserConfigurationsServiceImpl implements UserConfigurationsService 
     }
 
     private UserConfigurationsDto convertToDto(UserConfigurations userConfigurations) {
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(userConfigurations, UserConfigurationsDto.class);
+        return new ModelMapper().map(userConfigurations, UserConfigurationsDto.class);
     }
 }

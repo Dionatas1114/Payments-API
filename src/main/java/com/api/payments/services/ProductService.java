@@ -12,7 +12,6 @@ public interface ProductService {
     List<ProductsDto> findAllProducts() throws Exception;
     ProductsDto findProductById(UUID productId) throws Exception;
     List<ProductsDto> findByItemName(String itemName) throws Exception;
-    List<ProductsDto> findProductsByItemType(String productType) throws Exception;
     void saveProductData(ProductsDto productsData) throws Exception;
     void updateProductData(UUID productId, ProductsDto productsData) throws Exception;
     void deleteProductData(UUID productId) throws Exception;

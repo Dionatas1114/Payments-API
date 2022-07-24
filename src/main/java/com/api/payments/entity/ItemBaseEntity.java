@@ -5,12 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.UUID;
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 
 @Getter
 @Setter
@@ -22,10 +19,6 @@ public class ItemBaseEntity extends BaseEntity {
     @ApiModelProperty(notes = "Nome do item")
     @Column(nullable = false, length = 50)
     public String itemName;
-
-    @ApiModelProperty(notes = "Tipo do item: product or service")
-    @Column(nullable = false, length = 50)
-    public String itemType;
 
     @ApiModelProperty(notes = "Categoria do item: Other (def)")
     public String itemCategory = "Other";
