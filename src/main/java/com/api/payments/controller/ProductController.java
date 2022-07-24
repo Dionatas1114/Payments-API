@@ -37,7 +37,7 @@ public class ProductController {
                             response = ProductsDto.class),
                     @ApiResponse(code = 400, message = "Bad Request"),
                     @ApiResponse(code = 401, message = "Unauthorized Access"),
-                    @ApiResponse(code = 404, message = "No Registered Products")
+                    @ApiResponse(code = 404, message = "No Products Registered")
             })
     @GetMapping(path = {"/products"})
     public ResponseEntity<List<ProductsDto>> findAllProducts(){
@@ -70,8 +70,7 @@ public class ProductController {
                     @ApiResponse(code = 404, message = "Product Not Found")
             })
     @GetMapping(path = {"/products/{id}"})
-    public ResponseEntity<ProductsDto> findProductsById(
-            @PathVariable("id") UUID productId){
+    public ResponseEntity<ProductsDto> findProductsById(@PathVariable("id") UUID productId){
 
         ResponseEntity result;
 
