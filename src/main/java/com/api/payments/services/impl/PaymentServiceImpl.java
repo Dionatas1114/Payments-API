@@ -107,13 +107,11 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     private PaymentsDto convertToDto(Payments payments) {
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(payments, PaymentsDto.class);
+        return new ModelMapper().map(payments, PaymentsDto.class);
     }
 
     private Payments convertFromDto(PaymentsDto payments) {
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(payments, Payments.class);
+        return new ModelMapper().map(payments, Payments.class);
     }
 
     private List<PaymentsDto> convertToDtoList(List<Payments> paymentsFound) throws RepositoryException {

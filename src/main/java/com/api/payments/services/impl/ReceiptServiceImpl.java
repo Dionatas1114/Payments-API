@@ -86,7 +86,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 
         receiptValidator(receiptsData);
 
-        receiptRepository.save(converFromDto(receiptsData));
+        receiptRepository.save(convertFromDto(receiptsData));
     }
 
     @Override
@@ -115,13 +115,11 @@ public class ReceiptServiceImpl implements ReceiptService {
     }
 
     private ReceiptsDto convertToDto(Receipts receipts) {
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(receipts, ReceiptsDto.class);
+        return new ModelMapper().map(receipts, ReceiptsDto.class);
     }
 
-    private Receipts converFromDto(ReceiptsDto receiptsData) {
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(receiptsData, Receipts.class);
+    private Receipts convertFromDto(ReceiptsDto receiptsData) {
+        return new ModelMapper().map(receiptsData, Receipts.class);
     }
 
     private List<ReceiptsDto> convertToDtoList(List<Receipts> receipts) throws RepositoryException {

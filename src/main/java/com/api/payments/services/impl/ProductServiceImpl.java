@@ -62,28 +62,9 @@ public class ProductServiceImpl implements ProductService {
         return productDtoList;
     }
 
-    @Override
-    public List<ProductsDto> findProductsByItemType(String productType) throws Exception {
-
-        itemTypeValidator(productType);
-
-        List<ProductsDto> productsDtoList = new ArrayList<>();
-        List<Products> productsList = productRepository.findByItemType(productType);
-
-        boolean productsListEmpty = productsList.isEmpty();
-        if (productsListEmpty)
-            throw new RepositoryException(noProductDataRegistered);
-
-        for (Products products : productsList)
-            productsDtoList.add(convertToDto(products));
-
-        return productsDtoList;
-    }
-
     public void saveProductData(ProductsDto productsData) throws Exception {
 
         String itemName = productsData.getItemName();
-        String itemType = productsData.getItemType();
         String productBrand = productsData.getProductBrand();
         String captionPacking = productsData.getCaptionPacking();
 
@@ -91,8 +72,8 @@ public class ProductServiceImpl implements ProductService {
         List<Products> productsByItemName = productRepository.findByItemName(itemName);
 
         for (Products products : productsByItemName) {
-            boolean alreadyExists = Objects.equals(products.itemType, itemType)
-                    && Objects.equals(products.productBrand, productBrand)
+            boolean alreadyExists =
+                    Objects.equals(products.productBrand, productBrand)
                     && Objects.equals(products.captionPacking, captionPacking);
 
             booleanList.add(alreadyExists);
@@ -135,12 +116,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private ProductsDto convertToDto(Products products) {
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(products, ProductsDto.class);
+        return new ModelMapper().map(products, ProductsDto.class);
     }
 
     private Products convertFromDto(ProductsDto productsData) {
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(productsData, Products.class);
+        return new ModelMapper().map(productsData, Products.class);
     }
 }

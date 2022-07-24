@@ -38,7 +38,7 @@ public class UserController {
                             response = UsersDto.class),
                     @ApiResponse(code = 400, message = "Bad Request"),
                     @ApiResponse(code = 401, message = "Unauthorized Access"),
-                    @ApiResponse(code = 404, message = "No Registered User")
+                    @ApiResponse(code = 404, message = "No Users Registered")
             })
     @GetMapping(path = {"/users"})
     public ResponseEntity<List<UsersDto>> findAllUsers(){

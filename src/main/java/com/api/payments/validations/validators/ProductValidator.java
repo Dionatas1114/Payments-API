@@ -1,8 +1,9 @@
 package com.api.payments.validations.validators;
 
 import com.api.payments.dto.ProductsDto;
-import com.api.payments.validations.messages.ProductValidatorMessages;
 import org.hibernate.service.spi.ServiceException;
+
+import static com.api.payments.validations.messages.ProductValidatorMessages.*;
 
 public class ProductValidator {
 
@@ -10,7 +11,6 @@ public class ProductValidator {
             throws ServiceException {
 
         String itemName = productsData.getItemName ();
-        String itemType = productsData.getItemType ();
         String productBrand = productsData.getProductBrand ();
         String category = productsData.getItemCategory();
         String manufacturer = productsData.getManufacturer ();
@@ -23,24 +23,19 @@ public class ProductValidator {
         String description = productsData.getItemDescription ();
 
         itemNameValidator(itemName);
-        itemTypeValidator(itemType);
-        if (productBrand == null) throw new ServiceException (ProductValidatorMessages.productBrandInvalid);
-        if (category == null) throw new ServiceException (ProductValidatorMessages.categoryInvalid);
-        if (manufacturer == null) throw new ServiceException (ProductValidatorMessages.manufacturerInvalid);
-        if (captionPacking == null) throw new ServiceException (ProductValidatorMessages.captionPackingInvalid);
-        if (totalPrice == 0) throw new ServiceException (ProductValidatorMessages.totalPriceInvalid);
-        if (unitaryPrice == 0) throw new ServiceException (ProductValidatorMessages.unitaryPriceInvalid);
-        if (discountPrice == 0) throw new ServiceException (ProductValidatorMessages.discountPriceInvalid);
-        if (barCode == null) throw new ServiceException (ProductValidatorMessages.barCodeInvalid);
-        if (internalCode == null) throw new ServiceException (ProductValidatorMessages.internalCodeInvalid);
-        if (description == null) throw new ServiceException (ProductValidatorMessages.descriptionInvalid);
-    }
-
-    public static void itemTypeValidator(String itemType) {
-        if (itemType == null) throw new ServiceException (ProductValidatorMessages.itemTypeInvalid);
+        if (productBrand == null) throw new ServiceException (productBrandInvalid);
+        if (category == null) throw new ServiceException (categoryInvalid);
+        if (manufacturer == null) throw new ServiceException (manufacturerInvalid);
+        if (captionPacking == null) throw new ServiceException (captionPackingInvalid);
+        if (totalPrice == 0) throw new ServiceException (totalPriceInvalid);
+        if (unitaryPrice == 0) throw new ServiceException (unitaryPriceInvalid);
+        if (discountPrice == 0) throw new ServiceException (discountPriceInvalid);
+        if (barCode == null) throw new ServiceException (barCodeInvalid);
+        if (internalCode == null) throw new ServiceException (internalCodeInvalid);
+        if (description == null) throw new ServiceException (descriptionInvalid);
     }
 
     public static void itemNameValidator(String itemName) {
-        if (itemName == null) throw new ServiceException(ProductValidatorMessages.itemNameInvalid);
+        if (itemName == null) throw new ServiceException(itemNameInvalid);
     }
 }
