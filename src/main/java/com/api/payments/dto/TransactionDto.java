@@ -1,7 +1,6 @@
 package com.api.payments.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,8 +10,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
-public class ReceiptsDto {
+public class TransactionDto {
 
     public UUID id;
     public String debtorFullName;
@@ -31,5 +29,5 @@ public class ReceiptsDto {
     public double total;
     public String description;
     public String messageText;
-
+    public UsersDto user;
 }
