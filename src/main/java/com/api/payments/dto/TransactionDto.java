@@ -1,15 +1,16 @@
 package com.api.payments.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-public class TransactionBaseDto {
+@Data
+public class TransactionDto {
 
     public UUID id;
     public String debtorFullName;

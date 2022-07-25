@@ -1,8 +1,6 @@
 package com.api.payments.entity;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
@@ -11,8 +9,6 @@ import javax.persistence.MappedSuperclass;
 import java.time.LocalDate;
 import java.util.Objects;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @MappedSuperclass
 public class TransactionBaseEntity extends BaseEntity {
 
