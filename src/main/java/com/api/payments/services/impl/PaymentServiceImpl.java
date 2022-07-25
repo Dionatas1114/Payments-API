@@ -1,10 +1,11 @@
 package com.api.payments.services.impl;
 
-import com.api.payments.dto.PaymentsDto;
+import com.api.payments.dto.TransactionDto;
 import com.api.payments.entity.Payments;
 import com.api.payments.repository.PaymentRepository;
 import com.api.payments.services.PaymentService;
 import lombok.AllArgsConstructor;
+import lombok.val;
 import org.modelmapper.ModelMapper;
 import org.sonatype.aether.RepositoryException;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static com.api.payments.messages.PaymentMessages.*;
@@ -25,10 +25,10 @@ public class PaymentServiceImpl implements PaymentService {
     private PaymentRepository paymentRepository;
 
     @Override
-    public List<PaymentsDto> findAllPayments() throws Exception {
+    public List<TransactionDto> findAllPayments() throws Exception {
 
-        List<PaymentsDto> paymentsDtoList = new ArrayList<>();
-        List<Payments> allPayments = paymentRepository.findAll();
+        List<TransactionDto> paymentsDtoList = new ArrayList<>();
+        val allPayments = paymentRepository.findAll();
 
         if (allPayments.isEmpty()) throw new RepositoryException(noPaymentDaraRegistered);
 
@@ -38,9 +38,9 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public PaymentsDto findPaymentById(UUID paymentId) throws Exception {
+    public TransactionDto findPaymentById(UUID paymentId) throws Exception {
 
-        Optional<Payments> payment = paymentRepository.findById(paymentId);
+        val payment = paymentRepository.findById(paymentId);
 
         if (payment.isEmpty()) throw new RepositoryException(paymentDataNotFound);
 
@@ -48,39 +48,39 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public List<PaymentsDto> findPaymentsByExpirationDate(LocalDate expirationDate) throws Exception {
+    public List<TransactionDto> findPaymentsByExpirationDate(LocalDate expirationDate) throws Exception {
 
-        List<Payments> paymentsList = paymentRepository.findByExpirationDate(expirationDate);
-
-        return convertToDtoList(paymentsList);
-    }
-
-    @Override
-    public List<PaymentsDto> findByDebtorFullName(String debtorFullName) throws RepositoryException {
-
-        List<Payments> paymentsList = paymentRepository.findByDebtorFullName(debtorFullName);
+        val paymentsList = paymentRepository.findByExpirationDate(expirationDate);
 
         return convertToDtoList(paymentsList);
     }
 
     @Override
-    public List<PaymentsDto> findByPaymentStatus(boolean paymentStatus) throws RepositoryException {
+    public List<TransactionDto> findByDebtorFullName(String debtorFullName) throws RepositoryException {
 
-        List<Payments> paymentsList = paymentRepository.findByPaymentStatus(paymentStatus);
-
-        return convertToDtoList(paymentsList);
-    }
-
-    @Override
-    public List<PaymentsDto> findByPaymentMethod(String paymentMethod) throws RepositoryException {
-
-        List<Payments> paymentsList = paymentRepository.findByPaymentMethod(paymentMethod);
+        val paymentsList = paymentRepository.findByDebtorFullName(debtorFullName);
 
         return convertToDtoList(paymentsList);
     }
 
     @Override
-    public void savePaymentData(PaymentsDto paymentsData) {
+    public List<TransactionDto> findByPaymentStatus(boolean paymentStatus) throws RepositoryException {
+
+        val paymentsList = paymentRepository.findByPaymentStatus(paymentStatus);
+
+        return convertToDtoList(paymentsList);
+    }
+
+    @Override
+    public List<TransactionDto> findByPaymentMethod(String paymentMethod) throws RepositoryException {
+
+        val paymentsList = paymentRepository.findByPaymentMethod(paymentMethod);
+
+        return convertToDtoList(paymentsList);
+    }
+
+    @Override
+    public void savePaymentData(TransactionDto paymentsData) {
 
         paymentValidator(paymentsData);
 
@@ -88,7 +88,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public void updatePayment(UUID paymentId, PaymentsDto paymentsData) throws Exception {
+    public void updatePayment(UUID paymentId, TransactionDto paymentsData) throws Exception {
 
         if (!paymentRepository.existsById(paymentId)) throw new RepositoryException(paymentDataNotFound);
 
@@ -106,17 +106,17 @@ public class PaymentServiceImpl implements PaymentService {
         paymentRepository.deleteById(paymentId);
     }
 
-    private PaymentsDto convertToDto(Payments payments) {
-        return new ModelMapper().map(payments, PaymentsDto.class);
+    private TransactionDto convertToDto(Payments payments) {
+        return new ModelMapper().map(payments, TransactionDto.class);
     }
 
-    private Payments convertFromDto(PaymentsDto payments) {
+    private Payments convertFromDto(TransactionDto payments) {
         return new ModelMapper().map(payments, Payments.class);
     }
 
-    private List<PaymentsDto> convertToDtoList(List<Payments> paymentsFound) throws RepositoryException {
+    private List<TransactionDto> convertToDtoList(List<Payments> paymentsFound) throws RepositoryException {
 
-        List<PaymentsDto> paymentsDtoList = new ArrayList<>();
+        List<TransactionDto> paymentsDtoList = new ArrayList<>();
 
         if (paymentsFound.isEmpty()) throw new RepositoryException(paymentDataNotFound);
 

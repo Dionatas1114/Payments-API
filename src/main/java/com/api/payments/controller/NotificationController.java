@@ -1,7 +1,6 @@
 package com.api.payments.controller;
 
-import com.api.payments.dto.PaymentsDto;
-import com.api.payments.dto.ReceiptsDto;
+import com.api.payments.dto.TransactionDto;
 import com.api.payments.entity.Payments;
 import com.api.payments.entity.Receipts;
 import com.api.payments.repository.PaymentRepository;
@@ -10,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
+import lombok.val;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,14 +36,14 @@ public class NotificationController {
                     @ApiResponse(
                             code = 200,
                             message = "Returns Payment Data",
-                            response = PaymentsDto.class),
+                            response = TransactionDto.class),
                     @ApiResponse(code = 400, message = "Bad Request"),
                     @ApiResponse(code = 401, message = "Unauthorized Access"),
                     @ApiResponse(code = 404, message = "Payment Not Found")
             })
     @GetMapping(path = "/notifications/currentPayments")
     public List<Payments> getPaymentNotification(){
-        LocalDate actualDate = LocalDate.now();
+        val actualDate = LocalDate.now();
         return paymentRepository.findByExpirationDate(actualDate);
     }
 
@@ -56,14 +56,14 @@ public class NotificationController {
                     @ApiResponse(
                             code = 200,
                             message = "Returns Receipt Data",
-                            response = ReceiptsDto.class),
+                            response = TransactionDto.class),
                     @ApiResponse(code = 400, message = "Bad Request"),
                     @ApiResponse(code = 401, message = "Unauthorized Access"),
                     @ApiResponse(code = 404, message = "Receipt Not Found")
             })
     @GetMapping(path = "/notifications/currentReceipts")
     public List<Receipts> getReceiptNotification(){
-        LocalDate actualDate = LocalDate.now();
+        val actualDate = LocalDate.now();
         return receiptRepository.findByExpirationDate(actualDate);
     }
 }
