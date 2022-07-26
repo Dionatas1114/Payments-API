@@ -32,14 +32,14 @@ public class TransactionBaseEntity extends BaseEntity {
     @Column(nullable = false)
     public LocalDate expirationDate;
 
-    @ApiModelProperty(notes = "Data do Pagamento")
+    @ApiModelProperty(notes = "Data da Transação")
     public LocalDate paymentDate;
 
-    @ApiModelProperty(notes = "Frequência da transação: unique (def) - [unique, daily, weekly, monthly or yearly]")
+    @ApiModelProperty(notes = "Frequência da Transação: unique (def) - [unique, daily, weekly, monthly or yearly]")
     @Column(nullable = false, length = 10)
     public String transactionFrequency = "unique";
 
-    @ApiModelProperty(notes = "Moeda Utilizada no Recebimento: BRL/R$ (def)")
+    @ApiModelProperty(notes = "Moeda Utilizada na Transação: BRL/R$ (def)")
     public String currency = "BRL";
 
     @ApiModelProperty(notes = "Valor dos Juros: 0.00 (def)")
@@ -54,22 +54,22 @@ public class TransactionBaseEntity extends BaseEntity {
     @ApiModelProperty(notes = "Valor do Desconto por Pagamento Adiantado: 0.00 (def)")
     public double discPayAdvance = 0.00;
 
-    @ApiModelProperty(notes = "Valor Original do Recebimento")
+    @ApiModelProperty(notes = "Valor Original da Transação")
     @Column(nullable = false)
     public double originalValue;
 
-    @ApiModelProperty(notes = "Valor Total do Recebimento")
+    @ApiModelProperty(notes = "Valor Total da Transação")
     @Column(nullable = false)
     public double amount;
 
-    @ApiModelProperty(notes = "Descrição do Recebimento")
+    @ApiModelProperty(notes = "Descrição da Transação")
     @Column(length = 50)
     public String description;
 
-    @ApiModelProperty(notes = "Mensagem de texto do Recebimento")
+    @ApiModelProperty(notes = "Mensagem de texto da Transação")
     public String messageText;
 
-    @ApiModelProperty(notes = "Usuário do pagamento")
+    @ApiModelProperty(notes = "Usuário da Transação")
     @JoinColumn(name = "user_id")
     @ManyToOne
     private Users user;
