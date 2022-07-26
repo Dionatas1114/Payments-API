@@ -5,13 +5,13 @@ import com.api.payments.entity.Services;
 import com.api.payments.repository.ServiceRepository;
 import com.api.payments.services.ServiceService;
 import lombok.AllArgsConstructor;
+import lombok.val;
 import org.modelmapper.ModelMapper;
 import org.sonatype.aether.RepositoryException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static com.api.payments.messages.ServiceMessages.*;
@@ -27,7 +27,7 @@ public class ServiceServiceImpl implements ServiceService {
     public List<ServicesDto> findAllServices() throws Exception {
 
         List<ServicesDto> servicesList = new ArrayList<>();
-        List<Services> allServicesList = serviceRepository.findAll();
+        val allServicesList = serviceRepository.findAll();
 
         if (allServicesList.isEmpty())
             throw new RepositoryException(noServiceDataRegistered);
@@ -38,9 +38,9 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
-    public ServicesDto findServiceById(UUID serviceId) throws RepositoryException {
+    public ServicesDto findServiceById(UUID serviceId) {
 
-        Optional<Services> service = serviceRepository.findById(serviceId);
+        val service = serviceRepository.findById(serviceId);
 
         return convertToDto(service.get());
     }
@@ -51,6 +51,31 @@ public class ServiceServiceImpl implements ServiceService {
         serviceValidator(servicesData);
 
         serviceRepository.save(convertFromDto(servicesData));
+    }
+
+    @Override
+    public void updateServiceData(UUID serviceId, ServicesDto servicesData) throws RepositoryException {
+
+        val serviceExists = serviceRepository.existsById(serviceId);
+
+        if (!serviceExists) throw new RepositoryException(serviceDataNotFound);
+
+        serviceValidator(servicesData);
+
+        val services = convertFromDto(servicesData);
+
+        services.setId(serviceId);
+        serviceRepository.save(services);
+    }
+
+    @Override
+    public void deleteServiceData(UUID serviceId) throws RepositoryException {
+
+        val serviceExists = serviceRepository.existsById(serviceId);
+
+        if (!serviceExists) throw new RepositoryException(serviceDataNotFound);
+
+        serviceRepository.deleteById(serviceId);
     }
 
     private ServicesDto convertToDto(Services services) {
