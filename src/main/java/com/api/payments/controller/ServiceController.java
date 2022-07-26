@@ -115,4 +115,71 @@ public class ServiceController {
         }
         return result;
     }
+
+    @ApiOperation(
+            value = "Update Service Data",
+            notes = "This Request Update Service Data in the Database",
+            tags = {"Services"})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            code = 200,
+                            message = "Update Service Data",
+                            response = ServicesDto.class),
+                    @ApiResponse(code = 400, message = "Bad Request"),
+                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 404, message = "Service Not Found"),
+                    @ApiResponse(code = 409, message = "Conflict")
+            })
+    @PutMapping(path = {"/services/{id}"})
+    public ResponseEntity<String> updateService(
+            @PathVariable("id") UUID serviceId, @RequestBody ServicesDto servicesData){
+
+        ResponseEntity<String> result;
+
+        try {
+            serviceService.updateServiceData(serviceId, servicesData);
+            result = new ResponseEntity<>(serviceDataUpdated, HttpStatus.OK);
+        } catch (RepositoryException e){
+            result = new ResponseEntity<>(
+                    serviceDataNotUpdated + e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (ServiceException e){
+            result = new ResponseEntity<>(
+                    serviceDataNotUpdated + e.getMessage(), HttpStatus.CONFLICT);
+        } catch (Exception e){
+            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
+        }
+        return result;
+    }
+
+    @ApiOperation(
+            value = "Delete Service Data",
+            notes = "This Request Delete Service Data in the Database",
+            tags = {"Services"})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            code = 200,
+                            message = "Delete Service Data",
+                            response = ServicesDto.class),
+                    @ApiResponse(code = 400, message = "Bad Request"),
+                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 404, message = "Service Not Found")
+            })
+    @DeleteMapping(path = {"/services/{id}"})
+    public ResponseEntity<String> deleteService(@PathVariable("id") UUID serviceId) {
+
+        ResponseEntity<String> result;
+
+        try {
+            serviceService.deleteServiceData(serviceId);
+            result = new ResponseEntity<>(serviceDataDeleted, HttpStatus.OK);
+        } catch (RepositoryException e) {
+            result = new ResponseEntity<>(
+                    serviceDataNotDeleted + e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
+        }
+        return result;
+    }
 }
