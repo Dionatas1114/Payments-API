@@ -1,6 +1,6 @@
 package com.api.payments.controller;
 
-import com.api.payments.dto.PaymentsDto;
+import com.api.payments.dto.TransactionDto;
 import com.api.payments.entity.Payments;
 import com.api.payments.services.PaymentService;
 import io.swagger.annotations.ApiOperation;
@@ -37,17 +37,17 @@ public class PaymentController {
                     @ApiResponse(
                             code = 200,
                             message = "Returns All Payment Data",
-                            response = PaymentsDto.class),
+                            response = TransactionDto.class),
                     @ApiResponse(code = 400, message = "Bad Request"),
                     @ApiResponse(code = 401, message = "Unauthorized Access"),
                     @ApiResponse(code = 404, message = "No Payments Registered")
             })
     @GetMapping(path = {"/payments"})
-    public ResponseEntity<List<PaymentsDto>> findAllPayments(){
+    public ResponseEntity<List<TransactionDto>> findAllPayments(){
         ResponseEntity result;
 
         try {
-            List<PaymentsDto> allPayments = paymentService.findAllPayments();
+            List<TransactionDto> allPayments = paymentService.findAllPayments();
             result = new ResponseEntity<>(allPayments, HttpStatus.OK);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -66,19 +66,19 @@ public class PaymentController {
                     @ApiResponse(
                             code = 200,
                             message = "Returns Payment Data",
-                            response = PaymentsDto.class),
+                            response = TransactionDto.class),
                     @ApiResponse(code = 400, message = "Bad Request"),
                     @ApiResponse(code = 401, message = "Unauthorized Access"),
                     @ApiResponse(code = 404, message = "Payment Not Found")
             })
     @GetMapping(path = {"/payments/{id}"})
-    public ResponseEntity<PaymentsDto> findPaymentById(
+    public ResponseEntity<TransactionDto> findPaymentById(
             @PathVariable("id") UUID paymentId){
 
         ResponseEntity result;
 
         try {
-            PaymentsDto payment = paymentService.findPaymentById(paymentId);
+            TransactionDto payment = paymentService.findPaymentById(paymentId);
             result = new ResponseEntity<>(payment, HttpStatus.OK);
         } catch (RepositoryException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -97,20 +97,20 @@ public class PaymentController {
                     @ApiResponse(
                             code = 200,
                             message = "Returns Payments Data",
-                            response = PaymentsDto.class),
+                            response = TransactionDto.class),
                     @ApiResponse(code = 400, message = "Bad Request"),
                     @ApiResponse(code = 401, message = "Unauthorized Access"),
                     @ApiResponse(code = 404, message = "Payment Not Found")
             })
     @GetMapping(path = {"/payments/byExpirationDate/{expirationDate}"})
-    public ResponseEntity<List<PaymentsDto>> findPaymentsByExpirationDate(
+    public ResponseEntity<List<TransactionDto>> findPaymentsByExpirationDate(
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
             LocalDate expirationDate){
 
         ResponseEntity result;
 
         try {
-            List<PaymentsDto> payments =
+            List<TransactionDto> payments =
                     paymentService.findPaymentsByExpirationDate(expirationDate);
             result = new ResponseEntity<>(payments, HttpStatus.OK);
         } catch (RepositoryException e){
@@ -130,19 +130,19 @@ public class PaymentController {
                     @ApiResponse(
                             code = 200,
                             message = "Returns Payments Data",
-                            response = PaymentsDto.class),
+                            response = TransactionDto.class),
                     @ApiResponse(code = 400, message = "Bad Request"),
                     @ApiResponse(code = 401, message = "Unauthorized Access"),
                     @ApiResponse(code = 404, message = "Payment Not Found")
             })
     @GetMapping(path = {"/payments/byDebtorFullName/{debtorFullName}"})
-    public ResponseEntity<PaymentsDto> findByDebtorFullName(
+    public ResponseEntity<TransactionDto> findByDebtorFullName(
             @PathVariable String debtorFullName){
 
         ResponseEntity result;
 
         try {
-            List<PaymentsDto> payments =
+            List<TransactionDto> payments =
                     paymentService.findByDebtorFullName(debtorFullName);
             result = new ResponseEntity<>(payments, HttpStatus.OK);
         } catch (RepositoryException e){
@@ -162,19 +162,19 @@ public class PaymentController {
                     @ApiResponse(
                             code = 200,
                             message = "Returns Payments Data",
-                            response = PaymentsDto.class),
+                            response = TransactionDto.class),
                     @ApiResponse(code = 400, message = "Bad Request"),
                     @ApiResponse(code = 401, message = "Unauthorized Access"),
                     @ApiResponse(code = 404, message = "Payment Not Found")
             })
     @GetMapping(path = {"/payments/byPaymentStatus/{paymentStatus}"})
-    public ResponseEntity<PaymentsDto> findByPaymentStatus(
+    public ResponseEntity<TransactionDto> findByPaymentStatus(
             @PathVariable boolean paymentStatus){
 
         ResponseEntity result;
 
         try {
-            List<PaymentsDto> payments =
+            List<TransactionDto> payments =
                     paymentService.findByPaymentStatus(paymentStatus);
             result = new ResponseEntity<>(payments, HttpStatus.OK);
         } catch (RepositoryException e){
@@ -194,19 +194,19 @@ public class PaymentController {
                     @ApiResponse(
                             code = 200,
                             message = "Returns Payments Data",
-                            response = PaymentsDto.class),
+                            response = TransactionDto.class),
                     @ApiResponse(code = 400, message = "Bad Request"),
                     @ApiResponse(code = 401, message = "Unauthorized Access"),
                     @ApiResponse(code = 404, message = "Payment Not Found")
             })
     @GetMapping(path = {"/payments/byPaymentMethod/{paymentMethod}"})
-    public ResponseEntity<PaymentsDto> findByPaymentMethod(
+    public ResponseEntity<TransactionDto> findByPaymentMethod(
             @PathVariable String paymentMethod){
 
         ResponseEntity result;
 
         try {
-            List<PaymentsDto> payments =
+            List<TransactionDto> payments =
                     paymentService.findByPaymentMethod(paymentMethod);
             result = new ResponseEntity<>(payments, HttpStatus.OK);
         } catch (RepositoryException e){
@@ -226,14 +226,14 @@ public class PaymentController {
                     @ApiResponse(
                             code = 201,
                             message = "Register Payment Data",
-                            response = PaymentsDto.class),
+                            response = TransactionDto.class),
                     @ApiResponse(code = 400, message = "Bad Request"),
                     @ApiResponse(code = 401, message = "Unauthorized Access"),
                     @ApiResponse(code = 409, message = "Conflict")
             })
     @PostMapping(path = {"/payments"})
     public ResponseEntity<Payments> createPayment(
-            @RequestBody PaymentsDto paymentsData) {
+            @RequestBody TransactionDto paymentsData) {
         ResponseEntity result;
 
         try {
@@ -257,7 +257,7 @@ public class PaymentController {
                     @ApiResponse(
                             code = 200,
                             message = "Update Payment Data",
-                            response = PaymentsDto.class),
+                            response = TransactionDto.class),
                     @ApiResponse(code = 400, message = "Bad Request"),
                     @ApiResponse(code = 401, message = "Unauthorized Access"),
                     @ApiResponse(code = 404, message = "Payment Not Found"),
@@ -266,7 +266,7 @@ public class PaymentController {
     @PutMapping(path = {"/payments/{id}"})
     public ResponseEntity<String> updatePayment(
             @PathVariable("id") UUID paymentId,
-            @RequestBody PaymentsDto paymentsData){
+            @RequestBody TransactionDto paymentsData){
 
         ResponseEntity<String> result;
 
@@ -294,7 +294,7 @@ public class PaymentController {
                     @ApiResponse(
                             code = 200,
                             message = "Delete Payment Data",
-                            response = PaymentsDto.class),
+                            response = TransactionDto.class),
                     @ApiResponse(code = 400, message = "Bad Request"),
                     @ApiResponse(code = 401, message = "Unauthorized Access"),
                     @ApiResponse(code = 404, message = "Payment Not Found")

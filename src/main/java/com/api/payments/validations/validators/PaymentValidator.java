@@ -1,6 +1,6 @@
 package com.api.payments.validations.validators;
 
-import com.api.payments.dto.PaymentsDto;
+import com.api.payments.dto.TransactionDto;
 import org.hibernate.service.spi.ServiceException;
 
 import java.time.LocalDate;
@@ -10,7 +10,7 @@ import static com.api.payments.validations.messages.PaymentValidatorMessages.*;
 
 public class PaymentValidator {
 
-    public static void paymentValidator(PaymentsDto paymentsData)
+    public static void paymentValidator(TransactionDto paymentsData)
             throws ServiceException {
 
         String debtorFullName = paymentsData.getDebtorFullName ();
