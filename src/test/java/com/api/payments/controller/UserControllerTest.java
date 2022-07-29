@@ -1,11 +1,16 @@
 package com.api.payments.controller;
 
+import com.api.payments.mocks.User;
+import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@AllArgsConstructor
 class UserControllerTest {
+
+    User user;
 
     @Test
     @DisplayName(" should")
@@ -19,6 +24,8 @@ class UserControllerTest {
 
     @Test
     void createUser() {
+
+        var userData = user.returnUserData();
     }
 
     @Test
