@@ -7,7 +7,6 @@ import com.api.payments.services.ReceiptService;
 import lombok.AllArgsConstructor;
 import lombok.val;
 import org.modelmapper.ModelMapper;
-import org.sonatype.aether.RepositoryException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -31,7 +30,7 @@ public class ReceiptServiceImpl implements ReceiptService {
         val allReceiptsList = receiptRepository.findAll();
 
         if (allReceiptsList.isEmpty())
-            throw new RepositoryException(noReceiptDataRegistered);
+            throw new ExceptionInInitializerError(noReceiptDataRegistered);
 
         allReceiptsList.forEach(receipt ->
                 receiptsList.add(convertToDto(receipt)));
@@ -44,7 +43,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 
         val receipt = receiptRepository.findById(receiptId);
 
-        if (receipt.isEmpty()) throw new RepositoryException(receiptDataNotFound);
+        if (receipt.isEmpty()) throw new ExceptionInInitializerError(receiptDataNotFound);
 
         return convertToDto(receipt.get());
     }
@@ -94,7 +93,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 
         val receiptExists = receiptRepository.existsById(receiptId);
 
-        if (!receiptExists) throw new RepositoryException(receiptDataNotFound);
+        if (!receiptExists) throw new ExceptionInInitializerError(receiptDataNotFound);
 
         receiptValidator(receiptsData);
 
@@ -107,7 +106,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 
         val receiptExists = receiptRepository.existsById(receiptId);
 
-        if (!receiptExists) throw new RepositoryException(receiptDataNotFound);
+        if (!receiptExists) throw new ExceptionInInitializerError(receiptDataNotFound);
 
         receiptRepository.deleteById(receiptId);
     }
@@ -120,11 +119,11 @@ public class ReceiptServiceImpl implements ReceiptService {
         return new ModelMapper().map(receiptsData, Receipts.class);
     }
 
-    private List<TransactionDto> convertToDtoList(List<Receipts> receipts) throws RepositoryException {
+    private List<TransactionDto> convertToDtoList(List<Receipts> receipts) throws ExceptionInInitializerError {
 
         List<TransactionDto> receiptsList = new ArrayList<>();
 
-        if (receipts.isEmpty()) throw new RepositoryException(receiptDataNotFound);
+        if (receipts.isEmpty()) throw new ExceptionInInitializerError(receiptDataNotFound);
 
         receipts.forEach(receipt -> receiptsList.add(convertToDto(receipt)));
 

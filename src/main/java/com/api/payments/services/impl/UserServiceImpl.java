@@ -9,7 +9,6 @@ import com.api.payments.services.UserService;
 import lombok.AllArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
 import org.modelmapper.ModelMapper;
-import org.sonatype.aether.RepositoryException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -26,14 +25,14 @@ public class UserServiceImpl implements UserService {
     private UserConfigurationsRepository userConfigurationsRepository;
 
     @Override
-    public List<UsersDto> findAllUsers() throws RepositoryException {
+    public List<UsersDto> findAllUsers() throws ExceptionInInitializerError {
 
         List<UsersDto> usersDtoList = new ArrayList<>();
         List<Users> usersList = userRepository.findAll();
 
         boolean usersListEmpty = usersList.isEmpty();
         if (usersListEmpty)
-            throw new RepositoryException(noUserDataRegistered);
+            throw new ExceptionInInitializerError(noUserDataRegistered);
 
         for (Users user : usersList)
             usersDtoList.add(convertToDto(user));
@@ -42,11 +41,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UsersDto findUserById(UUID userId) throws RepositoryException {
+    public UsersDto findUserById(UUID userId) throws ExceptionInInitializerError {
 
         Optional<Users> user = userRepository.findById(userId);
         if (user.isEmpty())
-            throw new RepositoryException(userDataNotFound);
+            throw new ExceptionInInitializerError(userDataNotFound);
 
         return convertToDto(user.get());
     }
@@ -108,7 +107,7 @@ public class UserServiceImpl implements UserService {
 
         } catch (
                 Exception e) {
-            throw new RepositoryException(e.getMessage());
+            throw new ExceptionInInitializerError(e.getMessage());
         }
     }
 
@@ -126,7 +125,7 @@ public class UserServiceImpl implements UserService {
 
         Optional<Users> user = userRepository.findById(userId);
         if (user.isEmpty())
-            throw new RepositoryException(userDataNotFound);
+            throw new ExceptionInInitializerError(userDataNotFound);
 
         List<Users> usersList = userRepository.findAll();
 
@@ -177,7 +176,7 @@ public class UserServiceImpl implements UserService {
 
         boolean exists = userRepository.existsById(userId);
         if (!exists)
-            throw new RepositoryException(userDataNotFound);
+            throw new ExceptionInInitializerError(userDataNotFound);
 
         userRepository.deleteById(userId);
     }

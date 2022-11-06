@@ -7,7 +7,6 @@ import com.api.payments.services.PaymentService;
 import lombok.AllArgsConstructor;
 import lombok.val;
 import org.modelmapper.ModelMapper;
-import org.sonatype.aether.RepositoryException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -30,7 +29,7 @@ public class PaymentServiceImpl implements PaymentService {
         List<TransactionDto> paymentsDtoList = new ArrayList<>();
         val allPayments = paymentRepository.findAll();
 
-        if (allPayments.isEmpty()) throw new RepositoryException(noPaymentDaraRegistered);
+        if (allPayments.isEmpty()) throw new ExceptionInInitializerError(noPaymentDaraRegistered);
 
         allPayments.forEach(payment -> paymentsDtoList.add(convertToDto(payment)));
 
@@ -42,7 +41,7 @@ public class PaymentServiceImpl implements PaymentService {
 
         val payment = paymentRepository.findById(paymentId);
 
-        if (payment.isEmpty()) throw new RepositoryException(paymentDataNotFound);
+        if (payment.isEmpty()) throw new ExceptionInInitializerError(paymentDataNotFound);
 
         return convertToDto(payment.get());
     }
@@ -56,7 +55,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public List<TransactionDto> findByDebtorFullName(String debtorFullName) throws RepositoryException {
+    public List<TransactionDto> findByDebtorFullName(String debtorFullName) throws ExceptionInInitializerError {
 
         val paymentsList = paymentRepository.findByDebtorFullName(debtorFullName);
 
@@ -64,7 +63,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public List<TransactionDto> findByPaymentStatus(boolean paymentStatus) throws RepositoryException {
+    public List<TransactionDto> findByPaymentStatus(boolean paymentStatus) throws ExceptionInInitializerError {
 
         val paymentsList = paymentRepository.findByPaymentStatus(paymentStatus);
 
@@ -72,7 +71,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public List<TransactionDto> findByPaymentMethod(String paymentMethod) throws RepositoryException {
+    public List<TransactionDto> findByPaymentMethod(String paymentMethod) throws ExceptionInInitializerError {
 
         val paymentsList = paymentRepository.findByPaymentMethod(paymentMethod);
 
@@ -90,7 +89,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public void updatePayment(UUID paymentId, TransactionDto paymentsData) throws Exception {
 
-        if (!paymentRepository.existsById(paymentId)) throw new RepositoryException(paymentDataNotFound);
+        if (!paymentRepository.existsById(paymentId)) throw new ExceptionInInitializerError(paymentDataNotFound);
 
         paymentValidator(paymentsData);
 
@@ -101,7 +100,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public void deletePayment(UUID paymentId) throws Exception {
 
-        if (!paymentRepository.existsById(paymentId)) throw new RepositoryException(paymentDataNotFound);
+        if (!paymentRepository.existsById(paymentId)) throw new ExceptionInInitializerError(paymentDataNotFound);
 
         paymentRepository.deleteById(paymentId);
     }
@@ -114,11 +113,11 @@ public class PaymentServiceImpl implements PaymentService {
         return new ModelMapper().map(payments, Payments.class);
     }
 
-    private List<TransactionDto> convertToDtoList(List<Payments> paymentsFound) throws RepositoryException {
+    private List<TransactionDto> convertToDtoList(List<Payments> paymentsFound) throws ExceptionInInitializerError {
 
         List<TransactionDto> paymentsDtoList = new ArrayList<>();
 
-        if (paymentsFound.isEmpty()) throw new RepositoryException(paymentDataNotFound);
+        if (paymentsFound.isEmpty()) throw new ExceptionInInitializerError(paymentDataNotFound);
 
         paymentsFound.forEach(payments -> paymentsDtoList.add(convertToDto(payments)));
 

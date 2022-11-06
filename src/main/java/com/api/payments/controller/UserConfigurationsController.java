@@ -3,7 +3,6 @@ package com.api.payments.controller;
 import com.api.payments.dto.UserConfigurationsDto;
 import com.api.payments.services.UserConfigurationsService;
 import lombok.AllArgsConstructor;
-import org.sonatype.aether.RepositoryException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,7 +28,7 @@ public class UserConfigurationsController {
             List<UserConfigurationsDto> userConfigurations =
                     userConfigurationsService.findUserConfigurations();
             result = new ResponseEntity<>(userConfigurations, HttpStatus.OK);
-        } catch (RepositoryException e) {
+        } catch (ExceptionInInitializerError e) {
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

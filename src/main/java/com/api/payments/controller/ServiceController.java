@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
-import org.sonatype.aether.RepositoryException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +46,7 @@ public class ServiceController {
         try {
             List<ServicesDto> allServices = serviceService.findAllServices();
             result = new ResponseEntity<>(allServices, HttpStatus.OK);
-        } catch (RepositoryException e){
+        } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
@@ -77,7 +76,7 @@ public class ServiceController {
         try {
             ServicesDto service = serviceService.findServiceById(serviceId);
             result = new ResponseEntity<>(service, HttpStatus.OK);
-        } catch (RepositoryException e){
+        } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
@@ -140,7 +139,7 @@ public class ServiceController {
         try {
             serviceService.updateServiceData(serviceId, servicesData);
             result = new ResponseEntity<>(serviceDataUpdated, HttpStatus.OK);
-        } catch (RepositoryException e){
+        } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(
                     serviceDataNotUpdated + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (ServiceException e){
@@ -174,7 +173,7 @@ public class ServiceController {
         try {
             serviceService.deleteServiceData(serviceId);
             result = new ResponseEntity<>(serviceDataDeleted, HttpStatus.OK);
-        } catch (RepositoryException e) {
+        } catch (ExceptionInInitializerError e) {
             result = new ResponseEntity<>(
                     serviceDataNotDeleted + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {

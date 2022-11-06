@@ -7,7 +7,6 @@ import com.api.payments.services.ServiceService;
 import lombok.AllArgsConstructor;
 import lombok.val;
 import org.modelmapper.ModelMapper;
-import org.sonatype.aether.RepositoryException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ public class ServiceServiceImpl implements ServiceService {
         val allServicesList = serviceRepository.findAll();
 
         if (allServicesList.isEmpty())
-            throw new RepositoryException(noServiceDataRegistered);
+            throw new ExceptionInInitializerError(noServiceDataRegistered);
 
         allServicesList.forEach(service -> servicesList.add(convertToDto(service)));
 
@@ -54,11 +53,11 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
-    public void updateServiceData(UUID serviceId, ServicesDto servicesData) throws RepositoryException {
+    public void updateServiceData(UUID serviceId, ServicesDto servicesData) throws ExceptionInInitializerError {
 
         val serviceExists = serviceRepository.existsById(serviceId);
 
-        if (!serviceExists) throw new RepositoryException(serviceDataNotFound);
+        if (!serviceExists) throw new ExceptionInInitializerError(serviceDataNotFound);
 
         serviceValidator(servicesData);
 
@@ -69,11 +68,11 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
-    public void deleteServiceData(UUID serviceId) throws RepositoryException {
+    public void deleteServiceData(UUID serviceId) throws ExceptionInInitializerError {
 
         val serviceExists = serviceRepository.existsById(serviceId);
 
-        if (!serviceExists) throw new RepositoryException(serviceDataNotFound);
+        if (!serviceExists) throw new ExceptionInInitializerError(serviceDataNotFound);
 
         serviceRepository.deleteById(serviceId);
     }

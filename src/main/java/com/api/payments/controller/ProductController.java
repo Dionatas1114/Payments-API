@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
-import org.sonatype.aether.RepositoryException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +46,7 @@ public class ProductController {
         try {
             List<ProductsDto> allProducts = productService.findAllProducts();
             result = new ResponseEntity<>(allProducts, HttpStatus.OK);
-        } catch (RepositoryException e){
+        } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
@@ -77,7 +76,7 @@ public class ProductController {
         try {
             ProductsDto product = productService.findProductById(productId);
             result = new ResponseEntity<>(product, HttpStatus.OK);
-        } catch (RepositoryException e){
+        } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
@@ -108,7 +107,7 @@ public class ProductController {
         try {
             List<ProductsDto> products = productService.findByItemName(itemName);
             result = new ResponseEntity<>(products, HttpStatus.OK);
-        } catch (RepositoryException e){
+        } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (ServiceException e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
@@ -140,7 +139,7 @@ public class ProductController {
         try {
             productService.saveProductData(productsData);
             result = new ResponseEntity<>(productDataInserted, HttpStatus.CREATED);
-        } catch (RepositoryException e) {
+        } catch (ExceptionInInitializerError e) {
             result = new ResponseEntity<>(
                     productDataNotInserted + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (ServiceException e) {
@@ -176,7 +175,7 @@ public class ProductController {
         try {
             productService.updateProductData(productId, productsData);
             result = new ResponseEntity<>(productDataUpdated, HttpStatus.OK);
-        } catch (RepositoryException e){
+        } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(
                     productDataNotUpdated + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (ServiceException e){
@@ -210,7 +209,7 @@ public class ProductController {
         try {
             productService.deleteProductData(productId);
             result = new ResponseEntity<>(productDataDeleted, HttpStatus.OK);
-        } catch (RepositoryException e) {
+        } catch (ExceptionInInitializerError e) {
             result = new ResponseEntity<>(
                     productDataNotDeleted + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
