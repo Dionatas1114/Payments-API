@@ -2,9 +2,13 @@ package com.api.payments.mocks;
 
 import com.api.payments.dto.UserConfigurationsDto;
 import com.api.payments.dto.UsersDto;
+import com.api.payments.entity.UserConfigurations;
+import com.api.payments.entity.Users;
+import java.util.UUID;
 
-public class User {
+public class UserTest {
 
+    private static final UUID ID = UUID.fromString("4f9ab8ae-e62a-40f9-b7b8-66eb1d30b75a");
     private static final String USER_NAME = "Johann";
     private static final String EMAIL = "johann@gmail.com.br";
     private static final String PASSW = "Johann1234#@";
@@ -12,7 +16,7 @@ public class User {
     private static final boolean HAS_NOTIF = true;
     private static final String LANGUAGE = "pt_BR";
 
-    public UsersDto returnUserData(){
+    public UsersDto returnUserDtoData(){
 
         var userConfigurations =
                 UserConfigurationsDto.builder()
@@ -21,11 +25,28 @@ public class User {
                         .build();
 
         return UsersDto.builder()
+                .id(ID)
                 .name(USER_NAME)
                 .email(EMAIL)
                 .password(PASSW)
                 .phone(PHONE)
                 .userConfigurations(userConfigurations)
                 .build();
+    }
+
+    public Users returnUserData(){
+
+        var userConfigurations = new UserConfigurations();
+        userConfigurations.setHasNotifications(HAS_NOTIF);
+        userConfigurations.setLanguage(LANGUAGE);
+
+        var user = new Users();
+        user.setName(USER_NAME);
+        user.setEmail(EMAIL);
+        user.setPassword(PASSW);
+        user.setPhone(PHONE);
+        user.setUserConfigurations(userConfigurations);
+
+        return user;
     }
 }
