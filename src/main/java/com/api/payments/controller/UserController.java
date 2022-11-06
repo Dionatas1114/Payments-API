@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
-import org.sonatype.aether.RepositoryException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -48,7 +47,7 @@ public class UserController {
         try {
             List<UsersDto> allUsers = userService.findAllUsers();
             result = new ResponseEntity<>(allUsers, HttpStatus.OK);
-        } catch (RepositoryException e) {
+        } catch (ExceptionInInitializerError e) {
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
@@ -79,7 +78,7 @@ public class UserController {
         try {
             UsersDto user = userService.findUserById(userId);
             result = new ResponseEntity<>(user, HttpStatus.OK);
-        } catch (RepositoryException e){
+        } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
@@ -144,7 +143,7 @@ public class UserController {
         try {
             userService.updateUserData (usersData, userId);
             result = new ResponseEntity<>(userDataUpdated, HttpStatus.OK);
-        } catch (RepositoryException e){
+        } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(
                     userDataNotUpdated + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (ServiceException e){
@@ -178,7 +177,7 @@ public class UserController {
         try {
             userService.deleteUserData(userId);
             result = new ResponseEntity<>(userDataDeleted, HttpStatus.OK);
-        } catch (RepositoryException re) {
+        } catch (ExceptionInInitializerError re) {
             result = new ResponseEntity<>(
                     userDataNotDeleted + re.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {

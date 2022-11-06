@@ -8,7 +8,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
-import org.sonatype.aether.RepositoryException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +48,7 @@ public class PaymentController {
         try {
             List<TransactionDto> allPayments = paymentService.findAllPayments();
             result = new ResponseEntity<>(allPayments, HttpStatus.OK);
-        } catch (RepositoryException e){
+        } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
@@ -80,7 +79,7 @@ public class PaymentController {
         try {
             TransactionDto payment = paymentService.findPaymentById(paymentId);
             result = new ResponseEntity<>(payment, HttpStatus.OK);
-        } catch (RepositoryException e){
+        } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }catch (Exception e){
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
@@ -113,7 +112,7 @@ public class PaymentController {
             List<TransactionDto> payments =
                     paymentService.findPaymentsByExpirationDate(expirationDate);
             result = new ResponseEntity<>(payments, HttpStatus.OK);
-        } catch (RepositoryException e){
+        } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
@@ -145,7 +144,7 @@ public class PaymentController {
             List<TransactionDto> payments =
                     paymentService.findByDebtorFullName(debtorFullName);
             result = new ResponseEntity<>(payments, HttpStatus.OK);
-        } catch (RepositoryException e){
+        } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }catch (Exception e){
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
@@ -177,7 +176,7 @@ public class PaymentController {
             List<TransactionDto> payments =
                     paymentService.findByPaymentStatus(paymentStatus);
             result = new ResponseEntity<>(payments, HttpStatus.OK);
-        } catch (RepositoryException e){
+        } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }catch (Exception e){
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
@@ -209,7 +208,7 @@ public class PaymentController {
             List<TransactionDto> payments =
                     paymentService.findByPaymentMethod(paymentMethod);
             result = new ResponseEntity<>(payments, HttpStatus.OK);
-        } catch (RepositoryException e){
+        } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }catch (Exception e){
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
@@ -273,7 +272,7 @@ public class PaymentController {
         try {
             paymentService.updatePayment(paymentId, paymentsData);
             result = new ResponseEntity<>(paymentDataUpdated, HttpStatus.OK);
-        } catch (RepositoryException e){
+        } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(
                     paymentDataNotUpdated + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (ServiceException e){
@@ -307,7 +306,7 @@ public class PaymentController {
         try {
             paymentService.deletePayment(paymentId);
             result = new ResponseEntity<>(paymentDataDeleted, HttpStatus.OK);
-        } catch (RepositoryException e) {
+        } catch (ExceptionInInitializerError e) {
             result = new ResponseEntity<>(
                     paymentDataNotDeleted + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {

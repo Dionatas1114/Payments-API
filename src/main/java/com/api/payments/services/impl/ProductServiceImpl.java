@@ -6,7 +6,6 @@ import com.api.payments.repository.ProductRepository;
 import com.api.payments.services.ProductService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.sonatype.aether.RepositoryException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -27,7 +26,7 @@ public class ProductServiceImpl implements ProductService {
         List<ProductsDto> productsDtoList = new ArrayList<>();
 
         if (productsList.isEmpty())
-            throw new RepositoryException(noProductDataRegistered);
+            throw new ExceptionInInitializerError(noProductDataRegistered);
 
         productsList.forEach(products -> productsDtoList.add(convertToDto(products)));
 
@@ -35,11 +34,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductsDto findProductById(UUID productId) throws RepositoryException {
+    public ProductsDto findProductById(UUID productId) throws ExceptionInInitializerError {
         Optional<Products> product = productRepository.findById(productId);
 
         if (product.isEmpty())
-            throw new RepositoryException(productDataNotFound);
+            throw new ExceptionInInitializerError(productDataNotFound);
 
         return convertToDto(product.get());
     }
@@ -54,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
 
         boolean productsListEmpty = productsByItemName.isEmpty();
         if (productsListEmpty)
-            throw new RepositoryException(productDataNotFound);
+            throw new ExceptionInInitializerError(productDataNotFound);
 
         for (Products product : productsByItemName)
             productDtoList.add(convertToDto(product));
@@ -81,7 +80,7 @@ public class ProductServiceImpl implements ProductService {
 
         boolean alreadyExists = booleanList.contains(true);
         if (alreadyExists)
-            throw new RepositoryException(productDataAlreadyExists);
+            throw new ExceptionInInitializerError(productDataAlreadyExists);
 
         productValidator(productsData);
 
@@ -95,7 +94,7 @@ public class ProductServiceImpl implements ProductService {
 
         boolean existsById = productRepository.existsById(productId);
         if (!existsById)
-            throw new RepositoryException(productDataNotFound);
+            throw new ExceptionInInitializerError(productDataNotFound);
 
         productValidator(productsData);
 
@@ -110,7 +109,7 @@ public class ProductServiceImpl implements ProductService {
 
         boolean existsById = productRepository.existsById(productId);
         if (!existsById)
-            throw new RepositoryException(productDataNotFound);
+            throw new ExceptionInInitializerError(productDataNotFound);
 
         productRepository.deleteById(productId);
     }

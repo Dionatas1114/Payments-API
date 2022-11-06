@@ -6,7 +6,6 @@ import com.api.payments.repository.UserConfigurationsRepository;
 import com.api.payments.services.UserConfigurationsService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.sonatype.aether.RepositoryException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ public class UserConfigurationsServiceImpl implements UserConfigurationsService 
         List<UserConfigurationsDto> userConfigurationsDtoList = new ArrayList<>();
         List<UserConfigurations> allUserConfigurations = userConfigurationsRepository.findAll();
 
-        if (allUserConfigurations.isEmpty()) throw new RepositoryException(noUserDataRegistered);
+        if (allUserConfigurations.isEmpty()) throw new ExceptionInInitializerError(noUserDataRegistered);
 
         for (UserConfigurations userConfigurations : allUserConfigurations) {
             userConfigurationsDtoList.add(convertToDto(userConfigurations));

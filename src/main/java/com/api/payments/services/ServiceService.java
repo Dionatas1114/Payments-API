@@ -1,7 +1,6 @@
 package com.api.payments.services;
 
 import com.api.payments.dto.ServicesDto;
-import org.sonatype.aether.RepositoryException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +13,6 @@ public interface ServiceService {
     ServicesDto findServiceById(UUID serviceId) throws Exception;
 
     void saveServiceData(ServicesDto servicesData) throws Exception;
-    void updateServiceData(UUID serviceId, ServicesDto servicesData) throws RepositoryException;
-    void deleteServiceData(UUID serviceId) throws RepositoryException;
+    void updateServiceData(UUID serviceId, ServicesDto servicesData) throws ExceptionInInitializerError;
+    void deleteServiceData(UUID serviceId) throws ExceptionInInitializerError;
 }
