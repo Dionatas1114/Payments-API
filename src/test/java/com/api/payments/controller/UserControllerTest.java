@@ -1,6 +1,6 @@
 package com.api.payments.controller;
 
-import com.api.payments.mocks.User;
+import com.api.payments.mocks.UserTest;
 import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,10 +10,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @AllArgsConstructor
 class UserControllerTest {
 
-    User user;
+    UserTest user;
 
     @Test
-    @DisplayName(" should")
+    @DisplayName("Should")
     void findAllUsers() {
         assertEquals(2, 1 + 1);
     }
