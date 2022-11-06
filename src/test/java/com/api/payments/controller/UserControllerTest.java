@@ -13,7 +13,7 @@ class UserControllerTest {
     UserTest user;
 
     @Test
-    @DisplayName(" should")
+    @DisplayName("Should")
     void findAllUsers() {
         assertEquals(2, 1 + 1);
     }
