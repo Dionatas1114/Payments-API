@@ -1,7 +1,6 @@
 package com.api.payments.services;
 
 import com.api.payments.dto.TransactionDto;
-import org.sonatype.aether.RepositoryException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -14,9 +13,9 @@ public interface PaymentService {
     List<TransactionDto> findAllPayments() throws Exception;
     TransactionDto findPaymentById(UUID paymentId) throws Exception;
     List<TransactionDto> findPaymentsByExpirationDate(LocalDate expirationDate) throws Exception;
-    List<TransactionDto> findByDebtorFullName(String debtorFullName) throws RepositoryException;
-    List<TransactionDto> findByPaymentStatus(boolean paymentStatus) throws RepositoryException;
-    List<TransactionDto> findByPaymentMethod(String paymentMethod) throws RepositoryException;
+    List<TransactionDto> findByDebtorFullName(String debtorFullName) throws ExceptionInInitializerError;
+    List<TransactionDto> findByPaymentStatus(boolean paymentStatus) throws ExceptionInInitializerError;
+    List<TransactionDto> findByPaymentMethod(String paymentMethod) throws ExceptionInInitializerError;
     void savePaymentData (TransactionDto paymentsData) throws Exception;
     void updatePayment(UUID paymentId, TransactionDto paymentsData) throws Exception;
     void deletePayment(UUID paymentId) throws Exception;

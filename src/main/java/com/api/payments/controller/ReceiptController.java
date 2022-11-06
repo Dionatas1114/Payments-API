@@ -8,7 +8,6 @@ import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
 import lombok.val;
 import org.hibernate.service.spi.ServiceException;
-import org.sonatype.aether.RepositoryException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +49,7 @@ public class ReceiptController {
         try {
             val allReceipts = receiptService.findAllReceipts();
             result = new ResponseEntity<>(allReceipts, HttpStatus.OK);
-        } catch (RepositoryException e){
+        } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
@@ -81,7 +80,7 @@ public class ReceiptController {
         try {
             val receipt = receiptService.findReceiptById(receiptId);
             result = new ResponseEntity<>(receipt, HttpStatus.OK);
-        } catch (RepositoryException e){
+        } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
@@ -112,7 +111,7 @@ public class ReceiptController {
         try {
             val receipts = receiptService.findByDebtorFullName(debtorFullName);
             result = new ResponseEntity<>(receipts, HttpStatus.OK);
-        } catch (RepositoryException e){
+        } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
@@ -143,7 +142,7 @@ public class ReceiptController {
         try {
             val receipts = receiptService.findByPaymentStatus(paymentStatus);
             result = new ResponseEntity<>(receipts, HttpStatus.OK);
-        } catch (RepositoryException e){
+        } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
@@ -174,7 +173,7 @@ public class ReceiptController {
         try {
             val receipts = receiptService.findByPaymentMethod(paymentMethod);
             result = new ResponseEntity<>(receipts, HttpStatus.OK);
-        } catch (RepositoryException e){
+        } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
@@ -206,7 +205,7 @@ public class ReceiptController {
         try {
             val receipts = receiptService.findByExpirationDate(expirationDate);
             result = new ResponseEntity<>(receipts, HttpStatus.OK);
-        } catch (RepositoryException e){
+        } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
@@ -271,7 +270,7 @@ public class ReceiptController {
         try {
             receiptService.updateReceipt(receiptId, receiptsData);
             result = new ResponseEntity<>(receiptDataUpdated, HttpStatus.OK);
-        } catch (RepositoryException e) {
+        } catch (ExceptionInInitializerError e) {
             result = new ResponseEntity<>(
                     receiptDataNotUpdated + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (ServiceException e) {
@@ -305,7 +304,7 @@ public class ReceiptController {
         try {
             receiptService.deleteReceiptId(receiptId);
             result = new ResponseEntity<>(receiptDataDeleted, HttpStatus.OK);
-        } catch (RepositoryException e) {
+        } catch (ExceptionInInitializerError e) {
             result = new ResponseEntity<>(
                     receiptDataNotDeleted + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
