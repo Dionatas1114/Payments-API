@@ -4,9 +4,11 @@ import com.api.payments.dto.UserConfigurationsDto;
 import com.api.payments.dto.UsersDto;
 import com.api.payments.entity.UserConfigurations;
 import com.api.payments.entity.Users;
+import java.util.UUID;
 
 public class UserTest {
 
+    private static final UUID ID = UUID.fromString("4f9ab8ae-e62a-40f9-b7b8-66eb1d30b75a");
     private static final String USER_NAME = "Johann";
     private static final String EMAIL = "johann@gmail.com.br";
     private static final String PASSW = "Johann1234#@";
@@ -23,6 +25,7 @@ public class UserTest {
                         .build();
 
         return UsersDto.builder()
+                .id(ID)
                 .name(USER_NAME)
                 .email(EMAIL)
                 .password(PASSW)
