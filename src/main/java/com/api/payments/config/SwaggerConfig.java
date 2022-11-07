@@ -57,7 +57,7 @@ public class SwaggerConfig {
 
     private void checkVars(){
 
-        String envVarType = "SWAGGER ENV_VARS";
+        var envVarType = "SWAGGER ENV_VARS";
 
         String[] envVarValue = {
                 getPROJ_TITLE(),

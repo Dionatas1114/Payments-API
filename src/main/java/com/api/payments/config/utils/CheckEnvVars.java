@@ -21,8 +21,8 @@ public class CheckEnvVars {
 
     public static void message(String key, String varName){
 
-        String empty = "";
-        boolean isValueNotEmpty = !Objects.equals(key, empty);
+        var empty = "";
+        var isValueNotEmpty = !Objects.equals(key, empty);
 
         if (isValueNotEmpty) {
             Log.info(varName + ": OK ✔");

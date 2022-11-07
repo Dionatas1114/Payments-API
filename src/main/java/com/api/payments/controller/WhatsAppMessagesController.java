@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.http.HttpResponse;
-
 import static com.api.payments.messages.UserMessages.badRequest;
 
 @RestController
@@ -50,8 +48,8 @@ public class WhatsAppMessagesController {
 
                 ResponseEntity result;
 
-                String phoneNumber = whatsAppConfig.getWHATSAPP_RECIPIENT_PHONE_NUMBER();
-                String languageCode = String.valueOf(LanguageCodes.PT_BR);
+                var phoneNumber = whatsAppConfig.getWHATSAPP_RECIPIENT_PHONE_NUMBER();
+                var languageCode = LanguageCodes.PT_BR.toString();
 
 //                LocalDate date = LocalDate.now();
 //                List<PaymentsDto> paymentsByExpirationDate =
@@ -77,11 +75,11 @@ public class WhatsAppMessagesController {
                         whatsAppMessagesDto.setType("template");
                         whatsAppMessagesDto.setTemplate(whatsAppTemplateDto);
 
-                        String json = new Gson().toJson(whatsAppMessagesDto);
-                        String route = "messages";
-                        String method = "POST";
+                        var json = new Gson().toJson(whatsAppMessagesDto);
+                        var route = "messages";
+                        var method = "POST";
 
-                        HttpResponse<String> response = whatsAppConfig.CRUD(route, method, json);
+                        var response = whatsAppConfig.CRUD(route, method, json);
 
                         result = new ResponseEntity<>(response.body(),
                                 HttpStatus.valueOf(response.statusCode()));

@@ -43,7 +43,7 @@ public class WhatsAppConfig {
     @Bean
     public void checkWhatsAppVars(){
 
-        String envVarType = "WHATSAPP ENV_VARS";
+        var envVarType = "WHATSAPP ENV_VARS";
 
         String[] envVarValue = {
                 getWHATSAPP_VERSION(),
@@ -80,7 +80,7 @@ public class WhatsAppConfig {
                 + getWHATSAPP_VERSION() + "/"
                 + getWHATSAPP_PHONE_NUMBER_ID() + "/" + route;
 
-        HttpRequest request = HttpRequest.newBuilder()
+        var request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .header("Authorization", getWHATSAPP_PERMANENT_TOKEN())
                 .header("Content-Type", "application/json")
