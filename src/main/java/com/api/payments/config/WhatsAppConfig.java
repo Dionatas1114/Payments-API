@@ -1,7 +1,7 @@
 package com.api.payments.config;
 
-import com.api.payments.indicator.HttpMethods;
-import com.api.payments.utils.Log;
+import com.api.payments.config.utils.CheckEnvVars;
+import com.api.payments.validations.validators.WhatsAppValidator;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -35,6 +35,11 @@ public class WhatsAppConfig {
     @Value("${WHATSAPP.PERMANENT_TOKEN}")
     private String WHATSAPP_PERMANENT_TOKEN;
 
+    @Value("${WHATSAPP.AMOUNT_SECONDS}")
+    private String WHATSAPP_AMOUNT_SECONDS;
+
+    public WhatsAppValidator whatsAppValidator;
+
     @Bean
     public void checkWhatsAppVars(){
 
@@ -45,7 +50,8 @@ public class WhatsAppConfig {
                 getWHATSAPP_PHONE_NUMBER_ID(),
                 getWHATSAPP_RECIPIENT_PHONE_NUMBER(),
                 getWHATSAPP_URL(),
-                getWHATSAPP_PERMANENT_TOKEN()
+                getWHATSAPP_PERMANENT_TOKEN(),
+                getWHATSAPP_AMOUNT_SECONDS()
         };
 
         String[] envVarName = {
@@ -53,40 +59,36 @@ public class WhatsAppConfig {
                 "WHATSAPP_PHONE_NUMBER_ID",
                 "WHATSAPP_RECIPIENT_PHONE_NUMBER",
                 "WHATSAPP_URL",
-                "WHATSAPP_PERMANENT_TOKEN"
+                "WHATSAPP_PERMANENT_TOKEN",
+                "WHATSAPP_AMOUNT_SECONDS"
         };
 
-        CheckEnvVars.checkEnvVarsIsNotNull(
-                envVarType, envVarValue, envVarName);
+        CheckEnvVars.checkEnvVarsIsNotNull(envVarType, envVarValue, envVarName);
     }
 
     public HttpResponse<String> CRUD(
             String route,
             String method,
-            String body)
-            throws IOException, InterruptedException {
+            String body
+    ) throws IOException, InterruptedException {
 
-        HttpResponse<String> response = null;
+        HttpResponse<String> response;
 
-        if (method == null) {
-            Log.error("Metodo não informado");
-        } else {
-            var url = getWHATSAPP_URL()
-                    + getWHATSAPP_VERSION() + "/"
-                    + getWHATSAPP_PHONE_NUMBER_ID() + "/" + route;
+        WhatsAppValidator.whatsAppValidate(route, method, body);
 
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(url))
-                    .header("Authorization", getWHATSAPP_PERMANENT_TOKEN())
-                    .header("Content-Type", "application/json")
-                    .timeout(Duration.of(30, SECONDS))
-                    .method(HttpMethods.valueOf(method).toString(),
-                            HttpRequest.BodyPublishers.ofString(body))
-                    .build();
+        var url = getWHATSAPP_URL()
+                + getWHATSAPP_VERSION() + "/"
+                + getWHATSAPP_PHONE_NUMBER_ID() + "/" + route;
 
-            response = HttpClient.newHttpClient()
-                    .send(request, HttpResponse.BodyHandlers.ofString());
-        }
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .header("Authorization", getWHATSAPP_PERMANENT_TOKEN())
+                .header("Content-Type", "application/json")
+                .timeout(Duration.of(Long.parseLong(getWHATSAPP_AMOUNT_SECONDS()), SECONDS))
+                .method(method, HttpRequest.BodyPublishers.ofString(body))
+                .build();
+
+        response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
 
         return response;
     }
