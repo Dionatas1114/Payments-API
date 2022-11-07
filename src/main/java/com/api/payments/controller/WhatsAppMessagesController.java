@@ -4,13 +4,13 @@ import com.api.payments.config.WhatsAppConfig;
 import com.api.payments.dto.WhatsAppLanguageDto;
 import com.api.payments.dto.WhatsAppMessagesDto;
 import com.api.payments.dto.WhatsAppTemplateDto;
+import com.api.payments.indicator.LanguageCodes;
 import com.api.payments.services.PaymentService;
 import com.google.gson.Gson;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,7 +23,6 @@ import java.net.http.HttpResponse;
 import static com.api.payments.messages.UserMessages.badRequest;
 
 @RestController
-@NoArgsConstructor
 @AllArgsConstructor
 @RequestMapping("/api")
 @CrossOrigin("*")
@@ -47,9 +46,12 @@ public class WhatsAppMessagesController {
                         @ApiResponse(code = 404, message = "Not Found")
                 })
         @GetMapping(path = {"/whatsapp"})
-        public ResponseEntity sendWhatsAppMessages() throws Exception {
+        public ResponseEntity sendWhatsAppMessages() {
 
                 ResponseEntity result;
+
+                String phoneNumber = whatsAppConfig.getWHATSAPP_RECIPIENT_PHONE_NUMBER();
+                String languageCode = String.valueOf(LanguageCodes.PT_BR);
 
 //                LocalDate date = LocalDate.now();
 //                List<PaymentsDto> paymentsByExpirationDate =
@@ -61,7 +63,7 @@ public class WhatsAppMessagesController {
 
                 try {
                         var whatsAppLanguageDto = new WhatsAppLanguageDto();
-                        whatsAppLanguageDto.setCode("pt_BR");//en_US
+                        whatsAppLanguageDto.setCode(languageCode);
 
                         var whatsAppTemplateDto = new WhatsAppTemplateDto();
                         whatsAppTemplateDto.setName("new_message");
@@ -71,12 +73,11 @@ public class WhatsAppMessagesController {
                         whatsAppMessagesDto.setMessaging_product("whatsapp");
                         whatsAppMessagesDto.setPreview_url(false);
                         whatsAppMessagesDto.setRecipient_type("individual");
-                        whatsAppMessagesDto.setTo(whatsAppConfig.getWHATSAPP_RECIPIENT_PHONE_NUMBER());
+                        whatsAppMessagesDto.setTo(phoneNumber);
                         whatsAppMessagesDto.setType("template");
                         whatsAppMessagesDto.setTemplate(whatsAppTemplateDto);
 
                         String json = new Gson().toJson(whatsAppMessagesDto);
-
                         String route = "messages";
                         String method = "POST";
 
@@ -86,7 +87,7 @@ public class WhatsAppMessagesController {
                                 HttpStatus.valueOf(response.statusCode()));
 
                 } catch (Exception e) {
-                        result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
+                        result = new ResponseEntity<>(badRequest + e.getMessage(), HttpStatus.BAD_REQUEST);
                 }
                 return result;
         }
