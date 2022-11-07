@@ -9,7 +9,8 @@ public class CheckEnvVars {
     public static void checkEnvVarsIsNotNull(
             String envVarType,
             String[] envVarValue,
-            String[] envVarName){
+            String[] envVarName
+    ){
 
         Log.debug(envVarType + ": Starting verification...");
 
@@ -27,6 +28,7 @@ public class CheckEnvVars {
             Log.info(varName + ": OK ✔");
         } else {
             Log.error(varName + ": NULL ❌");
+            throw new Error(varName + " is Empty. ");
         }
     }
 }
