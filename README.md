@@ -1,22 +1,23 @@
-# Payments-API
+# 🏛 FINANCIAL SOLUTIONS API
 
-## Description
+### Description
 
-This is a Payments/Receipts API created as an exercise to apply what I learned from Java technology with Spring Boot Framework.
-Basically with this api it is possible to manipulate user data, payments, receipts and products according to the CRUD methods of a Rest API.
+This is an API created to solve 3 financial problems:
+ * I want a user record; 🙍‍♂️
+ * I want a report of payments, receipts and products; 🧾
+ * I want a stock exchange monitor; 💹
 
-the Crud methods
-
-**NOTE**: This API is Maven and required Java SE JDK 11 (We use 11.0.9). Install the Maven dependencies and run.
-
-## Technologies:
-* Spring Boot (last version),
-* Maven (2.6.3),
-* JPA (ORM),
-* Postgres (DB),
-* Lombok (1.18.22).
-
-## How to run in Development Environment?
+To develop these solutions, I used Java with Spring Boot.
+___
+### Technologies
+* Java SE JDK 11 (11.0.9);
+* Spring Boot (last version);
+* Maven (2.6.3);
+* JPA (ORM);
+* Postgres (DB);
+* Lombok (1.18.22);
+___
+### How to run in Development Environment?
 
 Create **Postgres Database** using docker command:
 
