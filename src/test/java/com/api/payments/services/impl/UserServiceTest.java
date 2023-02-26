@@ -2,7 +2,7 @@ package com.api.payments.services.impl;
 
 import com.api.payments.dto.UsersDto;
 import com.api.payments.entity.Users;
-import com.api.payments.mocks.UserTest;
+import com.api.payments.mocks.UsersMocked;
 import com.api.payments.repository.UserRepository;
 import com.api.payments.services.UserService;
 import org.junit.Before;
@@ -27,7 +27,7 @@ public class UserServiceTest {
     UserService userService;
 
 //    @Mock
-    UserTest userTest;
+    UsersMocked usersMocked;
 
     @Mock
     UserRepository userRepository;
@@ -35,7 +35,7 @@ public class UserServiceTest {
     @Test
     public void saveUserData() throws Exception {
 
-        UsersDto userData = userTest.returnUserDtoData();
+        UsersDto userData = usersMocked.returnUserDtoDataMocked();
 
 //        Optional<Users> user = userRepository.findById(userId);
 
@@ -49,8 +49,8 @@ public class UserServiceTest {
     @Before
     public void setup(){
 
-        UUID userId = userTest.returnUserDtoData().id;
-        Users user = userTest.returnUserData();
+        UUID userId = usersMocked.returnUserDtoDataMocked().id;
+        Users user = usersMocked.returnUserDataMocked();
 
         Mockito.when(userRepository.findById(userId))
                 .thenReturn(Optional.ofNullable(user));

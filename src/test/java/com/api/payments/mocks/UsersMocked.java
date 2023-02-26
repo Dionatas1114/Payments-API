@@ -6,7 +6,7 @@ import com.api.payments.entity.UserConfigurations;
 import com.api.payments.entity.Users;
 import java.util.UUID;
 
-public class UserTest {
+public class UsersMocked {
 
     private static final UUID ID = UUID.fromString("4f9ab8ae-e62a-40f9-b7b8-66eb1d30b75a");
     private static final String USER_NAME = "Johann";
@@ -16,7 +16,7 @@ public class UserTest {
     private static final boolean HAS_NOTIF = true;
     private static final String LANGUAGE = "pt_BR";
 
-    public UsersDto returnUserDtoData(){
+    public UsersDto returnUserDtoDataMocked(){
 
         var userConfigurations =
                 UserConfigurationsDto.builder()
@@ -34,7 +34,7 @@ public class UserTest {
                 .build();
     }
 
-    public Users returnUserData(){
+    public Users returnUserDataMocked(){
 
         var userConfigurations = new UserConfigurations();
         userConfigurations.setHasNotifications(HAS_NOTIF);
