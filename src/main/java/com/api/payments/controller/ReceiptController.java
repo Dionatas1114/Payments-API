@@ -72,8 +72,7 @@ public class ReceiptController {
                     @ApiResponse(code = 404, message = "Receipt Not Found")
             })
     @GetMapping(path = {"/receipts/{id}"})
-    public ResponseEntity<TransactionDto> findReceiptById(
-            @PathVariable("id") UUID receiptId){
+    public ResponseEntity<TransactionDto> findReceiptById(@PathVariable("id") UUID receiptId){
 
         ResponseEntity result;
 
@@ -103,8 +102,7 @@ public class ReceiptController {
                     @ApiResponse(code = 404, message = "Receipt Not Found")
             })
     @GetMapping(path = {"/receipts/byDebtorFullName/{debtorFullName}"})
-    public ResponseEntity<TransactionDto> findByDebtorFullName(
-            @PathVariable String debtorFullName){
+    public ResponseEntity<TransactionDto> findByDebtorFullName(@PathVariable String debtorFullName){
 
         ResponseEntity result;
 
@@ -134,8 +132,7 @@ public class ReceiptController {
                     @ApiResponse(code = 404, message = "Receipt Not Found")
             })
     @GetMapping(path = {"/receipts/byPaymentStatus/{paymentStatus}"})
-    public ResponseEntity<TransactionDto> findByPaymentStatus(
-            @PathVariable boolean paymentStatus){
+    public ResponseEntity<TransactionDto> findByPaymentStatus(@PathVariable boolean paymentStatus){
 
         ResponseEntity result;
 
@@ -165,8 +162,7 @@ public class ReceiptController {
                     @ApiResponse(code = 404, message = "Receipt Not Found")
             })
     @GetMapping(path = {"/receipts/byPaymentMethod/{paymentMethod}"})
-    public ResponseEntity<TransactionDto> findByPaymentMethod(
-            @PathVariable String paymentMethod){
+    public ResponseEntity<TransactionDto> findByPaymentMethod(@PathVariable String paymentMethod){
 
         ResponseEntity result;
 
@@ -228,8 +224,7 @@ public class ReceiptController {
                     @ApiResponse(code = 409, message = "Conflict")
             })
     @PostMapping(path = {"/receipts"})
-    public ResponseEntity<TransactionDto> createReceipt(
-            @RequestBody TransactionDto receiptsData) {
+    public ResponseEntity<TransactionDto> createReceipt(@RequestBody TransactionDto receiptsData) {
 
         ResponseEntity result;
 

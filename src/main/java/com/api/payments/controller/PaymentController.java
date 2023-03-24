@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
+import lombok.val;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -46,7 +47,7 @@ public class PaymentController {
         ResponseEntity result;
 
         try {
-            List<TransactionDto> allPayments = paymentService.findAllPayments();
+            val allPayments = paymentService.findAllPayments();
             result = new ResponseEntity<>(allPayments, HttpStatus.OK);
         } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -71,13 +72,12 @@ public class PaymentController {
                     @ApiResponse(code = 404, message = "Payment Not Found")
             })
     @GetMapping(path = {"/payments/{id}"})
-    public ResponseEntity<TransactionDto> findPaymentById(
-            @PathVariable("id") UUID paymentId){
+    public ResponseEntity<TransactionDto> findPaymentById(@PathVariable("id") UUID paymentId){
 
         ResponseEntity result;
 
         try {
-            TransactionDto payment = paymentService.findPaymentById(paymentId);
+            val payment = paymentService.findPaymentById(paymentId);
             result = new ResponseEntity<>(payment, HttpStatus.OK);
         } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -109,8 +109,7 @@ public class PaymentController {
         ResponseEntity result;
 
         try {
-            List<TransactionDto> payments =
-                    paymentService.findPaymentsByExpirationDate(expirationDate);
+            val payments = paymentService.findPaymentsByExpirationDate(expirationDate);
             result = new ResponseEntity<>(payments, HttpStatus.OK);
         } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -135,14 +134,12 @@ public class PaymentController {
                     @ApiResponse(code = 404, message = "Payment Not Found")
             })
     @GetMapping(path = {"/payments/byDebtorFullName/{debtorFullName}"})
-    public ResponseEntity<TransactionDto> findByDebtorFullName(
-            @PathVariable String debtorFullName){
+    public ResponseEntity<TransactionDto> findByDebtorFullName(@PathVariable String debtorFullName){
 
         ResponseEntity result;
 
         try {
-            List<TransactionDto> payments =
-                    paymentService.findByDebtorFullName(debtorFullName);
+            val payments = paymentService.findByDebtorFullName(debtorFullName);
             result = new ResponseEntity<>(payments, HttpStatus.OK);
         } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -167,14 +164,12 @@ public class PaymentController {
                     @ApiResponse(code = 404, message = "Payment Not Found")
             })
     @GetMapping(path = {"/payments/byPaymentStatus/{paymentStatus}"})
-    public ResponseEntity<TransactionDto> findByPaymentStatus(
-            @PathVariable boolean paymentStatus){
+    public ResponseEntity<TransactionDto> findByPaymentStatus(@PathVariable boolean paymentStatus){
 
         ResponseEntity result;
 
         try {
-            List<TransactionDto> payments =
-                    paymentService.findByPaymentStatus(paymentStatus);
+            val payments = paymentService.findByPaymentStatus(paymentStatus);
             result = new ResponseEntity<>(payments, HttpStatus.OK);
         } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -199,14 +194,12 @@ public class PaymentController {
                     @ApiResponse(code = 404, message = "Payment Not Found")
             })
     @GetMapping(path = {"/payments/byPaymentMethod/{paymentMethod}"})
-    public ResponseEntity<TransactionDto> findByPaymentMethod(
-            @PathVariable String paymentMethod){
+    public ResponseEntity<TransactionDto> findByPaymentMethod(@PathVariable String paymentMethod){
 
         ResponseEntity result;
 
         try {
-            List<TransactionDto> payments =
-                    paymentService.findByPaymentMethod(paymentMethod);
+            val payments = paymentService.findByPaymentMethod(paymentMethod);
             result = new ResponseEntity<>(payments, HttpStatus.OK);
         } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -231,8 +224,7 @@ public class PaymentController {
                     @ApiResponse(code = 409, message = "Conflict")
             })
     @PostMapping(path = {"/payments"})
-    public ResponseEntity<Payments> createPayment(
-            @RequestBody TransactionDto paymentsData) {
+    public ResponseEntity<Payments> createPayment(@RequestBody TransactionDto paymentsData) {
         ResponseEntity result;
 
         try {

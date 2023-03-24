@@ -3,6 +3,7 @@ package com.api.payments.controller;
 import com.api.payments.dto.UserConfigurationsDto;
 import com.api.payments.services.UserConfigurationsService;
 import lombok.AllArgsConstructor;
+import lombok.val;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,8 +26,7 @@ public class UserConfigurationsController {
         ResponseEntity result;
 
         try {
-            List<UserConfigurationsDto> userConfigurations =
-                    userConfigurationsService.findUserConfigurations();
+            val userConfigurations = userConfigurationsService.findUserConfigurations();
             result = new ResponseEntity<>(userConfigurations, HttpStatus.OK);
         } catch (ExceptionInInitializerError e) {
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
