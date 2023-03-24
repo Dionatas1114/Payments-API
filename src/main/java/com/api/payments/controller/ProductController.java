@@ -99,8 +99,7 @@ public class ProductController {
                     @ApiResponse(code = 404, message = "Product Not Found")
             })
     @GetMapping(path = {"/products/byItemName/{itemName}"})
-    public ResponseEntity<List<ProductsDto>> findByItemName(
-            @PathVariable String itemName){
+    public ResponseEntity<List<ProductsDto>> findByItemName(@PathVariable String itemName){
 
         ResponseEntity result;
 

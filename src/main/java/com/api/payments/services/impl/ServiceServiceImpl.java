@@ -23,16 +23,13 @@ public class ServiceServiceImpl implements ServiceService {
     private ServiceRepository serviceRepository;
 
     @Override
-    public List<ServicesDto> findAllServices() throws Exception {
+    public List<ServicesDto> findAllServices() {
+
+        val allServicesList = serviceRepository.findAll();
+        if (allServicesList.isEmpty()) throw new ExceptionInInitializerError(noServiceDataRegistered);
 
         List<ServicesDto> servicesList = new ArrayList<>();
-        val allServicesList = serviceRepository.findAll();
-
-        if (allServicesList.isEmpty())
-            throw new ExceptionInInitializerError(noServiceDataRegistered);
-
         allServicesList.forEach(service -> servicesList.add(convertToDto(service)));
-
         return servicesList;
     }
 
@@ -40,7 +37,7 @@ public class ServiceServiceImpl implements ServiceService {
     public ServicesDto findServiceById(UUID serviceId) {
 
         val service = serviceRepository.findById(serviceId);
-
+        if (service.isEmpty()) throw new ExceptionInInitializerError(serviceDataNotFound);
         return convertToDto(service.get());
     }
 
@@ -48,7 +45,6 @@ public class ServiceServiceImpl implements ServiceService {
     public void saveServiceData(ServicesDto servicesData) {
 
         serviceValidator(servicesData);
-
         serviceRepository.save(convertFromDto(servicesData));
     }
 
@@ -56,13 +52,10 @@ public class ServiceServiceImpl implements ServiceService {
     public void updateServiceData(UUID serviceId, ServicesDto servicesData) throws ExceptionInInitializerError {
 
         val serviceExists = serviceRepository.existsById(serviceId);
-
         if (!serviceExists) throw new ExceptionInInitializerError(serviceDataNotFound);
 
         serviceValidator(servicesData);
-
         val services = convertFromDto(servicesData);
-
         services.setId(serviceId);
         serviceRepository.save(services);
     }
@@ -71,9 +64,7 @@ public class ServiceServiceImpl implements ServiceService {
     public void deleteServiceData(UUID serviceId) throws ExceptionInInitializerError {
 
         val serviceExists = serviceRepository.existsById(serviceId);
-
         if (!serviceExists) throw new ExceptionInInitializerError(serviceDataNotFound);
-
         serviceRepository.deleteById(serviceId);
     }
 
