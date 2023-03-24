@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
+import lombok.val;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -74,7 +75,7 @@ public class ServiceController {
         ResponseEntity result;
 
         try {
-            ServicesDto service = serviceService.findServiceById(serviceId);
+            val service = serviceService.findServiceById(serviceId);
             result = new ResponseEntity<>(service, HttpStatus.OK);
         } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
