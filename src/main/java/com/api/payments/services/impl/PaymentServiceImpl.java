@@ -26,13 +26,11 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public List<TransactionDto> findAllPayments() throws Exception {
 
-        List<TransactionDto> paymentsDtoList = new ArrayList<>();
         val allPayments = paymentRepository.findAll();
-
         if (allPayments.isEmpty()) throw new ExceptionInInitializerError(noPaymentDaraRegistered);
 
+        List<TransactionDto> paymentsDtoList = new ArrayList<>();
         allPayments.forEach(payment -> paymentsDtoList.add(convertToDto(payment)));
-
         return paymentsDtoList;
     }
 
@@ -40,9 +38,7 @@ public class PaymentServiceImpl implements PaymentService {
     public TransactionDto findPaymentById(UUID paymentId) throws Exception {
 
         val payment = paymentRepository.findById(paymentId);
-
         if (payment.isEmpty()) throw new ExceptionInInitializerError(paymentDataNotFound);
-
         return convertToDto(payment.get());
     }
 
@@ -50,7 +46,6 @@ public class PaymentServiceImpl implements PaymentService {
     public List<TransactionDto> findPaymentsByExpirationDate(LocalDate expirationDate) throws Exception {
 
         val paymentsList = paymentRepository.findByExpirationDate(expirationDate);
-
         return convertToDtoList(paymentsList);
     }
 
@@ -58,7 +53,6 @@ public class PaymentServiceImpl implements PaymentService {
     public List<TransactionDto> findByDebtorFullName(String debtorFullName) throws ExceptionInInitializerError {
 
         val paymentsList = paymentRepository.findByDebtorFullName(debtorFullName);
-
         return convertToDtoList(paymentsList);
     }
 
@@ -66,7 +60,6 @@ public class PaymentServiceImpl implements PaymentService {
     public List<TransactionDto> findByPaymentStatus(boolean paymentStatus) throws ExceptionInInitializerError {
 
         val paymentsList = paymentRepository.findByPaymentStatus(paymentStatus);
-
         return convertToDtoList(paymentsList);
     }
 
@@ -74,7 +67,6 @@ public class PaymentServiceImpl implements PaymentService {
     public List<TransactionDto> findByPaymentMethod(String paymentMethod) throws ExceptionInInitializerError {
 
         val paymentsList = paymentRepository.findByPaymentMethod(paymentMethod);
-
         return convertToDtoList(paymentsList);
     }
 
@@ -82,7 +74,6 @@ public class PaymentServiceImpl implements PaymentService {
     public void savePaymentData(TransactionDto paymentsData) {
 
         paymentValidator(paymentsData);
-
         paymentRepository.save (convertFromDto(paymentsData));
     }
 
@@ -101,7 +92,6 @@ public class PaymentServiceImpl implements PaymentService {
     public void deletePayment(UUID paymentId) throws Exception {
 
         if (!paymentRepository.existsById(paymentId)) throw new ExceptionInInitializerError(paymentDataNotFound);
-
         paymentRepository.deleteById(paymentId);
     }
 
@@ -115,12 +105,10 @@ public class PaymentServiceImpl implements PaymentService {
 
     private List<TransactionDto> convertToDtoList(List<Payments> paymentsFound) throws ExceptionInInitializerError {
 
-        List<TransactionDto> paymentsDtoList = new ArrayList<>();
-
         if (paymentsFound.isEmpty()) throw new ExceptionInInitializerError(paymentDataNotFound);
 
-        paymentsFound.forEach(payments -> paymentsDtoList.add(convertToDto(payments)));
-
+        List<TransactionDto> paymentsDtoList = new ArrayList<>();
+        paymentsFound.forEach(payment -> paymentsDtoList.add(convertToDto(payment)));
         return paymentsDtoList;
     }
 }
