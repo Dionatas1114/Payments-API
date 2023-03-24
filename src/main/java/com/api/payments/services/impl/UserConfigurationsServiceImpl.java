@@ -5,6 +5,7 @@ import com.api.payments.entity.UserConfigurations;
 import com.api.payments.repository.UserConfigurationsRepository;
 import com.api.payments.services.UserConfigurationsService;
 import lombok.AllArgsConstructor;
+import lombok.val;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -20,16 +21,13 @@ public class UserConfigurationsServiceImpl implements UserConfigurationsService 
     private UserConfigurationsRepository userConfigurationsRepository;
 
     @Override
-    public List<UserConfigurationsDto> findUserConfigurations() throws Exception {
+    public List<UserConfigurationsDto> findUserConfigurations() {
 
-        List<UserConfigurationsDto> userConfigurationsDtoList = new ArrayList<>();
-        List<UserConfigurations> allUserConfigurations = userConfigurationsRepository.findAll();
-
+        val allUserConfigurations = userConfigurationsRepository.findAll();
         if (allUserConfigurations.isEmpty()) throw new ExceptionInInitializerError(noUserDataRegistered);
 
-        for (UserConfigurations userConfigurations : allUserConfigurations) {
-            userConfigurationsDtoList.add(convertToDto(userConfigurations));
-        }
+        List<UserConfigurationsDto> userConfigurationsDtoList = new ArrayList<>();
+        allUserConfigurations.forEach(userConfiguration -> userConfigurationsDtoList.add(convertToDto(userConfiguration)));
         return userConfigurationsDtoList;
     }
 

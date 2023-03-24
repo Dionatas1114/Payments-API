@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
+import lombok.val;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -70,13 +71,12 @@ public class UserController {
                     @ApiResponse(code = 404, message = "User Not Found")
             })
     @GetMapping(path = {"/users/{id}"})
-    public ResponseEntity<UsersDto> findUserById(
-            @PathVariable("id") UUID userId){
+    public ResponseEntity<UsersDto> findUserById(@PathVariable("id") UUID userId){
 
         ResponseEntity result;
 
         try {
-            UsersDto user = userService.findUserById(userId);
+            val user = userService.findUserById(userId);
             result = new ResponseEntity<>(user, HttpStatus.OK);
         } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -101,8 +101,7 @@ public class UserController {
                     @ApiResponse(code = 409, message = "Conflict")
             })
     @PostMapping(path = {"/users"})
-    public ResponseEntity<UsersDto> createUser(
-            @Validated @RequestBody UsersDto usersData) {
+    public ResponseEntity<UsersDto> createUser(@Validated @RequestBody UsersDto usersData) {
 
         ResponseEntity result;
 
