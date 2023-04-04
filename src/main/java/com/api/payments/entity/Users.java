@@ -23,7 +23,7 @@ public class Users extends BaseEntity{
     public String email;
 
     @ApiModelProperty(notes = "Password do Usuário")
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 100)
     public String password;
 
     @ApiModelProperty(notes = "Telefone do Usuário")
