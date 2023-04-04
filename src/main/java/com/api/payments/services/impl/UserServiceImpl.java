@@ -1,5 +1,6 @@
 package com.api.payments.services.impl;
 
+import com.api.payments.config.SecurityConfig;
 import com.api.payments.dto.UsersDto;
 import com.api.payments.entity.UserConfigurations;
 import com.api.payments.entity.Users;
@@ -13,7 +14,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 import static com.api.payments.messages.UserMessages.*;
 import static com.api.payments.validations.validators.UserValidator.userValidator;
@@ -24,6 +28,7 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private UserConfigurationsRepository userConfigurationsRepository;
+    private SecurityConfig securityConfig;
 
     @Override
     public List<UsersDto> findAllUsers() throws ExceptionInInitializerError {
@@ -76,12 +81,14 @@ public class UserServiceImpl implements UserService {
 
         userValidator(userName, email, password, phone);
 
+        String passwordEncoded = securityConfig.passwordEncoder().encode(password);
+
         try {
             val users = new Users();
 
             users.setName(userName);
             users.setEmail(email);
-            users.setPassword(password);
+            users.setPassword(passwordEncoded);
             users.setPhone(phone);
 
             val userDataSaved = userRepository.save(users);
