@@ -1,5 +1,6 @@
 package com.api.payments.controller;
 
+import com.api.payments.config.SecurityConfig;
 import com.api.payments.dto.UsersDto;
 import com.api.payments.services.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -8,11 +9,13 @@ import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
 import lombok.val;
 import org.hibernate.service.spi.ServiceException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.UnavailableException;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,6 +28,7 @@ import static com.api.payments.messages.UserMessages.*;
 public class UserController {
 
     private UserService userService;
+    private SecurityConfig securityConfig;
 
     @ApiOperation(
             value = "Returns Data from all Users",
@@ -41,15 +45,18 @@ public class UserController {
                     @ApiResponse(code = 404, message = "No Users Registered")
             })
     @GetMapping(path = {"/users"})
-    public ResponseEntity<List<UsersDto>> findAllUsers(){
+    public ResponseEntity<List<UsersDto>> findAllUsers(@RequestHeader (name = HttpHeaders.AUTHORIZATION) String token){
 
         ResponseEntity result;
 
         try {
-            List<UsersDto> allUsers = userService.findAllUsers();
+            securityConfig.validateToken(token);
+            val allUsers = userService.findAllUsers();
             result = new ResponseEntity<>(allUsers, HttpStatus.OK);
         } catch (ExceptionInInitializerError e) {
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (UnavailableException e) {
+            result = new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
