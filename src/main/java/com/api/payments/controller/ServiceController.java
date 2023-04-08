@@ -1,5 +1,6 @@
 package com.api.payments.controller;
 
+import com.api.payments.config.SecurityConfig;
 import com.api.payments.dto.ServicesDto;
 import com.api.payments.services.ServiceService;
 import io.swagger.annotations.ApiOperation;
@@ -8,13 +9,14 @@ import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
 import lombok.val;
 import org.hibernate.service.spi.ServiceException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
+import static com.api.payments.messages.GenericMessages.badRequest;
 import static com.api.payments.messages.ServiceMessages.*;
 
 @RestController
@@ -24,6 +26,7 @@ import static com.api.payments.messages.ServiceMessages.*;
 public class ServiceController {
 
     private ServiceService serviceService;
+    private SecurityConfig securityConfig;
 
     @ApiOperation(
             value = "Returns Data from all Services",
@@ -40,12 +43,13 @@ public class ServiceController {
                     @ApiResponse(code = 404, message = "No Services Registered")
             })
     @GetMapping(path = {"/services"})
-    public ResponseEntity findAllServices(){
+    public ResponseEntity findAllServices(@RequestHeader (name = HttpHeaders.AUTHORIZATION) String token){
 
         ResponseEntity result;
 
         try {
-            List<ServicesDto> allServices = serviceService.findAllServices();
+            securityConfig.validateToken(token);
+            val allServices = serviceService.findAllServices();
             result = new ResponseEntity<>(allServices, HttpStatus.OK);
         } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);

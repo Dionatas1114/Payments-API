@@ -7,5 +7,4 @@ import java.util.List;
 public interface UserConfigurationsService {
 
     List<UserConfigurationsDto> findUserConfigurations() throws Exception;
-
 }

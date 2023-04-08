@@ -12,5 +12,4 @@ public interface UserService {
     void saveUserData(UsersDto userDto) throws Exception;
     void updateUserData(UsersDto usersData, UUID userId) throws Exception;
     void deleteUserData(UUID userId) throws Exception;
-
 }
