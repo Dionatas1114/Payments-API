@@ -15,5 +15,4 @@ public interface ProductService {
     void saveProductData(ProductsDto productsData) throws Exception;
     void updateProductData(UUID productId, ProductsDto productsData) throws Exception;
     void deleteProductData(UUID productId) throws Exception;
-
 }
