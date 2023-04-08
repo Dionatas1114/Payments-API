@@ -6,25 +6,32 @@ import com.api.payments.dto.TokenDto;
 import com.api.payments.entity.Users;
 import com.api.payments.repository.UserRepository;
 import com.api.payments.services.UserAccessService;
+import com.api.payments.utils.Log;
 import lombok.AllArgsConstructor;
 import lombok.val;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
+import static com.api.payments.messages.UserAccessMessages.*;
 
 @Service
 @AllArgsConstructor
 public class UserAccessServiceImpl implements UserAccessService {
 
     private UserRepository userRepository;
-
     private SecurityConfig securityConfig;
 
     @Override
-    public TokenDto findUserByEmail(LoginDto loginDto) throws Exception {
+    public TokenDto findUserByEmail(LoginDto loginDto) throws ExceptionInInitializerError {
 
         String email = loginDto.getEmail();
+        Log.warn("Iniciando Login...");
+
         val userByEmail = userRepository.findByEmail(email);
-        if(userByEmail == null) throw new Exception("Usuário não encontrado");
+        if(userByEmail == null) {
+            Log.error("Erro no Login: " + invalidEmail + "[ " + email + " ]. ");
+            throw new ExceptionInInitializerError(invalidEmail);
+        }
 
         val userAccessData = convertToDto(userByEmail);
 
@@ -33,8 +40,12 @@ public class UserAccessServiceImpl implements UserAccessService {
 
         boolean passwordIsValid = securityConfig.passwordEncoder().matches(rawPassword, encodedPassword);
 
-        if(!passwordIsValid) throw new Exception("Senha Incorreta");
+        if(!passwordIsValid) {
+            Log.error("Erro no Login: " + invalidPassword);
+            throw new ExceptionInInitializerError(invalidPassword);
+        }
 
+        Log.info("Login para email: " + email + " ✔");
         return securityConfig.generateToken(email);
     }
 

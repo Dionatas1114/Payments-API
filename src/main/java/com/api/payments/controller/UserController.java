@@ -19,6 +19,7 @@ import javax.servlet.UnavailableException;
 import java.util.List;
 import java.util.UUID;
 
+import static com.api.payments.messages.GenericMessages.*;
 import static com.api.payments.messages.UserMessages.*;
 
 @RestController

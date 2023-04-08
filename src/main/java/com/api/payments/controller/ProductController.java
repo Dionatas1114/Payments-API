@@ -1,12 +1,15 @@
 package com.api.payments.controller;
 
+import com.api.payments.config.SecurityConfig;
 import com.api.payments.dto.ProductsDto;
 import com.api.payments.services.ProductService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
+import lombok.val;
 import org.hibernate.service.spi.ServiceException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+import static com.api.payments.messages.GenericMessages.*;
 import static com.api.payments.messages.ProductMessages.*;
 
 @RestController
@@ -23,6 +27,7 @@ import static com.api.payments.messages.ProductMessages.*;
 public class ProductController {
 
     private ProductService productService;
+    private SecurityConfig securityConfig;
 
     @ApiOperation(
             value = "Returns Data from all Products",
@@ -39,12 +44,13 @@ public class ProductController {
                     @ApiResponse(code = 404, message = "No Products Registered")
             })
     @GetMapping(path = {"/products"})
-    public ResponseEntity<List<ProductsDto>> findAllProducts(){
+    public ResponseEntity<List<ProductsDto>> findAllProducts(@RequestHeader (name = HttpHeaders.AUTHORIZATION) String token){
 
         ResponseEntity result;
 
         try {
-            List<ProductsDto> allProducts = productService.findAllProducts();
+            securityConfig.validateToken(token);
+            val allProducts = productService.findAllProducts();
             result = new ResponseEntity<>(allProducts, HttpStatus.OK);
         } catch (ExceptionInInitializerError e){
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
