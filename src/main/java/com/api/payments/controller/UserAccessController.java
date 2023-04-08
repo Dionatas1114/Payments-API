@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.api.payments.messages.UserMessages.badRequest;
+import static com.api.payments.messages.GenericMessages.*;
 
 @RestController
 @AllArgsConstructor
@@ -49,7 +49,7 @@ public class UserAccessController {
 //            response.addHeader("Authorization", "Bearer " + token);
             result = new ResponseEntity<>(token, HttpStatus.OK);
         } catch (ExceptionInInitializerError e) {
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            result = new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
