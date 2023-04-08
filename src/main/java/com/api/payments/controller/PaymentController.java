@@ -1,8 +1,10 @@
 package com.api.payments.controller;
 
+import com.api.payments.config.SecurityConfig;
 import com.api.payments.dto.TransactionDto;
 import com.api.payments.entity.Payments;
 import com.api.payments.services.PaymentService;
+import com.google.common.net.HttpHeaders;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -18,6 +20,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import static com.api.payments.messages.GenericMessages.*;
 import static com.api.payments.messages.PaymentMessages.*;
 
 @RestController
@@ -27,6 +30,7 @@ import static com.api.payments.messages.PaymentMessages.*;
 public class PaymentController {
 
     private PaymentService paymentService;
+    private SecurityConfig securityConfig;
 
     @ApiOperation(
             value = "Returns Data from all Payments",
@@ -43,10 +47,11 @@ public class PaymentController {
                     @ApiResponse(code = 404, message = "No Payments Registered")
             })
     @GetMapping(path = {"/payments"})
-    public ResponseEntity<List<TransactionDto>> findAllPayments(){
+    public ResponseEntity<List<TransactionDto>> findAllPayments(@RequestHeader (name = HttpHeaders.AUTHORIZATION) String token){
         ResponseEntity result;
 
         try {
+            securityConfig.validateToken(token);
             val allPayments = paymentService.findAllPayments();
             result = new ResponseEntity<>(allPayments, HttpStatus.OK);
         } catch (ExceptionInInitializerError e){

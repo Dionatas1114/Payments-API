@@ -19,5 +19,4 @@ public interface PaymentService {
     void savePaymentData (TransactionDto paymentsData) throws Exception;
     void updatePayment(UUID paymentId, TransactionDto paymentsData) throws Exception;
     void deletePayment(UUID paymentId) throws Exception;
-
 }

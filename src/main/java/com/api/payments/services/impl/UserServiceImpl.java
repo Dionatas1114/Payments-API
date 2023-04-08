@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void saveUserData(UsersDto userDto) throws Exception {
+    public void saveUserData(UsersDto userDto) {
 
         String userName = userDto.getName();
         String email = userDto.getEmail();

@@ -51,8 +51,7 @@ public class SwaggerConfig {
             .title(PROJ_TITLE)
             .version(PROJ_VERSION)
             .description(PROJ_DESCRIPTION)
-            .contact(new Contact(
-                    OWNER_NAME,OWNER_URL,OWNER_EMAIL));
+            .contact(new Contact(OWNER_NAME,OWNER_URL,OWNER_EMAIL));
     }
 
     private void checkVars(){

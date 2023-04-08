@@ -1,5 +1,6 @@
 package com.api.payments.controller;
 
+import com.api.payments.config.SecurityConfig;
 import com.api.payments.dto.TransactionDto;
 import com.api.payments.services.ReceiptService;
 import io.swagger.annotations.ApiOperation;
@@ -9,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.val;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import static com.api.payments.messages.GenericMessages.*;
 import static com.api.payments.messages.ReceiptMessages.*;
 
 @RestController
@@ -26,6 +29,7 @@ import static com.api.payments.messages.ReceiptMessages.*;
 public class ReceiptController {
 
     private ReceiptService receiptService;
+    private SecurityConfig securityConfig;
 
     @ApiOperation(
             value = "Returns Data from all Receipts",
@@ -42,11 +46,12 @@ public class ReceiptController {
                     @ApiResponse(code = 404, message = "No Receipts Registered")
             })
     @GetMapping(path = {"/receipts"})
-    public ResponseEntity<List<TransactionDto>> findAllReceipts(){
+    public ResponseEntity<List<TransactionDto>> findAllReceipts(@RequestHeader (name = HttpHeaders.AUTHORIZATION) String token){
 
         ResponseEntity result;
 
         try {
+            securityConfig.validateToken(token);
             val allReceipts = receiptService.findAllReceipts();
             result = new ResponseEntity<>(allReceipts, HttpStatus.OK);
         } catch (ExceptionInInitializerError e){
