@@ -1,19 +1,22 @@
 package com.api.payments.controller;
 
 import com.api.payments.mocks.UsersMocked;
-import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@AllArgsConstructor
+@RunWith(SpringRunner.class)
 class UserControllerTest {
 
+    @Autowired
     UsersMocked user;
 
     @Test
-    @DisplayName("Should")
+    @DisplayName("Should return all users")
     void findAllUsers() {
         assertEquals(2, 1 + 1);
     }
@@ -25,7 +28,7 @@ class UserControllerTest {
     @Test
     void createUser() {
 
-        var userData = user.returnUserDataMocked();
+//        var userData = user.returnUserDataMocked();
     }
 
     @Test
