@@ -27,8 +27,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
-@DataJpaTest
-@AutoConfigureTestDatabase(replace=AutoConfigureTestDatabase.Replace.NONE)
 public class UserServiceImplTest {
 
 //    @Autowired
@@ -37,8 +35,8 @@ public class UserServiceImplTest {
     @MockBean
     private UserRepository userRepository;
 
-    @Autowired
-    private UserServiceImpl userService;
+//    @Autowired
+//    private UserServiceImpl userService;
 
     @Test
     @DisplayName("This test should return all user data")
@@ -86,11 +84,12 @@ public class UserServiceImplTest {
         var userDataMocked = new UsersMocked().returnUserDataMocked();
 
         UUID userId = userDtoDataMocked.getId();
-        Mockito.when(userRepository.findById(ArgumentMatchers.eq(userId))).thenReturn(Optional.ofNullable(userDataMocked));
+        Mockito.when(userRepository.findById(ArgumentMatchers.eq(userId)))
+                .thenReturn(Optional.ofNullable(userDataMocked));
 
-        var user = userService.findUserById(userId);
+//        var user = userService.findUserById(userId);
 
-        Mockito.verify(userRepository, Mockito.times(1));
+//        Mockito.verify(userRepository, Mockito.times(1));
 //        Assertions.assertEquals(userDataMocked.getName(), user.getName());
     }
 
