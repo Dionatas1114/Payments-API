@@ -1,8 +1,8 @@
 package com.api.payments.repositories;
 
-import com.api.payments.entity.Users;
 import com.api.payments.mocks.UsersMocked;
 import com.api.payments.utils.Log;
+import lombok.val;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -11,13 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
-@DataJpaTest
-@AutoConfigureTestDatabase(replace=AutoConfigureTestDatabase.Replace.NONE)
+@WebMvcTest
 public class UserRepositoryTest {
 
     @Autowired
@@ -29,30 +29,30 @@ public class UserRepositoryTest {
     @Test
     @DisplayName("This test should return all user data")
     public void findAllUsers() {
-        var userDataMocked = new UsersMocked().returnUserDataMocked();
+        val userDataMocked = new UsersMocked().returnUserDataMocked();
 
-        var userPersisted = testEntityManager.persist(userDataMocked);
+        val userPersisted = testEntityManager.persist(userDataMocked);
         Log.info("## userPersisted, userName: " + userPersisted.getName());
 
-        var allUsersFromRepository = userRepository.findAll();
+        val allUsersFromRepository = userRepository.findAll();
 
-        Assertions.assertEquals(1, allUsersFromRepository.size());
+        Assertions.assertEquals(2, allUsersFromRepository.size());
         Assertions.assertEquals(userDataMocked.getName(), allUsersFromRepository.get(0).getName());
     }
 
     @Test
     @DisplayName("This test should return user data by params: name, email or phone")
     public void findUserByParam() {
-        var userDataMocked = new UsersMocked().returnUserDataMocked();
+        val userDataMocked = new UsersMocked().returnUserDataMocked();
 
-        var userPersisted = testEntityManager.persist(userDataMocked);
+        val userPersisted = testEntityManager.persist(userDataMocked);
         String userName = userPersisted.getName();
         String userEmail = userPersisted.getEmail();
         String userPhone = userPersisted.getPhone();
 
-        var userByName = userRepository.findByName(userName);
-        var userByEmail = userRepository.findByEmail(userEmail);
-        var userByPhone = userRepository.findByPhone(userPhone);
+        val userByName = userRepository.findByName(userName);
+        val userByEmail = userRepository.findByEmail(userEmail);
+        val userByPhone = userRepository.findByPhone(userPhone);
 
         Assertions.assertEquals(userDataMocked.getName(), userByName.getName());
         Assertions.assertEquals(userDataMocked, userByName);
@@ -67,11 +67,11 @@ public class UserRepositoryTest {
     @Test
     @DisplayName("This test should save user data")
     public void saveUserData() {
-        var userDataMocked = new UsersMocked().returnUserDataMocked();
+        val userDataMocked = new UsersMocked().returnUserDataMocked();
 
-        var userPersisted = testEntityManager.persist(userDataMocked);
+        val userPersisted = testEntityManager.persist(userDataMocked);
 
-        Users userSaved = userRepository.save(userPersisted);
+        val userSaved = userRepository.save(userPersisted);
 
         Assertions.assertEquals(userDataMocked, userSaved);
     }
@@ -79,9 +79,9 @@ public class UserRepositoryTest {
     @Test
     @DisplayName("This test should update user data")
     public void updateUserData() {
-        var userDataMocked = new UsersMocked().returnUserDataMocked();
+        val userDataMocked = new UsersMocked().returnUserDataMocked();
 
-        var userPersisted = testEntityManager.persist(userDataMocked);
+        val userPersisted = testEntityManager.persist(userDataMocked);
 
         String newUserName = "Luis";
         String newUserEmail = "luis@gmail.com.br";
@@ -93,7 +93,7 @@ public class UserRepositoryTest {
         userPersisted.setPassword(newUserPassw);
         userPersisted.setPhone(newUserPhone);
 
-        Users userUpdated = userRepository.save(userPersisted);
+        val userUpdated = userRepository.save(userPersisted);
 
         Assertions.assertEquals(newUserName, userUpdated.getName());
         Assertions.assertEquals(newUserEmail, userUpdated.getEmail());
@@ -104,14 +104,15 @@ public class UserRepositoryTest {
     @Test
     @DisplayName("This test should delete user data by userId")
     public void deleteUserData() {
-        var userDataMocked = new UsersMocked().returnUserDataMocked();
+        val userDataMocked = new UsersMocked().returnUserDataMocked();
 
-        var userPersisted = testEntityManager.persist(userDataMocked);
+        val userPersisted = testEntityManager.persist(userDataMocked);
         UUID userId = userPersisted.getId();
 
         userRepository.deleteById(userId);
 
-        Log.info(userPersisted.getName());
-        Assertions.assertEquals(10, 10);
+        val user = userRepository.findById(userId);
+
+        Assertions.assertTrue(user.isEmpty());
     }
 }

@@ -14,22 +14,27 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
-@ExtendWith(MockitoExtension.class)
+@WebMvcTest
 public class UserServiceTest {
 
-    @InjectMocks
+    @Autowired
     UserService userService;
 
-//    @Mock
+    @Autowired
     UsersMocked usersMocked;
 
-    @Mock
+    @MockBean
     UserRepository userRepository;
 
     @Test
