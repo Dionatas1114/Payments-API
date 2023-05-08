@@ -3,15 +3,16 @@ package com.api.payments.messages;
 public interface UserAccessMessages {
 
     // Process Messages
-    String tokenValidation = "Validando Token... ";
-    String tokenGenerate = "Gerando Token... válido por ";
+    String tokenValidation = "Validating Token... ";
+    String tokenGenerate = "Generating Token... valid for ";
 
     // Process Messages
-    String tokenIsValid = "Token Valido! ";
+    String tokenIsValid = "The Token is Valid! ";
 
     // Error Messages
-    String invalidToken = "Token Inválido! ";
-    String invalidPassword = "Acesso Negado: Senha incorreta. ";
-    String invalidEmail = "Usuário não encontrado. ";
+    String invalidToken = "The Token is Invalid! ";
+    String invalidPassword = "Access denied: incorrect password. ";
+    String userNotFound = "User not found. ";
+    String invalidEmail = "Invalid Email. ";
 
 }
