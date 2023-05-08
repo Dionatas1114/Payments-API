@@ -47,7 +47,7 @@ public class SecurityConfig {
                 .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
                 .compact();
 
-        Log.info(tokenGenerate + days + "d");
+        Log.info(tokenGenerate + days + "day.");
         return TokenDto.builder().token(token).expiresIn(days + "d").build();
     }
 
@@ -55,9 +55,13 @@ public class SecurityConfig {
 
         try {
             Log.warn(tokenValidation);
-            String token = rawToken.replace("Bearer ", "");
-            Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token);
-            Log.info(tokenIsValid);
+            if (rawToken != null && !rawToken.equals("")) {
+                String token = rawToken.replace("Bearer ", "");
+                Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token);
+                Log.info(tokenIsValid);
+            } else {
+                throw new Exception();
+            }
         } catch (Exception e) {
             Log.error(invalidToken + e.getMessage());
             throw new UnavailableException(invalidToken);
