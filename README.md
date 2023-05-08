@@ -18,9 +18,16 @@ ___
 * Lombok (1.18.22);
 ___
 ### How to run in Development Environment?
-
 Create **Postgres Database** using docker command:
 
 ```bash
 docker run -d -i -t --name crudjavapostgres -ePOSTGRES_PASSWORD=passw -ePOSTGRES_DATABASE=crudjavapostgres -ePOSTGRES_USER=username -p5432:5432 postgres
+```
+
+___
+### How to remove local branches that do not exist on remote anymore?
+using this command:
+
+```bash
+git branch -D (git branch --merged |% { $_.trim() } )
 ```
