@@ -4,6 +4,8 @@ import com.api.payments.dto.UserConfigurationsDto;
 import com.api.payments.dto.UsersDto;
 import com.api.payments.entity.UserConfigurations;
 import com.api.payments.entity.Users;
+
+import java.util.Optional;
 import java.util.UUID;
 
 public class UsersMocked {
@@ -16,8 +18,7 @@ public class UsersMocked {
     private static final boolean HAS_NOTIF = true;
     private static final String LANGUAGE = "pt_BR";
 
-    public UsersDto returnUserDtoDataMocked(){
-
+    public UsersDto returnUserDtoMocked(){
         var userConfigurations =
                 UserConfigurationsDto.builder()
                         .hasNotifications(HAS_NOTIF)
@@ -34,8 +35,7 @@ public class UsersMocked {
                 .build();
     }
 
-    public Users returnUserDataMocked(){
-
+    public Users returnUserMocked(){
         var userConfigurations = new UserConfigurations();
         userConfigurations.setHasNotifications(HAS_NOTIF);
         userConfigurations.setLanguage(LANGUAGE);
@@ -48,5 +48,10 @@ public class UsersMocked {
         user.setUserConfigurations(userConfigurations);
 
         return user;
+    }
+
+    public Optional<Users> returnOptionalUserMocked() {
+        Users user = returnUserMocked();
+        return Optional.of(user);
     }
 }
