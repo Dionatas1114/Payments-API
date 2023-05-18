@@ -1,5 +1,6 @@
 package com.api.payments.config.test;
 
+import com.api.payments.dto.ServicesDto;
 import com.api.payments.entity.Services;
 import com.api.payments.repository.ServiceRepository;
 import lombok.AllArgsConstructor;
@@ -16,54 +17,60 @@ import java.util.UUID;
 public class ServicesMocked {
 
     private static final UUID ID = UUID.fromString("4f9ab8ae-e62a-40f9-b7b8-66eb1d30b75a");
-    private static final String USER_NAME = "Johann";
-    private static final String EMAIL = "johann@gmail.com.br";
-    private static final String PASSW = "Johann1234#@";
-    private static final String PHONE = "5551999999999";
-    private static final boolean HAS_NOTIF = true;
-    private static final String LANGUAGE = "pt_BR";
+    private static final String ITEM_NAME = "Manutencao";
+    private static final String ITEM_CATEGORY = "Informatica";
+    private static final Double TOTAL_PRICE = 500.00;
+    private static final Double DISCOUNT = 0.0;
+    private static final String INTERNAL_CODE = "informatica_";
 
     private ServiceRepository serviceRepository;
 
-//    @Bean
-//    public UsersDto returnUserDtoMocked(){
-//        var userConfigurations =
-//                UserConfigurationsDto.builder()
-//                        .hasNotifications(HAS_NOTIF)
-//                        .language(LANGUAGE)
-//                        .build();
-//
-//        return UsersDto.builder()
-//                .id(ID)
-//                .name(USER_NAME)
-//                .email(EMAIL)
-//                .password(PASSW)
-//                .phone(PHONE)
-//                .userConfigurations(userConfigurations)
-//                .build();
-//    }
+    @Bean
+    public ServicesDto returnServiceDtoMocked(){
+        return ServicesDto.builder()
+                .id(ID)
+                .itemName(ITEM_NAME)
+                .itemCategory(ITEM_CATEGORY)
+                .totalPrice(TOTAL_PRICE)
+                .discountPrice(DISCOUNT)
+                .internalCode(INTERNAL_CODE)
+                .build();
+    }
 
     @Bean
     public Services returnServiceMocked(){
 
         val service = new Services();
-//        user.setName(USER_NAME);
-//        user.setEmail(EMAIL);
-//        user.setPassword(PASSW);
-//        user.setPhone(PHONE);
-//        user.setUserConfigurations(userConfigurations);
+        service.setItemName(ITEM_NAME);
+        service.setItemCategory(ITEM_CATEGORY);
+        service.setTotalPrice(TOTAL_PRICE);
+        service.setDiscountPrice(DISCOUNT);
+        service.setInternalCode(INTERNAL_CODE);
 
         return service;
     }
 
     @Bean
-    public Optional<Services> returnOptionalUserMocked() {
+    public Optional<Services> returnOptionalServiceMocked() {
         return Optional.of(returnServiceMocked());
     }
 
     public void servicesDB() {
+
         val s1 = new Services();
+        s1.setItemName(ITEM_NAME);
+        s1.setItemCategory(ITEM_CATEGORY);
+        s1.setTotalPrice(TOTAL_PRICE);
+        s1.setDiscountPrice(DISCOUNT);
+        s1.setInternalCode(INTERNAL_CODE);
+
         val s2 = new Services();
+        s2.setItemName(ITEM_NAME);
+        s2.setItemCategory(ITEM_CATEGORY);
+        s2.setTotalPrice(TOTAL_PRICE);
+        s2.setDiscountPrice(DISCOUNT);
+        s2.setInternalCode(INTERNAL_CODE);
+
         serviceRepository.saveAll(List.of(s1, s2));
     }
 }
