@@ -14,8 +14,7 @@ public class LocalConfig {
     private ProductsMocked productsMocked;
     private ServicesMocked servicesMocked;
     private PaymentsMocked paymentsMocked;
-    //receipts
-
+    private ReceiptsMocked receiptsMocked;
 
     @Bean
     public void startDB() {
@@ -23,5 +22,6 @@ public class LocalConfig {
         productsMocked.productsDB();
         servicesMocked.servicesDB();
         paymentsMocked.paymentsDB();
+        receiptsMocked.receiptsDB();
     }
 }
