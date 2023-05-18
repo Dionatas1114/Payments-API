@@ -35,8 +35,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductsDto findProductById(UUID productId) throws ExceptionInInitializerError {
 
         val product = productRepository.findById(productId);
-        if (product.isEmpty()) throw new ExceptionInInitializerError(productDataNotFound);
-        return convertToDto(product.get());
+        return convertToDto(product.orElseThrow(() -> new ExceptionInInitializerError(productDataNotFound)));
     }
 
     @Override
