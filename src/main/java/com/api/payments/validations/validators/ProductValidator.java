@@ -20,7 +20,7 @@ public class ProductValidator {
         double discountPrice = productsData.getDiscountPrice ();
         String barCode = productsData.getBarCode ();
         String internalCode = productsData.getInternalCode ();
-        String description = productsData.getItemDescription ();
+//        String description = productsData.getItemDescription ();
 
         itemNameValidator(itemName);
         if (productBrand == null) throw new ServiceException (productBrandInvalid);
@@ -32,7 +32,7 @@ public class ProductValidator {
         if (discountPrice == 0) throw new ServiceException (discountPriceInvalid);
         if (barCode == null) throw new ServiceException (barCodeInvalid);
         if (internalCode == null) throw new ServiceException (internalCodeInvalid);
-        if (description == null) throw new ServiceException (descriptionInvalid);
+//        if (description == null) throw new ServiceException (descriptionInvalid);
     }
 
     public static void itemNameValidator(String itemName) {

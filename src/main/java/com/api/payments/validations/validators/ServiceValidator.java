@@ -15,13 +15,13 @@ public class ServiceValidator {
         double totalPrice = servicesData.getTotalPrice();
 //        double discountPrice = servicesData.getDiscountPrice();
         String internalCode = servicesData.getInternalCode();
-        String itemDescription = servicesData.getItemDescription();
+//        String itemDescription = servicesData.getItemDescription();
 
         if(itemName == null) throw new ServiceException (itemNameInvalid);
         if(itemCategory == null) throw new ServiceException (categoryInvalid);
         if(totalPrice == 0) throw new ServiceException (totalPriceInvalid);
 //        if(discountPrice == 0) throw new ServiceException (discountPriceInvalid);
         if(internalCode == null) throw new ServiceException (internalCodeInvalid);
-        if(itemDescription == null) throw new ServiceException (descriptionInvalid);
+//        if(itemDescription == null) throw new ServiceException (descriptionInvalid);
     }
 }

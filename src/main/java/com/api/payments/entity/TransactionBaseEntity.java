@@ -64,10 +64,10 @@ public class TransactionBaseEntity extends BaseEntity {
 
     @ApiModelProperty(notes = "Descrição da Transação")
     @Column(length = 50)
-    public String description;
+    public String description = "None";
 
     @ApiModelProperty(notes = "Mensagem de texto da Transação")
-    public String messageText;
+    public String messageText = "None";
 
     @ApiModelProperty(notes = "Usuário da Transação")
     @JoinColumn(name = "user_id")

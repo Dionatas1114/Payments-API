@@ -45,8 +45,7 @@ public class UserServiceImpl implements UserService {
     public UsersDto findUserById(UUID userId) throws ExceptionInInitializerError {
 
         val user = userRepository.findById(userId);
-        if (user.isEmpty()) throw new ExceptionInInitializerError(userDataNotFound);
-        return convertToDto(user.get());
+        return convertToDto(user.orElseThrow(() -> new ExceptionInInitializerError(userDataNotFound)));
     }
 
     @Transactional
@@ -116,8 +115,7 @@ public class UserServiceImpl implements UserService {
         boolean hasNotifications = userDto.getUserConfigurations().isHasNotifications();
         String language = userDto.getUserConfigurations().getLanguage();
 
-        val user = userRepository.findById(userId);
-        if (user.isEmpty()) throw new ExceptionInInitializerError(userDataNotFound);
+        userRepository.findById(userId).orElseThrow(() -> new ExceptionInInitializerError(userDataNotFound));
 
         val usersList = userRepository.findAll();
 
