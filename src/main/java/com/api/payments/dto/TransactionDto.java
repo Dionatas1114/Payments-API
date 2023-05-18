@@ -21,7 +21,6 @@ public class TransactionDto {
     public Boolean paymentStatus;
     public LocalDate expirationDate;
     public LocalDate paymentDate;
-    public String receiptType;
     public String currency;
     public double interest;
     public double fine;

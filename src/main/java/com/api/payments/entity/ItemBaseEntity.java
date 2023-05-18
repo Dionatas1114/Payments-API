@@ -36,6 +36,6 @@ public class ItemBaseEntity extends BaseEntity {
 
     @ApiModelProperty(notes = "Descrição do item")
     @Column(length = 100)
-    public String itemDescription;
+    public String itemDescription = "None";
 
 }
