@@ -1,15 +1,13 @@
 package com.api.payments.controller;
 
-import com.api.payments.config.SecurityConfig;
 import com.api.payments.dto.ProductsDto;
+import com.api.payments.exception.GenericExceptionHandler;
 import com.api.payments.services.ProductService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
-import lombok.val;
 import org.hibernate.service.spi.ServiceException;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +25,6 @@ import static com.api.payments.messages.ProductMessages.*;
 public class ProductController {
 
     private ProductService productService;
-    private SecurityConfig securityConfig;
 
     @ApiOperation(
             value = "Returns Data from all Products",
@@ -39,25 +36,19 @@ public class ProductController {
                             code = 200,
                             message = "Return All Product Data",
                             response = ProductsDto.class),
-                    @ApiResponse(code = 400, message = "Bad Request"),
-                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 400, message = badRequest),
+                    @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 404, message = "No Products Registered")
             })
     @GetMapping(path = {"/products"})
-    public ResponseEntity<List<ProductsDto>> findAllProducts(@RequestHeader (name = HttpHeaders.AUTHORIZATION) String token){
-
-        ResponseEntity result;
+    public ResponseEntity<?> findAllProducts() {
 
         try {
-            securityConfig.validateToken(token);
-            val allProducts = productService.findAllProducts();
-            result = new ResponseEntity<>(allProducts, HttpStatus.OK);
-        } catch (ExceptionInInitializerError e){
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e){
-            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
+            List<ProductsDto> allProducts = productService.findAllProducts();
+            return ResponseEntity.ok(allProducts);
+        } catch (Exception e) {
+            return GenericExceptionHandler.getException(e);
         }
-        return result;
     }
 
     @ApiOperation(
@@ -70,24 +61,19 @@ public class ProductController {
                             code = 200,
                             message = "Return Product Data",
                             response = ProductsDto.class),
-                    @ApiResponse(code = 400, message = "Bad Request"),
-                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 400, message = badRequest),
+                    @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 404, message = "Product Not Found")
             })
     @GetMapping(path = {"/products/{id}"})
-    public ResponseEntity<ProductsDto> findProductsById(@PathVariable("id") UUID productId){
-
-        ResponseEntity result;
+    public ResponseEntity<?> findProductsById(@PathVariable("id") UUID productId) {
 
         try {
             ProductsDto product = productService.findProductById(productId);
-            result = new ResponseEntity<>(product, HttpStatus.OK);
-        } catch (ExceptionInInitializerError e){
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e){
-            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
+            return ResponseEntity.ok(product);
+        } catch (Exception e) {
+            return GenericExceptionHandler.getException(e);
         }
-        return result;
     }
 
     @ApiOperation(
@@ -100,23 +86,23 @@ public class ProductController {
                             code = 200,
                             message = "Return Product Data",
                             response = ProductsDto.class),
-                    @ApiResponse(code = 400, message = "Bad Request"),
-                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 400, message = badRequest),
+                    @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 404, message = "Product Not Found")
             })
     @GetMapping(path = {"/products/byItemName/{itemName}"})
-    public ResponseEntity<List<ProductsDto>> findByItemName(@PathVariable String itemName){
+    public ResponseEntity<?> findByItemName(@PathVariable String itemName) {
 
         ResponseEntity result;
 
         try {
             List<ProductsDto> products = productService.findByItemName(itemName);
-            result = new ResponseEntity<>(products, HttpStatus.OK);
-        } catch (ExceptionInInitializerError e){
+            return ResponseEntity.ok(products);
+        } catch (ExceptionInInitializerError e) {
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (ServiceException e){
+        } catch (ServiceException e) {
             result = new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-        } catch (Exception e){
+        } catch (Exception e) {
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
@@ -132,12 +118,12 @@ public class ProductController {
                             code = 200,
                             message = "Register Product Data",
                             response = ProductsDto.class),
-                    @ApiResponse(code = 400, message = "Bad Request"),
-                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 400, message = badRequest),
+                    @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 409, message = "Conflict")
             })
     @PostMapping(path = {"/products"})
-    public ResponseEntity<ProductsDto> createProduct(@RequestBody ProductsDto productsData) {
+    public ResponseEntity<?> createProduct(@RequestBody ProductsDto productsData) {
 
         ResponseEntity result;
 
@@ -166,27 +152,27 @@ public class ProductController {
                             code = 200,
                             message = "Update Product Data",
                             response = ProductsDto.class),
-                    @ApiResponse(code = 400, message = "Bad Request"),
-                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 400, message = badRequest),
+                    @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 404, message = "Product Not Found"),
                     @ApiResponse(code = 409, message = "Conflict")
             })
     @PutMapping(path = {"/products/{id}"})
     public ResponseEntity<String> updateProduct(
-            @PathVariable("id") UUID productId, @RequestBody ProductsDto productsData){
+            @PathVariable("id") UUID productId, @RequestBody ProductsDto productsData) {
 
         ResponseEntity<String> result;
 
         try {
             productService.updateProductData(productId, productsData);
             result = new ResponseEntity<>(productDataUpdated, HttpStatus.OK);
-        } catch (ExceptionInInitializerError e){
+        } catch (ExceptionInInitializerError e) {
             result = new ResponseEntity<>(
                     productDataNotUpdated + e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (ServiceException e){
+        } catch (ServiceException e) {
             result = new ResponseEntity<>(
                     productDataNotUpdated + e.getMessage(), HttpStatus.CONFLICT);
-        } catch (Exception e){
+        } catch (Exception e) {
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
@@ -202,24 +188,18 @@ public class ProductController {
                             code = 200,
                             message = "Delete Product Data",
                             response = ProductsDto.class),
-                    @ApiResponse(code = 400, message = "Bad Request"),
-                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 400, message = badRequest),
+                    @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 404, message = "Product Not Found")
             })
     @DeleteMapping(path = {"/products/{id}"})
-    public ResponseEntity<String> deleteProduct(@PathVariable("id") UUID productId) {
-
-        ResponseEntity<String> result;
+    public ResponseEntity<?> deleteProduct(@PathVariable("id") UUID productId) {
 
         try {
             productService.deleteProductData(productId);
-            result = new ResponseEntity<>(productDataDeleted, HttpStatus.OK);
-        } catch (ExceptionInInitializerError e) {
-            result = new ResponseEntity<>(
-                    productDataNotDeleted + e.getMessage(), HttpStatus.NOT_FOUND);
+            return ResponseEntity.ok(productDataDeleted);
         } catch (Exception e) {
-            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
+            return GenericExceptionHandler.getException(e);
         }
-        return result;
     }
 }
