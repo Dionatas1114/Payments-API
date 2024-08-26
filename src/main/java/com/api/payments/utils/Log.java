@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 public class Log {
 
-    static final Logger log = LoggerFactory.getLogger(Log.class);
+    private static final Logger log = LoggerFactory.getLogger(Log.class);
 
     // Reset
     public static final String TEXT_RESET = "\033[0m";
@@ -31,18 +31,18 @@ public class Log {
     public static final String CYAN_BOLD = "\033[1;36m";
 
     public static void info(String message) {
-        log.info(GREEN + message + TEXT_RESET);
+        log.info(GREEN + "{}" + TEXT_RESET, message);
     }
 
     public static void error(String message) {
-        log.info(RED + message + TEXT_RESET);
+        log.info(RED + "{}" + TEXT_RESET, message);
     }
 
     public static void debug(String message) {
-        log.info(BLUE + message + TEXT_RESET);
+        log.info(BLUE + "{}" + TEXT_RESET, message);
     }
 
     public static void warn(String message) {
-        log.info(YELLOW + message + TEXT_RESET);
+        log.info(YELLOW + "{}" + TEXT_RESET, message);
     }
 }
