@@ -1,22 +1,22 @@
 package com.api.payments.controller;
 
-import com.api.payments.config.SecurityConfig;
 import com.api.payments.dto.ServicesDto;
+import com.api.payments.exception.GenericExceptionHandler;
 import com.api.payments.services.ServiceService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
-import lombok.val;
 import org.hibernate.service.spi.ServiceException;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 import static com.api.payments.messages.GenericMessages.badRequest;
+import static com.api.payments.messages.GenericMessages.unauthorized;
 import static com.api.payments.messages.ServiceMessages.*;
 
 @RestController
@@ -26,7 +26,6 @@ import static com.api.payments.messages.ServiceMessages.*;
 public class ServiceController {
 
     private ServiceService serviceService;
-    private SecurityConfig securityConfig;
 
     @ApiOperation(
             value = "Returns Data from all Services",
@@ -38,25 +37,19 @@ public class ServiceController {
                             code = 200,
                             message = "Return All Service Data",
                             response = ServicesDto.class),
-                    @ApiResponse(code = 400, message = "Bad Request"),
-                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 400, message = badRequest),
+                    @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 404, message = "No Services Registered")
             })
     @GetMapping(path = {"/services"})
-    public ResponseEntity findAllServices(@RequestHeader (name = HttpHeaders.AUTHORIZATION) String token){
-
-        ResponseEntity result;
+    public ResponseEntity<?> findAllServices() {
 
         try {
-            securityConfig.validateToken(token);
-            val allServices = serviceService.findAllServices();
-            result = new ResponseEntity<>(allServices, HttpStatus.OK);
-        } catch (ExceptionInInitializerError e){
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e){
-            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
+            List<ServicesDto> allServices = serviceService.findAllServices();
+            return ResponseEntity.ok(allServices);
+        } catch (Exception e) {
+            return GenericExceptionHandler.getException(e);
         }
-        return result;
     }
 
     @ApiOperation(
@@ -69,24 +62,19 @@ public class ServiceController {
                             code = 200,
                             message = "Return Service Data",
                             response = ServicesDto.class),
-                    @ApiResponse(code = 400, message = "Bad Request"),
-                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 400, message = badRequest),
+                    @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 404, message = "Service Not Found")
             })
     @GetMapping(path = {"/services/{id}"})
-    public ResponseEntity findServiceById(@PathVariable("id") UUID serviceId){
-
-        ResponseEntity result;
+    public ResponseEntity<?> findServiceById(@PathVariable("id") UUID serviceId) {
 
         try {
-            val service = serviceService.findServiceById(serviceId);
-            result = new ResponseEntity<>(service, HttpStatus.OK);
-        } catch (ExceptionInInitializerError e){
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e){
-            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
+            ServicesDto service = serviceService.findServiceById(serviceId);
+            return ResponseEntity.ok(service);
+        } catch (Exception e) {
+            return GenericExceptionHandler.getException(e);
         }
-        return result;
     }
 
     @ApiOperation(
@@ -99,25 +87,19 @@ public class ServiceController {
                             code = 201,
                             message = "Register Service Data",
                             response = ServicesDto.class),
-                    @ApiResponse(code = 400, message = "Bad Request"),
-                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 400, message = badRequest),
+                    @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 409, message = "Conflict")
             })
     @PostMapping(path = {"/services"})
-    public ResponseEntity createService(@RequestBody ServicesDto servicesData){
-
-        ResponseEntity result;
+    public ResponseEntity<?> createService(@RequestBody ServicesDto servicesData) {
 
         try {
             serviceService.saveServiceData(servicesData);
-            result = new ResponseEntity<>(serviceDataInserted, HttpStatus.CREATED);
-        } catch (ServiceException e){
-            result = new ResponseEntity<>(
-                    serviceDataNotInserted + e.getMessage(), HttpStatus.CONFLICT);
-        } catch (Exception e){
-            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.CREATED).body(serviceDataInserted);
+        } catch (Exception e) {
+            return GenericExceptionHandler.getException(e);
         }
-        return result;
     }
 
     @ApiOperation(
@@ -130,30 +112,27 @@ public class ServiceController {
                             code = 200,
                             message = "Update Service Data",
                             response = ServicesDto.class),
-                    @ApiResponse(code = 400, message = "Bad Request"),
-                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 400, message = badRequest),
+                    @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 404, message = "Service Not Found"),
                     @ApiResponse(code = 409, message = "Conflict")
             })
     @PutMapping(path = {"/services/{id}"})
-    public ResponseEntity<String> updateService(
-            @PathVariable("id") UUID serviceId, @RequestBody ServicesDto servicesData){
-
-        ResponseEntity<String> result;
+    public ResponseEntity<?> updateService(
+            @PathVariable("id") UUID serviceId, @RequestBody ServicesDto servicesData) {
 
         try {
             serviceService.updateServiceData(serviceId, servicesData);
-            result = new ResponseEntity<>(serviceDataUpdated, HttpStatus.OK);
-        } catch (ExceptionInInitializerError e){
-            result = new ResponseEntity<>(
+            return ResponseEntity.ok(serviceDataUpdated);
+        } catch (ExceptionInInitializerError e) {
+            return new ResponseEntity<>(
                     serviceDataNotUpdated + e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (ServiceException e){
-            result = new ResponseEntity<>(
+        } catch (ServiceException e) {
+            return new ResponseEntity<>(
                     serviceDataNotUpdated + e.getMessage(), HttpStatus.CONFLICT);
-        } catch (Exception e){
-            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return GenericExceptionHandler.getException(e);
         }
-        return result;
     }
 
     @ApiOperation(
@@ -166,24 +145,18 @@ public class ServiceController {
                             code = 200,
                             message = "Delete Service Data",
                             response = ServicesDto.class),
-                    @ApiResponse(code = 400, message = "Bad Request"),
-                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 400, message = badRequest),
+                    @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 404, message = "Service Not Found")
             })
     @DeleteMapping(path = {"/services/{id}"})
-    public ResponseEntity<String> deleteService(@PathVariable("id") UUID serviceId) {
-
-        ResponseEntity<String> result;
+    public ResponseEntity<?> deleteService(@PathVariable("id") UUID serviceId) {
 
         try {
             serviceService.deleteServiceData(serviceId);
-            result = new ResponseEntity<>(serviceDataDeleted, HttpStatus.OK);
-        } catch (ExceptionInInitializerError e) {
-            result = new ResponseEntity<>(
-                    serviceDataNotDeleted + e.getMessage(), HttpStatus.NOT_FOUND);
+            return ResponseEntity.ok(serviceDataDeleted);
         } catch (Exception e) {
-            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
+            return GenericExceptionHandler.getException(e);
         }
-        return result;
     }
 }
