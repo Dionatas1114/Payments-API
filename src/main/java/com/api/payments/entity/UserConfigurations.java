@@ -3,10 +3,12 @@ package com.api.payments.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+@Getter
 @Entity
 @Table(name = "USER_CONFIGURATIONS")
 @EqualsAndHashCode(callSuper = true)
@@ -27,24 +29,12 @@ public class UserConfigurations extends BaseEntity{
     @ApiModelProperty(notes = "Idioma do Usuário")
     public String language = "pt_BR";
 
-    public Users getUser() {
-        return user;
-    }
-
     public void setUser(Users user) {
         this.user = user;
     }
 
-    public boolean isHasNotifications() {
-        return hasNotifications;
-    }
-
     public void setHasNotifications(boolean hasNotifications) {
         this.hasNotifications = hasNotifications;
-    }
-
-    public String getLanguage() {
-        return language;
     }
 
     public void setLanguage(String language) {
