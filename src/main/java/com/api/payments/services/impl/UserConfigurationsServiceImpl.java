@@ -4,6 +4,7 @@ import com.api.payments.dto.UserConfigurationsDto;
 import com.api.payments.entity.UserConfigurations;
 import com.api.payments.repository.UserConfigurationsRepository;
 import com.api.payments.services.UserConfigurationsService;
+import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class UserConfigurationsServiceImpl implements UserConfigurationsService 
 
         Optional.of(userConfigurationsRepository.findAll())
                 .filter(list -> !list.isEmpty())
-                .orElseThrow(() -> new Exception(noUserDataRegistered))
+                .orElseThrow(() -> new NotFoundException(noUserDataRegistered))
                 .forEach(userConfiguration -> userConfigurationsDtoList.add(convertToDto(userConfiguration)));
 
         return userConfigurationsDtoList;
