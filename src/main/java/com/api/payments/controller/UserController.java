@@ -1,26 +1,32 @@
 package com.api.payments.controller;
 
-import com.api.payments.config.SecurityConfig;
 import com.api.payments.dto.UsersDto;
+import com.api.payments.exception.GenericExceptionHandler;
 import com.api.payments.services.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
-import lombok.val;
-import org.hibernate.service.spi.ServiceException;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.UnavailableException;
 import java.util.List;
 import java.util.UUID;
 
-import static com.api.payments.messages.GenericMessages.*;
+import static com.api.payments.messages.GenericMessages.badRequest;
+import static com.api.payments.messages.GenericMessages.unauthorized;
 import static com.api.payments.messages.UserMessages.*;
+
 
 @RestController
 @AllArgsConstructor
@@ -29,7 +35,6 @@ import static com.api.payments.messages.UserMessages.*;
 public class UserController {
 
     private UserService userService;
-    private SecurityConfig securityConfig;
 
     @ApiOperation(
             value = "Returns Data from all Users",
@@ -37,31 +42,20 @@ public class UserController {
             tags = {"Users"})
     @ApiResponses(
             value = {
-                    @ApiResponse(
-                            code = 200,
-                            message = "Return All User Data",
-                            response = UsersDto.class),
-                    @ApiResponse(code = 400, message = "Bad Request"),
-                    @ApiResponse(code = 401, message = "Unauthorized Access"),
-                    @ApiResponse(code = 404, message = "No Users Registered")
+                    @ApiResponse(code = 200, message = "Return All User Data", response = UsersDto.class),
+                    @ApiResponse(code = 400, message = badRequest),
+                    @ApiResponse(code = 401, message = unauthorized),
+                    @ApiResponse(code = 404, message = noUserDataRegistered)
             })
     @GetMapping(path = {"/users"})
-    public ResponseEntity<List<UsersDto>> findAllUsers(@RequestHeader (name = HttpHeaders.AUTHORIZATION) String token){
-
-        ResponseEntity result;
+    public ResponseEntity<?> findAllUsers() {
 
         try {
-            securityConfig.validateToken(token);
-            val allUsers = userService.findAllUsers();
-            result = new ResponseEntity<>(allUsers, HttpStatus.OK);
-        } catch (ExceptionInInitializerError e) {
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (UnavailableException e) {
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+            List<UsersDto> allUsers = userService.findAllUsers();
+            return ResponseEntity.ok(allUsers);
         } catch (Exception e) {
-            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
+            return GenericExceptionHandler.getException(e);
         }
-        return result;
     }
 
     @ApiOperation(
@@ -70,28 +64,20 @@ public class UserController {
             tags = {"Users"})
     @ApiResponses(
             value = {
-                    @ApiResponse(
-                            code = 200,
-                            message = "Returns User Data",
-                            response = UsersDto.class),
-                    @ApiResponse(code = 400, message = "Bad Request"),
-                    @ApiResponse(code = 401, message = "Unauthorized Access"),
-                    @ApiResponse(code = 404, message = "User Not Found")
+                    @ApiResponse(code = 200, message = "Returns User Data", response = UsersDto.class),
+                    @ApiResponse(code = 400, message = badRequest),
+                    @ApiResponse(code = 401, message = unauthorized),
+                    @ApiResponse(code = 404, message = userDataNotFound)
             })
     @GetMapping(path = {"/users/{id}"})
-    public ResponseEntity<UsersDto> findUserById(@PathVariable("id") UUID userId){
-
-        ResponseEntity result;
+    public ResponseEntity<?> findUserById(@PathVariable("id") UUID userId) {
 
         try {
-            val user = userService.findUserById(userId);
-            result = new ResponseEntity<>(user, HttpStatus.OK);
-        } catch (ExceptionInInitializerError e){
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e){
-            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
+            UsersDto user = userService.findUserById(userId);
+            return ResponseEntity.ok(user);
+        } catch (Exception e) {
+            return GenericExceptionHandler.getException(e);
         }
-        return result;
     }
 
     @ApiOperation(
@@ -100,29 +86,20 @@ public class UserController {
             tags = {"Users"})
     @ApiResponses(
             value = {
-                    @ApiResponse(
-                            code = 201,
-                            message = "Register User Data",
-                            response = void.class),
-                    @ApiResponse(code = 400, message = "Bad Request"),
-                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 201, message = userDataInserted),
+                    @ApiResponse(code = 400, message = badRequest),
+                    @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 409, message = "Conflict")
             })
     @PostMapping(path = {"/users"})
-    public ResponseEntity<UsersDto> createUser(@Validated @RequestBody UsersDto usersData) {
-
-        ResponseEntity result;
+    public ResponseEntity<?> createUser(@Validated @RequestBody UsersDto usersData) {
 
         try {
-            userService.saveUserData (usersData);
-            result = new ResponseEntity<>(userDataInserted, HttpStatus.CREATED);
-        } catch (ServiceException e) {
-            result = new ResponseEntity<>(
-                    userDataNotInserted + e.getMessage(), HttpStatus.CONFLICT);
+            userService.saveUserData(usersData);
+            return ResponseEntity.status(HttpStatus.CREATED).body(userDataInserted);
         } catch (Exception e) {
-            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
+            return GenericExceptionHandler.getException(e);
         }
-        return result;
     }
 
     @ApiOperation(
@@ -131,35 +108,23 @@ public class UserController {
             tags = {"Users"})
     @ApiResponses(
             value = {
-                    @ApiResponse(
-                            code = 200,
-                            message = "Update User Data",
-                            response = void.class),
-                    @ApiResponse(code = 400, message = "Bad Request"),
-                    @ApiResponse(code = 401, message = "Unauthorized Access"),
-                    @ApiResponse(code = 404, message = "User Not Found"),
+                    @ApiResponse(code = 200, message = userDataUpdated),
+                    @ApiResponse(code = 400, message = badRequest),
+                    @ApiResponse(code = 401, message = unauthorized),
+                    @ApiResponse(code = 404, message = userDataNotFound),
                     @ApiResponse(code = 409, message = "Conflict")
             })
     @PutMapping(path = {"/users/{id}"})
-    public ResponseEntity<String> updateUser(
+    public ResponseEntity<?> updateUser(
             @Validated @PathVariable("id") UUID userId,
-            @RequestBody UsersDto usersData){
+            @RequestBody UsersDto usersData) {
 
-        ResponseEntity<String> result;
-        
         try {
-            userService.updateUserData (usersData, userId);
-            result = new ResponseEntity<>(userDataUpdated, HttpStatus.OK);
-        } catch (ExceptionInInitializerError e){
-            result = new ResponseEntity<>(
-                    userDataNotUpdated + e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (ServiceException e){
-            result = new ResponseEntity<>(
-                    userDataNotUpdated + e.getMessage(), HttpStatus.CONFLICT);
-        } catch (Exception e){
-            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
+            userService.updateUserData(userId, usersData);
+            return ResponseEntity.ok(userDataUpdated);
+        } catch (Exception e) {
+            return GenericExceptionHandler.getException(e);
         }
-        return result;
     }
 
     @ApiOperation(
@@ -168,28 +133,19 @@ public class UserController {
             tags = {"Users"})
     @ApiResponses(
             value = {
-                    @ApiResponse(
-                            code = 200,
-                            message = "Delete User Data",
-                            response = void.class),
-                    @ApiResponse(code = 400, message = "Bad Request"),
-                    @ApiResponse(code = 401, message = "Unauthorized Access"),
-                    @ApiResponse(code = 404, message = "User Not Found")
+                    @ApiResponse(code = 200, message = userDataDeleted),
+                    @ApiResponse(code = 400, message = badRequest),
+                    @ApiResponse(code = 401, message = unauthorized),
+                    @ApiResponse(code = 404, message = userDataNotFound)
             })
     @DeleteMapping(path = {"/users/{id}"})
-    public ResponseEntity<String> deleteUser(@PathVariable("id") UUID userId) {
-
-        ResponseEntity<String> result;
+    public ResponseEntity<?> deleteUser(@PathVariable("id") UUID userId) {
 
         try {
             userService.deleteUserData(userId);
-            result = new ResponseEntity<>(userDataDeleted, HttpStatus.OK);
-        } catch (ExceptionInInitializerError re) {
-            result = new ResponseEntity<>(
-                    userDataNotDeleted + re.getMessage(), HttpStatus.NOT_FOUND);
+            return ResponseEntity.ok(userDataDeleted);
         } catch (Exception e) {
-            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
+            return GenericExceptionHandler.getException(e);
         }
-        return result;
     }
 }
