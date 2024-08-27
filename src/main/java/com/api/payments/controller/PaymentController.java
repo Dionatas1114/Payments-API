@@ -11,6 +11,7 @@ import org.hibernate.service.spi.ServiceException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -195,7 +196,7 @@ public class PaymentController {
                     @ApiResponse(code = 409, message = "Conflict")
             })
     @PostMapping(path = {"/payments"})
-    public ResponseEntity<?> createPayment(@RequestBody TransactionDto paymentsData) {
+    public ResponseEntity<?> createPayment(@Validated @RequestBody TransactionDto paymentsData) {
 
         try {
             paymentService.savePaymentData(paymentsData);
@@ -223,7 +224,7 @@ public class PaymentController {
     @PutMapping(path = {"/payments/{id}"})
     public ResponseEntity<?> updatePayment(
             @PathVariable("id") UUID paymentId,
-            @RequestBody TransactionDto paymentsData) {
+            @Validated @RequestBody TransactionDto paymentsData) {
 
         try {
             paymentService.updatePayment(paymentId, paymentsData);

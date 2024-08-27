@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +21,7 @@ import static com.api.payments.messages.ProductMessages.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/private")
 @CrossOrigin("*")
 public class ProductController {
 
@@ -123,7 +124,7 @@ public class ProductController {
                     @ApiResponse(code = 409, message = "Conflict")
             })
     @PostMapping(path = {"/products"})
-    public ResponseEntity<?> createProduct(@RequestBody ProductsDto productsData) {
+    public ResponseEntity<?> createProduct(@Validated @RequestBody ProductsDto productsData) {
 
         ResponseEntity result;
 
@@ -159,7 +160,7 @@ public class ProductController {
             })
     @PutMapping(path = {"/products/{id}"})
     public ResponseEntity<String> updateProduct(
-            @PathVariable("id") UUID productId, @RequestBody ProductsDto productsData) {
+            @PathVariable("id") UUID productId, @Validated @RequestBody ProductsDto productsData) {
 
         ResponseEntity<String> result;
 

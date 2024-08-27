@@ -44,7 +44,7 @@ public class UserAccessController {
                     @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 404, message = userNotFound)
             })
-    @PostMapping(path = {"/login"})
+    @PostMapping(path = {"/public/login"})
     public ResponseEntity<?> login(@Validated @RequestBody LoginDto loginDto) {
 
         try {
@@ -71,7 +71,7 @@ public class UserAccessController {
                     @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 404, message = "No Users Registered")
             })
-    @PostMapping(path = {"/refresh_token"})
+    @PostMapping(path = {"/private/refresh_token"})
     public ResponseEntity<?> refresh_token() {
 
         try {
@@ -99,7 +99,7 @@ public class UserAccessController {
                     @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 404, message = "No Users Registered")
             })
-    @DeleteMapping(path = {"/logout"})
+    @DeleteMapping(path = {"/private/logout"})
     public ResponseEntity<?> logout() {
 
         try {
@@ -125,7 +125,7 @@ public class UserAccessController {
                     @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 404, message = "No Users Registered")
             })
-    @PostMapping(path = {"/digit-code"})
+    @PostMapping(path = {"/private/digit-code"})
     public ResponseEntity<?> digitCode(@Validated @RequestBody DigitCodeDto digitCodeDto) {
 
         try {

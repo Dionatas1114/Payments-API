@@ -1,7 +1,9 @@
 package com.api.payments.controller;
 
+import com.api.payments.dto.UserConfigurationsDto;
 import com.api.payments.dto.UsersDto;
 import com.api.payments.exception.GenericExceptionHandler;
+import com.api.payments.services.UserConfigurationsService;
 import com.api.payments.services.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -35,6 +37,7 @@ import static com.api.payments.messages.UserMessages.*;
 public class UserController {
 
     private UserService userService;
+    private UserConfigurationsService userConfigurationsService;
 
     @ApiOperation(
             value = "Returns Data from all Users",
@@ -47,7 +50,7 @@ public class UserController {
                     @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 404, message = noUserDataRegistered)
             })
-    @GetMapping(path = {"/users"})
+    @GetMapping(path = {"/private/users"})
     public ResponseEntity<?> findAllUsers() {
 
         try {
@@ -69,7 +72,7 @@ public class UserController {
                     @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 404, message = userDataNotFound)
             })
-    @GetMapping(path = {"/users/{id}"})
+    @GetMapping(path = {"/private/users/{id}"})
     public ResponseEntity<?> findUserById(@PathVariable("id") UUID userId) {
 
         try {
@@ -91,7 +94,7 @@ public class UserController {
                     @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 409, message = "Conflict")
             })
-    @PostMapping(path = {"/users"})
+    @PostMapping(path = {"/public/users"})
     public ResponseEntity<?> createUser(@Validated @RequestBody UsersDto usersData) {
 
         try {
@@ -114,10 +117,10 @@ public class UserController {
                     @ApiResponse(code = 404, message = userDataNotFound),
                     @ApiResponse(code = 409, message = "Conflict")
             })
-    @PutMapping(path = {"/users/{id}"})
+    @PutMapping(path = {"/private/users/{id}"})
     public ResponseEntity<?> updateUser(
             @Validated @PathVariable("id") UUID userId,
-            @RequestBody UsersDto usersData) {
+            @Validated @RequestBody UsersDto usersData) {
 
         try {
             userService.updateUserData(userId, usersData);
@@ -138,12 +141,37 @@ public class UserController {
                     @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 404, message = userDataNotFound)
             })
-    @DeleteMapping(path = {"/users/{id}"})
+    @DeleteMapping(path = {"/private/users/{id}"})
     public ResponseEntity<?> deleteUser(@PathVariable("id") UUID userId) {
 
         try {
             userService.deleteUserData(userId);
             return ResponseEntity.ok(userDataDeleted);
+        } catch (Exception e) {
+            return GenericExceptionHandler.getException(e);
+        }
+    }
+
+    @ApiOperation(
+            value = "Returns Data from all User Configurations",
+            notes = "This Request Returns all User Configurations Data from the Database",
+            tags = {"Users"})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            code = 200,
+                            message = "Return All User Configurations Data",
+                            response = UserConfigurationsDto.class),
+                    @ApiResponse(code = 400, message = badRequest),
+                    @ApiResponse(code = 401, message = unauthorized),
+                    @ApiResponse(code = 404, message = noUserDataRegistered)
+            })
+    @GetMapping(path = {"/private/usersConfigurations"})
+    public ResponseEntity<?> findAllUserConfigurations() {
+
+        try {
+            List<UserConfigurationsDto> userConfigurations = userConfigurationsService.findUserConfigurations();
+            return ResponseEntity.ok(userConfigurations);
         } catch (Exception e) {
             return GenericExceptionHandler.getException(e);
         }

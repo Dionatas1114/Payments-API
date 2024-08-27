@@ -11,6 +11,7 @@ import org.hibernate.service.spi.ServiceException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -22,7 +23,7 @@ import static com.api.payments.messages.ReceiptMessages.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/private")
 @CrossOrigin("*")
 public class ReceiptController {
 
@@ -194,7 +195,7 @@ public class ReceiptController {
                     @ApiResponse(code = 409, message = "Conflict")
             })
     @PostMapping(path = {"/receipts"})
-    public ResponseEntity<?> createReceipt(@RequestBody TransactionDto receiptsData) {
+    public ResponseEntity<?> createReceipt(@Validated @RequestBody TransactionDto receiptsData) {
 
         try {
             receiptService.saveReceiptData(receiptsData);
@@ -222,7 +223,7 @@ public class ReceiptController {
     @PutMapping(path = {"/receipts/{id}"})
     public ResponseEntity<?> updateReceipt(
             @PathVariable("id") UUID receiptId,
-            @RequestBody TransactionDto receiptsData) {
+            @Validated @RequestBody TransactionDto receiptsData) {
 
         ResponseEntity<String> result;
 

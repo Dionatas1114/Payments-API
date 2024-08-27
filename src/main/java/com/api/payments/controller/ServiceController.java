@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +22,7 @@ import static com.api.payments.messages.ServiceMessages.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/private")
 @CrossOrigin("*")
 public class ServiceController {
 
@@ -92,7 +93,7 @@ public class ServiceController {
                     @ApiResponse(code = 409, message = "Conflict")
             })
     @PostMapping(path = {"/services"})
-    public ResponseEntity<?> createService(@RequestBody ServicesDto servicesData) {
+    public ResponseEntity<?> createService(@Validated @RequestBody ServicesDto servicesData) {
 
         try {
             serviceService.saveServiceData(servicesData);
@@ -119,7 +120,8 @@ public class ServiceController {
             })
     @PutMapping(path = {"/services/{id}"})
     public ResponseEntity<?> updateService(
-            @PathVariable("id") UUID serviceId, @RequestBody ServicesDto servicesData) {
+            @PathVariable("id") UUID serviceId,
+            @Validated @RequestBody ServicesDto servicesData) {
 
         try {
             serviceService.updateServiceData(serviceId, servicesData);

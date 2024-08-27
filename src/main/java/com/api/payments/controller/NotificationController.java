@@ -20,7 +20,7 @@ import static com.api.payments.messages.GenericMessages.unauthorized;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/private")
 @CrossOrigin("*")
 public class NotificationController {
 
