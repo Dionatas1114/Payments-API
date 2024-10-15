@@ -1,14 +1,14 @@
 package com.api.payments.services.impl;
 
-import com.api.payments.config.SecurityConfig;
 import com.api.payments.dto.UsersDto;
 import com.api.payments.entity.UserConfigurations;
 import com.api.payments.entity.Users;
+import com.api.payments.interceptor.TokenInterceptor;
 import com.api.payments.repository.UserConfigurationsRepository;
 import com.api.payments.repository.UserRepository;
 import com.api.payments.services.UserService;
+import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
-import lombok.val;
 import org.hibernate.service.spi.ServiceException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 import static com.api.payments.messages.UserMessages.*;
@@ -28,24 +28,26 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private UserConfigurationsRepository userConfigurationsRepository;
-    private SecurityConfig securityConfig;
+    private TokenInterceptor tokenInterceptor;
 
     @Override
-    public List<UsersDto> findAllUsers() throws ExceptionInInitializerError {
-
-        val usersList = userRepository.findAll();
-        if (usersList.isEmpty()) throw new ExceptionInInitializerError(noUserDataRegistered);
+    public List<UsersDto> findAllUsers() throws Exception {
 
         List<UsersDto> usersDtoList = new ArrayList<>();
-        usersList.forEach(user -> usersDtoList.add(convertToDto(user)));
+
+        Optional.of(userRepository.findAll())
+                .filter(list -> !list.isEmpty())
+                .orElseThrow(() -> new Exception(noUserDataRegistered))
+                .forEach(user -> usersDtoList.add(convertToDto(user)));
+
         return usersDtoList;
     }
 
     @Override
-    public UsersDto findUserById(UUID userId) throws ExceptionInInitializerError {
+    public UsersDto findUserById(UUID userId) throws Exception {
 
-        val user = userRepository.findById(userId);
-        return convertToDto(user.orElseThrow(() -> new ExceptionInInitializerError(userDataNotFound)));
+        Users user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(userDataNotFound));
+        return convertToDto(user);
     }
 
     @Transactional
@@ -57,56 +59,42 @@ public class UserServiceImpl implements UserService {
         String password = userDto.getPassword();
         String phone = userDto.getPhone();
 
-        if (userRepository.count() != 0) {
-            Users byName = userRepository.findByName(userName);
-            Users byEmail = userRepository.findByEmail(email);
-            Users byPhone = userRepository.findByPhone(phone);
-
-            if (byName != null) {
-                boolean userNameAlreadyExists = Objects.equals(byName.name, userName);
-                if (userNameAlreadyExists) throw new ServiceException(userNameAlreadyRegistered);
-            }
-
-            if (byEmail != null) {
-                boolean userEmailAlreadyExists = Objects.equals(byEmail.email, email);
-                if (userEmailAlreadyExists) throw new ServiceException(userEmailAlreadyRegistered);
-            }
-
-            if (byPhone != null) {
-                boolean userPhoneAlreadyExists = Objects.equals(byPhone.phone, phone);
-                if (userPhoneAlreadyExists) throw new ServiceException(userPhoneAlreadyRegistered);
-            }
-        }
+        // Verifica se o usuário já existe por nome, e-mail ou telefone
+        userRepository.findByNameOrEmailOrPhone(userName, email, phone)
+                .ifPresent(user -> {
+                    if (userName.equals(user.getName())) throw new ServiceException(userNameAlreadyRegistered);
+                    if (email.equals(user.getEmail())) throw new ServiceException(userEmailAlreadyRegistered);
+                    if (phone.equals(user.getPhone())) throw new ServiceException(userPhoneAlreadyRegistered);
+                });
 
         userValidator(userName, email, password, phone);
 
-        String passwordEncoded = securityConfig.passwordEncoder().encode(password);
+        String passwordEncoded = tokenInterceptor.passwordEncoder().encode(password);
 
-        try {
-            val users = new Users();
+        Users users = new Users();
+        users.setName(userName);
+        users.setEmail(email);
+        users.setPassword(passwordEncoded);
+        users.setPhone(phone);
 
-            users.setName(userName);
-            users.setEmail(email);
-            users.setPassword(passwordEncoded);
-            users.setPhone(phone);
+        Users userDataSaved = userRepository.save(users);
 
-            val userDataSaved = userRepository.save(users);
+        UserConfigurations userConfigurations = new UserConfigurations();
+        userConfigurations.setHasNotifications(userDto.getUserConfigurations().isHasNotifications());
+        userConfigurations.setLanguage(userDto.getUserConfigurations().getLanguage());
+        userConfigurations.setUser(userDataSaved);
 
-            val userConfigurations = new UserConfigurations();
-            userConfigurations.setHasNotifications(userDto.getUserConfigurations().isHasNotifications());
-            userConfigurations.setLanguage(userDto.getUserConfigurations().getLanguage());
-            userConfigurations.setUser(userDataSaved);
-            userConfigurationsRepository.save(userConfigurations);
-
-        } catch (Exception e) {
-            throw new ExceptionInInitializerError(e.getMessage());
-        }
+        userConfigurationsRepository.save(userConfigurations);
     }
 
     @Transactional
     @Override
-    public void updateUserData(UsersDto userDto, UUID userId) throws Exception {
-        val userConfigurations = new UserConfigurations();
+    public void updateUserData(UUID userId, UsersDto userDto) throws Exception {
+
+        Users users = new Users();
+        UserConfigurations userConfigurations = new UserConfigurations();
+
+        userRepository.findById(userId).orElseThrow(() -> new NotFoundException(userDataNotFound));
 
         String userName = userDto.getName();
         String email = userDto.getEmail();
@@ -115,55 +103,48 @@ public class UserServiceImpl implements UserService {
         boolean hasNotifications = userDto.getUserConfigurations().isHasNotifications();
         String language = userDto.getUserConfigurations().getLanguage();
 
-        userRepository.findById(userId).orElseThrow(() -> new ExceptionInInitializerError(userDataNotFound));
-
-        val usersList = userRepository.findAll();
-
-        if (!usersList.isEmpty()) {
-            for (val users : usersList) {
-                if (Objects.equals(users.getName(), userName) && users.getId() != userId)
-                    throw new ServiceException(userNameAlreadyRegistered);
-
-                if (Objects.equals(users.getEmail(), email) && users.getId() != userId)
-                    throw new ServiceException(userEmailAlreadyRegistered);
-
-                if (Objects.equals(users.getPhone(), phone) && users.getId() != userId)
-                    throw new ServiceException(userPhoneAlreadyRegistered);
-            }
-        }
-
         userValidator(userName, email, password, phone);
 
-        try {
-            val userConfiguration = userConfigurationsRepository.findByUserId(userId);
-            val users = new Users();
+        userRepository.findByEmail(email)
+                .ifPresent(existingUser -> {
+                    if (!existingUser.getId().equals(userId)) {
+                        throw new ServiceException(userEmailAlreadyRegistered);
+                    }
+                });
 
-            users.setId(userId);
-            users.setName(userName);
-            users.setEmail(email);
-            users.setPassword(password);
-            users.setPhone(phone);
+        userRepository.findByPhone(phone)
+                .ifPresent(existingUser -> {
+                    if (!existingUser.getId().equals(userId)) {
+                        throw new ServiceException(userPhoneAlreadyRegistered);
+                    }
+                });
 
-            userRepository.save(users);
+        UserConfigurations userConfiguration = userConfigurationsRepository
+                .findByUserId(userId)
+                .orElseThrow(() -> new NotFoundException(userDataNotFound));
 
-            UUID userConfigurationId = userConfiguration.getId();
-            userConfigurations.setId(userConfigurationId);
-            userConfigurations.setHasNotifications(hasNotifications);
-            userConfigurations.setLanguage(language);
-            userConfigurations.setUser(users);
+        users.setId(userId);
+        users.setName(userName);
+        users.setEmail(email);
+        users.setPassword(password);
+        users.setPhone(phone);
 
-            userConfigurationsRepository.save(userConfigurations);
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
+        userRepository.save(users);
+
+        UUID userConfigurationId = userConfiguration.getId();
+        userConfigurations.setId(userConfigurationId);
+        userConfigurations.setHasNotifications(hasNotifications);
+        userConfigurations.setLanguage(language);
+        userConfigurations.setUser(users);
+
+        userConfigurationsRepository.save(userConfigurations);
     }
 
     @Transactional
     @Override
-    public void deleteUserData(UUID userId) {
+    public void deleteUserData(UUID userId) throws Exception {
 
-        boolean exists = userRepository.existsById(userId);
-        if (!exists) throw new ExceptionInInitializerError(userDataNotFound);
+        userRepository.findById(userId).orElseThrow(() -> new NotFoundException(userDataNotFound));
         userRepository.deleteById(userId);
     }
 

@@ -16,6 +16,10 @@ ___
 * JPA (ORM);
 * Postgres (DB);
 * Lombok (1.18.22);
+* JUnit (5.8.2);
+* Git (2.33.0);
+* Docker (18.09.9);
+* Swagger (2.9.2); => http://localhost:8080/swagger-ui/#/
 ___
 ### How to run in Development Environment?
 Create **Postgres Database** using docker command:

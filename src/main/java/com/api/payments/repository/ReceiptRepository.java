@@ -7,9 +7,9 @@ import java.util.*;
 
 public interface ReceiptRepository extends JpaRepository<Receipts, UUID> {
 
-    List<Receipts> findByDebtorFullName(String debtorFullName);
-    List<Receipts> findByPaymentStatus(boolean paymentStatus);
-    List<Receipts> findByPaymentMethod(String paymentMethod);
-    List<Receipts> findByExpirationDate(LocalDate expirationDate);
+    Optional<List<Receipts>> findByDebtorFullName(String debtorFullName);
+    Optional<List<Receipts>> findByPaymentStatus(boolean paymentStatus);
+    Optional<List<Receipts>> findByPaymentMethod(String paymentMethod);
+    Optional<List<Receipts>> findByExpirationDate(LocalDate expirationDate);
 
 }

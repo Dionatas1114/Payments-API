@@ -11,9 +11,9 @@ public interface UserMessages {
 
     //Error Messages
     String userDataNotInserted = "Não foi possível inserir os dados do usuário. ";
-    String userNameAlreadyRegistered = "Dados do usuário já existentes, tente inserir outros dados. ";
-    String userEmailAlreadyRegistered = "Já existe um usuário cadastrado com este email, tente inserir outros dados. ";
-    String userPhoneAlreadyRegistered = "Já existe um usuário cadastrado com este número de telefone, tente inserir outros dados. ";
+    String userNameAlreadyRegistered = "Dados do usuário já existentes, tente inserir dados diferentes. ";
+    String userEmailAlreadyRegistered = "Já existe um usuário cadastrado com este email, tente inserir dados diferentes. ";
+    String userPhoneAlreadyRegistered = "Já existe um usuário cadastrado com este número de telefone, tente inserir dados diferentes. ";
     String userDataNotUpdated = "Não foi possível atualizar os dados do usuário. ";
     String userDataNotDeleted = "Não foi possível deletar os dados do usuário. ";
 

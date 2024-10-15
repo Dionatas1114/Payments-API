@@ -1,77 +1,24 @@
 package com.api.payments.config;
 
-import com.api.payments.dto.TokenDto;
-import com.api.payments.utils.Log;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.api.payments.interceptor.TokenInterceptor;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.val;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
-
-import javax.servlet.UnavailableException;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
-
-import static com.api.payments.messages.UserAccessMessages.*;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Getter
-@Component
-public class SecurityConfig {
+@Configuration
+@AllArgsConstructor
+public class SecurityConfig implements WebMvcConfigurer {
 
-    @Value("${JWT.VALIDITY}")
-    private String JWT_VALIDITY;
+    private TokenInterceptor tokenInterceptor;
+    private Properties properties;
 
-    @Value("${JWT.SECRET}")
-    private String JWT_SECRET;
-
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
-
-    public TokenDto generateToken(String username) {
-        long validityInMilliseconds = Long.parseLong(JWT_VALIDITY); // 1day
-        val claims = Jwts.claims().setSubject(username);
-        Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInMilliseconds);
-        long days = TimeUnit.MILLISECONDS.toDays(validityInMilliseconds);
-
-        String token = Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(validity)
-                .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
-                .compact();
-
-        Log.info(tokenGenerate + days + "day.");
-        return TokenDto.builder().token(token).expiresIn(days + "d").build();
-    }
-
-    public void validateToken(String rawToken) throws UnavailableException {
-
-        try {
-            Log.warn(tokenValidation);
-            if (rawToken != null && !rawToken.equals("")) {
-                String token = rawToken.replace("Bearer ", "");
-                Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token);
-                Log.info(tokenIsValid);
-            } else {
-                throw new Exception();
-            }
-        } catch (Exception e) {
-            Log.error(invalidToken + e.getMessage());
-            throw new UnavailableException(invalidToken);
-        }
-    }
-
-    public String getUsernameFromToken(String token) {
-        return Jwts.parser()
-                .setSigningKey(JWT_SECRET)
-                .parseClaimsJws(token)
-                .getBody().getSubject();
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(tokenInterceptor)
+                .addPathPatterns(properties.getSecurePaths()) // add list of protected routes
+                .excludePathPatterns(properties.getPublicPaths()); // add list of public routes (ex. login page)
     }
 }

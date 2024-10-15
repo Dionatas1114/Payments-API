@@ -4,13 +4,14 @@ import com.api.payments.dto.ServicesDto;
 import com.api.payments.entity.Services;
 import com.api.payments.repository.ServiceRepository;
 import com.api.payments.services.ServiceService;
+import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
-import lombok.val;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static com.api.payments.messages.ServiceMessages.*;
@@ -23,22 +24,23 @@ public class ServiceServiceImpl implements ServiceService {
     private ServiceRepository serviceRepository;
 
     @Override
-    public List<ServicesDto> findAllServices() {
+    public List<ServicesDto> findAllServices() throws Exception {
 
-        val allServicesList = serviceRepository.findAll();
-        if (allServicesList.isEmpty()) throw new ExceptionInInitializerError(noServiceDataRegistered);
+        List<ServicesDto> servicesDtoList = new ArrayList<>();
 
-        List<ServicesDto> servicesList = new ArrayList<>();
-        allServicesList.forEach(service -> servicesList.add(convertToDto(service)));
-        return servicesList;
+        Optional.of(serviceRepository.findAll())
+                .filter(services -> !services.isEmpty())
+                .orElseThrow(() -> new Exception(noServiceDataRegistered))
+                .forEach(service -> servicesDtoList.add(convertToDto(service)));
+
+        return servicesDtoList;
     }
 
     @Override
-    public ServicesDto findServiceById(UUID serviceId) {
+    public ServicesDto findServiceById(UUID serviceId) throws Exception {
 
-        val service = serviceRepository.findById(serviceId);
-        if (service.isEmpty()) throw new ExceptionInInitializerError(serviceDataNotFound);
-        return convertToDto(service.get());
+        Services service = serviceRepository.findById(serviceId).orElseThrow(() -> new NotFoundException(serviceDataNotFound));
+        return convertToDto(service);
     }
 
     @Override
@@ -49,22 +51,20 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
-    public void updateServiceData(UUID serviceId, ServicesDto servicesData) throws ExceptionInInitializerError {
+    public void updateServiceData(UUID serviceId, ServicesDto servicesData) throws Exception {
 
-        val serviceExists = serviceRepository.existsById(serviceId);
-        if (!serviceExists) throw new ExceptionInInitializerError(serviceDataNotFound);
+        serviceRepository.findById(serviceId).orElseThrow(() -> new NotFoundException(serviceDataNotFound));
 
         serviceValidator(servicesData);
-        val services = convertFromDto(servicesData);
-        services.setId(serviceId);
-        serviceRepository.save(services);
+
+        servicesData.setId(serviceId);
+        saveServiceData(servicesData);
     }
 
     @Override
-    public void deleteServiceData(UUID serviceId) throws ExceptionInInitializerError {
+    public void deleteServiceData(UUID serviceId) throws Exception {
 
-        val serviceExists = serviceRepository.existsById(serviceId);
-        if (!serviceExists) throw new ExceptionInInitializerError(serviceDataNotFound);
+        serviceRepository.findById(serviceId).orElseThrow(() -> new NotFoundException(serviceDataNotFound));
         serviceRepository.deleteById(serviceId);
     }
 

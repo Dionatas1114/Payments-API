@@ -4,12 +4,16 @@ import com.api.payments.dto.ProductsDto;
 import com.api.payments.entity.Products;
 import com.api.payments.repository.ProductRepository;
 import com.api.payments.services.ProductService;
+import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
-import lombok.val;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 import static com.api.payments.messages.ProductMessages.*;
 import static com.api.payments.validations.validators.ProductValidator.*;
@@ -21,78 +25,74 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
 
     @Override
-    public List<ProductsDto> findAllProducts() {
-
-        val productsList = productRepository.findAll();
-        if (productsList.isEmpty()) throw new ExceptionInInitializerError(noProductDataRegistered);
+    public List<ProductsDto> findAllProducts() throws Exception {
 
         List<ProductsDto> productsDtoList = new ArrayList<>();
-        productsList.forEach(products -> productsDtoList.add(convertToDto(products)));
+
+        Optional.of(productRepository.findAll())
+                .filter(list -> !list.isEmpty())
+                .orElseThrow(() -> new Exception(noProductDataRegistered))
+                .forEach(product -> productsDtoList.add(convertToDto(product)));
+
         return productsDtoList;
     }
 
     @Override
-    public ProductsDto findProductById(UUID productId) throws ExceptionInInitializerError {
+    public ProductsDto findProductById(UUID productId) throws Exception {
 
-        val product = productRepository.findById(productId);
-        return convertToDto(product.orElseThrow(() -> new ExceptionInInitializerError(productDataNotFound)));
+        Products product = productRepository
+                .findById(productId)
+                .orElseThrow(() -> new NotFoundException(productDataNotFound));
+
+        return convertToDto(product);
     }
 
     @Override
-    public List<ProductsDto> findByItemName(String itemName) {
-
-        itemNameValidator(itemName);
-
-        val productsByItemName = productRepository.findByItemName(itemName);
-
-        boolean productsListEmpty = productsByItemName.isEmpty();
-        if (productsListEmpty) throw new ExceptionInInitializerError(productDataNotFound);
+    public List<ProductsDto> findByItemName(String itemName) throws Exception {
 
         List<ProductsDto> productDtoList = new ArrayList<>();
-        productsByItemName.forEach(product -> productDtoList.add(convertToDto(product)));
+        itemNameValidator(itemName);
+
+        productRepository.findByItemName(itemName)
+                .orElseThrow(() -> new NotFoundException(productDataNotFound))
+                .forEach(product -> productDtoList.add(convertToDto(product)));
+
         return productDtoList;
     }
 
-    public void saveProductData(ProductsDto productsData) {
+    public void saveProductData(ProductsDto productsData) throws Exception {
 
         String itemName = productsData.getItemName();
         String productBrand = productsData.getProductBrand();
         String captionPacking = productsData.getCaptionPacking();
 
-        ArrayList<Object> booleanList = new ArrayList<>();
-        val productsByItemName = productRepository.findByItemName(itemName);
+        List<Products> productsByItemName = productRepository.findByItemName(itemName).orElse(new ArrayList<>());
 
-        productsByItemName.forEach(products -> {
-            booleanList.add(
-                    Objects.equals(products.productBrand, productBrand)
-                            && Objects.equals(products.captionPacking, captionPacking));
-        });
+        boolean alreadyExists = productsByItemName.stream().anyMatch(products ->
+                Objects.equals(products.productBrand, productBrand)
+                        && Objects.equals(products.captionPacking, captionPacking)
+        );
 
-        boolean alreadyExists = booleanList.contains(true);
-        if (alreadyExists) throw new ExceptionInInitializerError(productDataAlreadyExists);
+        if (alreadyExists) throw new Exception(productDataAlreadyExists);
 
         productValidator(productsData);
-        val products = convertFromDto(productsData);
-        productRepository.save(products);
+        productRepository.save(convertFromDto(productsData));
     }
 
     @Override
-    public void updateProductData(UUID productId, ProductsDto productsData) {
+    public void updateProductData(UUID productId, ProductsDto productsData) throws Exception {
 
-        boolean existsById = productRepository.existsById(productId);
-        if (!existsById) throw new ExceptionInInitializerError(productDataNotFound);
+        productRepository.findById(productId).orElseThrow(() -> new NotFoundException(productDataNotFound));
 
         productValidator(productsData);
-        val products = convertFromDto(productsData);
-        products.setId(productId);
-        productRepository.save(products);
+        productsData.setId(productId);
+        productRepository.save(convertFromDto(productsData));
     }
 
     @Override
-    public void deleteProductData(UUID productId) {
+    public void deleteProductData(UUID productId) throws Exception {
 
-        boolean existsById = productRepository.existsById(productId);
-        if (!existsById) throw new ExceptionInInitializerError(productDataNotFound);
+        productRepository.findById(productId).orElseThrow(() -> new NotFoundException(productDataNotFound));
         productRepository.deleteById(productId);
     }
 

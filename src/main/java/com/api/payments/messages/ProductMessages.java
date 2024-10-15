@@ -11,7 +11,7 @@ public interface ProductMessages {
 
     //Error Messages
     String productDataNotInserted = "Não foi possível inserir os dados do produto. ";
-    String productDataAlreadyExists = "Dados do produto já existentes, tente inserir outros dados. ";
+    String productDataAlreadyExists = "Dados do produto já existentes, tente inserir dados diferentes. ";
     String productDataNotUpdated = "Não foi possível atualizar os dados do produto. ";
     String productDataNotDeleted = "Não foi possível excluir os dados do produto. ";
 
