@@ -1,18 +1,17 @@
 package com.api.payments.controller;
 
-import com.api.payments.config.SecurityConfig;
 import com.api.payments.dto.TransactionDto;
+import com.api.payments.exception.GenericExceptionHandler;
 import com.api.payments.services.ReceiptService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
-import lombok.val;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -24,12 +23,11 @@ import static com.api.payments.messages.ReceiptMessages.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/private")
 @CrossOrigin("*")
 public class ReceiptController {
 
     private ReceiptService receiptService;
-    private SecurityConfig securityConfig;
 
     @ApiOperation(
             value = "Returns Data from all Receipts",
@@ -41,25 +39,19 @@ public class ReceiptController {
                             code = 200,
                             message = "Return All Receipt Data",
                             response = TransactionDto.class),
-                    @ApiResponse(code = 400, message = "Bad Request"),
-                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 400, message = badRequest),
+                    @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 404, message = "No Receipts Registered")
             })
     @GetMapping(path = {"/receipts"})
-    public ResponseEntity<List<TransactionDto>> findAllReceipts(@RequestHeader (name = HttpHeaders.AUTHORIZATION) String token){
-
-        ResponseEntity result;
+    public ResponseEntity<?> findAllReceipts() {
 
         try {
-            securityConfig.validateToken(token);
-            val allReceipts = receiptService.findAllReceipts();
-            result = new ResponseEntity<>(allReceipts, HttpStatus.OK);
-        } catch (ExceptionInInitializerError e){
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e){
-            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
+            List<TransactionDto> allReceipts = receiptService.findAllReceipts();
+            return ResponseEntity.ok(allReceipts);
+        } catch (Exception e) {
+            return GenericExceptionHandler.getException(e);
         }
-        return result;
     }
 
     @ApiOperation(
@@ -72,24 +64,19 @@ public class ReceiptController {
                             code = 200,
                             message = "Return Receipt Data",
                             response = TransactionDto.class),
-                    @ApiResponse(code = 400, message = "Bad Request"),
-                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 400, message = badRequest),
+                    @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 404, message = "Receipt Not Found")
             })
     @GetMapping(path = {"/receipts/{id}"})
-    public ResponseEntity<TransactionDto> findReceiptById(@PathVariable("id") UUID receiptId){
-
-        ResponseEntity result;
+    public ResponseEntity<?> findReceiptById(@PathVariable("id") UUID receiptId) {
 
         try {
-            val receipt = receiptService.findReceiptById(receiptId);
-            result = new ResponseEntity<>(receipt, HttpStatus.OK);
-        } catch (ExceptionInInitializerError e){
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e){
-            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
+            TransactionDto receipt = receiptService.findReceiptById(receiptId);
+            return ResponseEntity.ok(receipt);
+        } catch (Exception e) {
+            return GenericExceptionHandler.getException(e);
         }
-        return result;
     }
 
     @ApiOperation(
@@ -102,24 +89,19 @@ public class ReceiptController {
                             code = 200,
                             message = "Return Receipt Data",
                             response = TransactionDto.class),
-                    @ApiResponse(code = 400, message = "Bad Request"),
-                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 400, message = badRequest),
+                    @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 404, message = "Receipt Not Found")
             })
     @GetMapping(path = {"/receipts/byDebtorFullName/{debtorFullName}"})
-    public ResponseEntity<TransactionDto> findByDebtorFullName(@PathVariable String debtorFullName){
-
-        ResponseEntity result;
+    public ResponseEntity<?> findByDebtorFullName(@PathVariable String debtorFullName) {
 
         try {
-            val receipts = receiptService.findByDebtorFullName(debtorFullName);
-            result = new ResponseEntity<>(receipts, HttpStatus.OK);
-        } catch (ExceptionInInitializerError e){
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e){
-            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
+            List<TransactionDto> receipts = receiptService.findByDebtorFullName(debtorFullName);
+            return ResponseEntity.ok(receipts);
+        } catch (Exception e) {
+            return GenericExceptionHandler.getException(e);
         }
-        return result;
     }
 
     @ApiOperation(
@@ -132,24 +114,19 @@ public class ReceiptController {
                             code = 200,
                             message = "Return Receipt Data",
                             response = TransactionDto.class),
-                    @ApiResponse(code = 400, message = "Bad Request"),
-                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 400, message = badRequest),
+                    @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 404, message = "Receipt Not Found")
             })
     @GetMapping(path = {"/receipts/byPaymentStatus/{paymentStatus}"})
-    public ResponseEntity<TransactionDto> findByPaymentStatus(@PathVariable boolean paymentStatus){
-
-        ResponseEntity result;
+    public ResponseEntity<?> findByPaymentStatus(@PathVariable boolean paymentStatus) {
 
         try {
-            val receipts = receiptService.findByPaymentStatus(paymentStatus);
-            result = new ResponseEntity<>(receipts, HttpStatus.OK);
-        } catch (ExceptionInInitializerError e){
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e){
-            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
+            List<TransactionDto> receipts = receiptService.findByPaymentStatus(paymentStatus);
+            return ResponseEntity.ok(receipts);
+        } catch (Exception e) {
+            return GenericExceptionHandler.getException(e);
         }
-        return result;
     }
 
     @ApiOperation(
@@ -162,24 +139,19 @@ public class ReceiptController {
                             code = 200,
                             message = "Return Receipt Data",
                             response = TransactionDto.class),
-                    @ApiResponse(code = 400, message = "Bad Request"),
-                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 400, message = badRequest),
+                    @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 404, message = "Receipt Not Found")
             })
     @GetMapping(path = {"/receipts/byPaymentMethod/{paymentMethod}"})
-    public ResponseEntity<TransactionDto> findByPaymentMethod(@PathVariable String paymentMethod){
-
-        ResponseEntity result;
+    public ResponseEntity<?> findByPaymentMethod(@PathVariable String paymentMethod) {
 
         try {
-            val receipts = receiptService.findByPaymentMethod(paymentMethod);
-            result = new ResponseEntity<>(receipts, HttpStatus.OK);
-        } catch (ExceptionInInitializerError e){
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e){
-            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
+            List<TransactionDto> receipts = receiptService.findByPaymentMethod(paymentMethod);
+            return ResponseEntity.ok(receipts);
+        } catch (Exception e) {
+            return GenericExceptionHandler.getException(e);
         }
-        return result;
     }
 
     @ApiOperation(
@@ -192,26 +164,20 @@ public class ReceiptController {
                             code = 200,
                             message = "Return Receipt Data",
                             response = TransactionDto.class),
-                    @ApiResponse(code = 400, message = "Bad Request"),
-                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 400, message = badRequest),
+                    @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 404, message = "Receipt Not Found")
             })
     @GetMapping(path = {"/receipts/byExpirationDate/{expirationDate}"})
-    public ResponseEntity<TransactionDto> findReceiptsByExpirationDate(
-            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-            LocalDate expirationDate){
-
-        ResponseEntity result;
+    public ResponseEntity<?> findReceiptsByExpirationDate(
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate expirationDate) {
 
         try {
-            val receipts = receiptService.findByExpirationDate(expirationDate);
-            result = new ResponseEntity<>(receipts, HttpStatus.OK);
-        } catch (ExceptionInInitializerError e){
-            result = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e){
-            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
+            List<TransactionDto> receipts = receiptService.findByExpirationDate(expirationDate);
+            return ResponseEntity.ok(receipts);
+        } catch (Exception e) {
+            return GenericExceptionHandler.getException(e);
         }
-        return result;
     }
 
     @ApiOperation(
@@ -224,25 +190,19 @@ public class ReceiptController {
                             code = 201,
                             message = "Register Receipt Data",
                             response = TransactionDto.class),
-                    @ApiResponse(code = 400, message = "Bad Request"),
-                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 400, message = badRequest),
+                    @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 409, message = "Conflict")
             })
     @PostMapping(path = {"/receipts"})
-    public ResponseEntity<TransactionDto> createReceipt(@RequestBody TransactionDto receiptsData) {
-
-        ResponseEntity result;
+    public ResponseEntity<?> createReceipt(@Validated @RequestBody TransactionDto receiptsData) {
 
         try {
-            receiptService.saveReceiptData (receiptsData);
-            result = new ResponseEntity<>(receiptDataInserted, HttpStatus.CREATED);
-        } catch (ServiceException e) {
-            result = new ResponseEntity<>(
-                    receiptDataNotInserted + e.getMessage(), HttpStatus.CONFLICT);
+            receiptService.saveReceiptData(receiptsData);
+            return ResponseEntity.status(HttpStatus.CREATED).body(receiptDataInserted);
         } catch (Exception e) {
-            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
+            return GenericExceptionHandler.getException(e);
         }
-        return result;
     }
 
     @ApiOperation(
@@ -255,15 +215,15 @@ public class ReceiptController {
                             code = 200,
                             message = "Update Receipt Data",
                             response = TransactionDto.class),
-                    @ApiResponse(code = 400, message = "Bad Request"),
-                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 400, message = badRequest),
+                    @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 404, message = "Receipt Not Found"),
                     @ApiResponse(code = 409, message = "Conflict")
             })
     @PutMapping(path = {"/receipts/{id}"})
-    public ResponseEntity<String> updateReceipt(
+    public ResponseEntity<?> updateReceipt(
             @PathVariable("id") UUID receiptId,
-            @RequestBody TransactionDto receiptsData){
+            @Validated @RequestBody TransactionDto receiptsData) {
 
         ResponseEntity<String> result;
 
@@ -276,7 +236,7 @@ public class ReceiptController {
         } catch (ServiceException e) {
             result = new ResponseEntity<>(
                     receiptDataNotUpdated + e.getMessage(), HttpStatus.CONFLICT);
-        } catch (Exception e){
+        } catch (Exception e) {
             result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
         }
         return result;
@@ -292,24 +252,18 @@ public class ReceiptController {
                             code = 200,
                             message = "Delete Receipt Data",
                             response = TransactionDto.class),
-                    @ApiResponse(code = 400, message = "Bad Request"),
-                    @ApiResponse(code = 401, message = "Unauthorized Access"),
+                    @ApiResponse(code = 400, message = badRequest),
+                    @ApiResponse(code = 401, message = unauthorized),
                     @ApiResponse(code = 404, message = "Receipt Not Found")
             })
     @DeleteMapping(path = {"/receipts/{id}"})
-    public ResponseEntity<String> deleteReceiptId(@PathVariable("id") UUID receiptId) {
-
-        ResponseEntity<String> result;
+    public ResponseEntity<?> deleteReceiptId(@PathVariable("id") UUID receiptId) {
 
         try {
             receiptService.deleteReceiptId(receiptId);
-            result = new ResponseEntity<>(receiptDataDeleted, HttpStatus.OK);
-        } catch (ExceptionInInitializerError e) {
-            result = new ResponseEntity<>(
-                    receiptDataNotDeleted + e.getMessage(), HttpStatus.NOT_FOUND);
+            return ResponseEntity.ok(receiptDataDeleted);
         } catch (Exception e) {
-            result = new ResponseEntity<>(badRequest, HttpStatus.BAD_REQUEST);
+            return GenericExceptionHandler.getException(e);
         }
-        return result;
     }
 }

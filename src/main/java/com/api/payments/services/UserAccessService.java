@@ -6,7 +6,7 @@ import com.api.payments.dto.TokenDto;
 
 public interface UserAccessService {
 
-    TokenDto findUserByEmail(LoginDto loginDto) throws Exception;
+    TokenDto validateUserCredentials(LoginDto loginDto) throws Exception;
 
     TokenDto getDigitCode(DigitCodeDto digitCodeDto) throws Exception;
 

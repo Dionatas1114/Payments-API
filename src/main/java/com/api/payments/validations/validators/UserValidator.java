@@ -7,11 +7,15 @@ import static com.api.payments.validations.messages.UserValidatorMessages.*;
 
 public class UserValidator {
 
-    public static void userValidator(String userName, String email, String password, String phone) {
+    public static void userValidator(
+            String userName,
+            String email,
+            String password,
+            String phone) {
 
         boolean nameIsValid = Patterns.userNameValidate(userName);
         boolean emailIsValid = Patterns.emailValidate (email);
-        boolean passwIsValid = Patterns.passwValidate(password);
+        boolean passwIsValid = Patterns.passwordValidate(password);
         boolean phoneValid = Patterns.phoneValidate(phone);
 
         if (!nameIsValid) throw new ServiceException (userNameInvalid);

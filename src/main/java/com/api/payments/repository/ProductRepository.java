@@ -6,8 +6,8 @@ import java.util.*;
 
 public interface ProductRepository extends JpaRepository<Products, UUID> {
 
-    List<Products> findByItemName(String itemName);
-    List<Products> findByProductBrand(String productBrand);
-    List<Products> findByCaptionPacking(String captionPacking);
+    Optional<List<Products>> findByItemName(String itemName);
+    Optional<List<Products>> findByProductBrand(String productBrand);
+    Optional<List<Products>> findByCaptionPacking(String captionPacking);
 
 }

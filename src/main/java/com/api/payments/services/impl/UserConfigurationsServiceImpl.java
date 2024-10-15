@@ -4,13 +4,14 @@ import com.api.payments.dto.UserConfigurationsDto;
 import com.api.payments.entity.UserConfigurations;
 import com.api.payments.repository.UserConfigurationsRepository;
 import com.api.payments.services.UserConfigurationsService;
+import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
-import lombok.val;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.api.payments.messages.UserMessages.noUserDataRegistered;
 
@@ -21,13 +22,15 @@ public class UserConfigurationsServiceImpl implements UserConfigurationsService 
     private UserConfigurationsRepository userConfigurationsRepository;
 
     @Override
-    public List<UserConfigurationsDto> findUserConfigurations() {
-
-        val allUserConfigurations = userConfigurationsRepository.findAll();
-        if (allUserConfigurations.isEmpty()) throw new ExceptionInInitializerError(noUserDataRegistered);
+    public List<UserConfigurationsDto> findUserConfigurations() throws Exception {
 
         List<UserConfigurationsDto> userConfigurationsDtoList = new ArrayList<>();
-        allUserConfigurations.forEach(userConfiguration -> userConfigurationsDtoList.add(convertToDto(userConfiguration)));
+
+        Optional.of(userConfigurationsRepository.findAll())
+                .filter(list -> !list.isEmpty())
+                .orElseThrow(() -> new NotFoundException(noUserDataRegistered))
+                .forEach(userConfiguration -> userConfigurationsDtoList.add(convertToDto(userConfiguration)));
+
         return userConfigurationsDtoList;
     }
 

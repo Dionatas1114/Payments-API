@@ -13,6 +13,6 @@ public interface ServiceService {
     ServicesDto findServiceById(UUID serviceId) throws Exception;
 
     void saveServiceData(ServicesDto servicesData) throws Exception;
-    void updateServiceData(UUID serviceId, ServicesDto servicesData) throws ExceptionInInitializerError;
-    void deleteServiceData(UUID serviceId) throws ExceptionInInitializerError;
+    void updateServiceData(UUID serviceId, ServicesDto servicesData) throws ExceptionInInitializerError, Exception;
+    void deleteServiceData(UUID serviceId) throws ExceptionInInitializerError, Exception;
 }

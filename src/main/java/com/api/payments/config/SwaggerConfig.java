@@ -76,7 +76,6 @@ public class SwaggerConfig {
                 "OWNER_EMAIL"
         };
 
-        CheckEnvVars.checkEnvVarsIsNotNull(
-                envVarType, envVarValue, envVarName);
+        CheckEnvVars.checkEnvVarsIsNotNull(envVarType, envVarValue, envVarName);
     }
 }

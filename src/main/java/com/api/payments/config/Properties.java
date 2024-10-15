@@ -11,6 +11,18 @@ import org.springframework.context.annotation.Configuration;
 public class Properties {
 
     @Value("${PROJ.TITLE}")
-    private String PROJ_TITLE;
+    public String PROJ_TITLE;
+
+    @Value("${JWT.VALIDITY}")
+    public String JWT_VALIDITY;
+
+    @Value("${JWT.SECRET}")
+    public String JWT_SECRET;
+
+    @Value("${secure.paths}")
+    public String[] securePaths;
+
+    @Value("${public.paths}")
+    public String[] publicPaths;
 
 }
