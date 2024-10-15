@@ -18,7 +18,7 @@ public class SecurityConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(tokenInterceptor)
-                .addPathPatterns(properties.getSecurePaths())
-                .excludePathPatterns(properties.getPublicPaths());
+                .addPathPatterns(properties.getSecurePaths()) // add list of protected routes
+                .excludePathPatterns(properties.getPublicPaths()); // add list of public routes (ex. login page)
     }
 }

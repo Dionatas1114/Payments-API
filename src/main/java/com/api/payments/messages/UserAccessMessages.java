@@ -4,7 +4,7 @@ public interface UserAccessMessages {
 
     // Process Messages
     String tokenValidation = "Validating Token... ";
-    String tokenGenerate = "Generating Token... valid for ";
+    String tokenGenerated = "Token generated! valid for ";
 
     // Process Messages
     String tokenIsValid = "The Token is Valid! ";

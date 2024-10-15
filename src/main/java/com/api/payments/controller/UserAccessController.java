@@ -49,8 +49,6 @@ public class UserAccessController {
 
         try {
             TokenDto token = userAccessService.validateUserCredentials(loginDto);
-//            response.addHeader("Authorization", "Bearer " + token);
-            // TODO Implement Login: set o token no header
             return ResponseEntity.ok(token);
         } catch (Exception e) {
             return GenericExceptionHandler.getException(e);

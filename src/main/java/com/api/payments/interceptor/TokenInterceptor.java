@@ -63,7 +63,7 @@ public class TokenInterceptor implements HandlerInterceptor {
                 .signWith(SignatureAlgorithm.HS512, properties.getJWT_SECRET())
                 .compact();
 
-        Log.info(tokenGenerate + days + "day.");
+        Log.info(tokenGenerated + days + " day.");
         return TokenDto.builder().token(token).expiresIn(days + "d").build();
     }
 
