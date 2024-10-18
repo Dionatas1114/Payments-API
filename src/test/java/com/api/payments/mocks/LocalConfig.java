@@ -1,4 +1,4 @@
-package com.api.payments.config.test;
+package com.api.payments.mocks;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;

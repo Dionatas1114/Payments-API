@@ -1,4 +1,4 @@
-package com.api.payments.config.test;
+package com.api.payments.mocks;
 
 import com.api.payments.dto.TransactionDto;
 import com.api.payments.entity.Payments;

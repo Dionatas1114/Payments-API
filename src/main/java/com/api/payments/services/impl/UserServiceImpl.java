@@ -7,6 +7,7 @@ import com.api.payments.interceptor.TokenInterceptor;
 import com.api.payments.repository.UserConfigurationsRepository;
 import com.api.payments.repository.UserRepository;
 import com.api.payments.services.UserService;
+import com.api.payments.utils.Log;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
@@ -56,8 +57,8 @@ public class UserServiceImpl implements UserService {
 
         String userName = userDto.getName();
         String email = userDto.getEmail();
-        String password = userDto.getPassword();
         String phone = userDto.getPhone();
+        String password = userDto.getPassword();
 
         // Verifica se o usuário já existe por nome, e-mail ou telefone
         userRepository.findByNameOrEmailOrPhone(userName, email, phone)
