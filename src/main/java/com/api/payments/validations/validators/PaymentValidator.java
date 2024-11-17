@@ -1,50 +1,54 @@
 package com.api.payments.validations.validators;
 
 import com.api.payments.dto.TransactionDto;
+import com.api.payments.enums.PaymentMethods;
 import org.hibernate.service.spi.ServiceException;
 
-import java.time.LocalDate;
-import java.util.UUID;
+import java.util.Objects;
 
 import static com.api.payments.validations.messages.PaymentValidatorMessages.*;
 
 public class PaymentValidator {
 
-    public static void paymentValidator(TransactionDto paymentsData)
-            throws ServiceException {
+    public static void paymentValidator(TransactionDto paymentsData) throws ServiceException {
 
-        String debtorFullName = paymentsData.getDebtorFullName ();
-        String debtorLastName = paymentsData.getDebtorLastName ();
-        String paymentMethod = paymentsData.getPaymentMethod ();
-        Boolean paymentStatus = paymentsData.getPaymentStatus ();
-        LocalDate paymentDate = paymentsData.getPaymentDate ();
-        LocalDate expirationDate = paymentsData.getExpirationDate ();
-        String currency = paymentsData.getCurrency ();
-        double interest = paymentsData.getInterest ();
-        double fine = paymentsData.getFine ();
-        double increasedValue = paymentsData.getIncreasedValue ();
-        double discPayAdvance = paymentsData.getDiscPayAdvance ();
-        double originalValue = paymentsData.getOriginalValue ();
-        double total = paymentsData.getTotal ();
-        String description = paymentsData.getDescription ();
-        String messageText = paymentsData.getMessageText ();
-        UUID userId = paymentsData.getUser().getId();
+        paymentMethodValidator(paymentsData.getPaymentMethod());
 
-        if (debtorFullName == null) throw new ServiceException (debtorFullNameInvalid);
-        if (debtorLastName == null) throw new ServiceException (debtorLastNameInvalid);
-        if (paymentMethod == null) throw new ServiceException (paymentMethodInvalid);
-        if (paymentStatus == null) throw new ServiceException (paymentStatusInvalid);
-        if (paymentDate == null) throw new ServiceException (paymentDateInvalid);
-        if (expirationDate == null) throw new ServiceException (expirationDateInvalid);
-        if (currency == null) throw new ServiceException(currencyInvalid);
-//        if (interest == 0) throw new ServiceException (interestInvalid);
-//        if (fine == 0) throw new ServiceException (fineInvalid);
-//        if (increasedValue == 0) throw new ServiceException (increasedValueInvalid);
-//        if (discPayAdvance == 0) throw new ServiceException (discPayAdvanceInvalid);
-//        if (originalValue == 0) throw new ServiceException (originalValueInvalid);
-//        if (total == 0) throw new ServiceException (totalInvalid);
-        if (description == null) throw new ServiceException (descriptionInvalid);
-        if (messageText == null) throw new ServiceException (messageTextInvalid);
-        if (userId == null) throw new ServiceException (userIdInvalid);
+        validateField(paymentsData.getDebtorFullName(), debtorFullNameInvalid);
+        validateField(paymentsData.getDebtorLastName(), debtorLastNameInvalid);
+        validateField(paymentsData.getUser(), userIdInvalid);
+        validateField(paymentsData.getUser().getId(), userIdInvalid);
+
+        validateField(paymentsData.getPaymentStatus(), paymentStatusInvalid); //TODO create enum
+        validateField(paymentsData.getCurrency(), currencyInvalid); //TODO create enum
+        validateField(paymentsData.getPaymentDate(), paymentDateInvalid);
+        validateField(paymentsData.getExpirationDate(), expirationDateInvalid);
+
+//        validateField(paymentsData.getInterest(), interestInvalid);
+//        validateField(paymentsData.getFine(), fineInvalid);
+//        validateField(paymentsData.getIncreasedValue(), increasedValueInvalid);
+//        validateField(paymentsData.getDiscPayAdvance(), discPayAdvanceInvalid);
+//        validateField(paymentsData.getOriginalValue(), originalValueInvalid);
+//        validateField(paymentsData.getTotal(), totalInvalid);
+
+        validateField(paymentsData.getDescription(), descriptionInvalid);
+        validateField(paymentsData.getMessageText(), messageTextInvalid);
+    }
+
+    private static void validateField(Object field, String message) {
+        if (Objects.isNull(field)) throw new ServiceException(message);
+
+        if(field instanceof String) {
+            if (((String) field).isBlank()) throw new ServiceException(message);
+        }
+
+        if (field instanceof Double) {
+            if ((Double) field <= 0) throw new ServiceException(message);
+        }
+    }
+
+    private static void paymentMethodValidator(String paymentMethod) {
+        validateField(paymentMethod, paymentMethodInvalid);
+        PaymentMethods.fromValue(paymentMethod);
     }
 }
