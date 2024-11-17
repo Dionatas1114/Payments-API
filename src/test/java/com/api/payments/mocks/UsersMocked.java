@@ -64,10 +64,7 @@ public class UsersMocked {
     }
 
     public void usersDB() {
-        Users userMocked = returnUserMocked();
-        Users u1 = new Users(userMocked.name, userMocked.email, userMocked.password, userMocked.phone, userMocked.userConfigurations);
-        Users u2 = new Users(userMocked.name, userMocked.email, userMocked.password, userMocked.phone, userMocked.userConfigurations);
-        userRepository.saveAll(List.of(u1, u2));
+        userRepository.saveAll(List.of(returnUserMocked(), returnUserMocked()));
     }
 }
 

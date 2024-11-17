@@ -60,7 +60,7 @@ public class TransactionBaseEntity extends BaseEntity {
 
     @ApiModelProperty(notes = "Valor Total da Transação")
     @Column(nullable = false)
-    public double amount;
+    public double total;
 
     @ApiModelProperty(notes = "Descrição da Transação")
     @Column(length = 50)
@@ -180,12 +180,12 @@ public class TransactionBaseEntity extends BaseEntity {
         this.originalValue = originalValue;
     }
 
-    public double getAmount() {
-        return amount;
+    public double getTotal() {
+        return total;
     }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
+    public void setTotal(double total) {
+        this.total = total;
     }
 
     public String getDescription() {

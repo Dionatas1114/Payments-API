@@ -7,7 +7,7 @@ import com.api.payments.interceptor.TokenInterceptor;
 import com.api.payments.repository.UserConfigurationsRepository;
 import com.api.payments.repository.UserRepository;
 import com.api.payments.services.UserService;
-import com.api.payments.utils.Log;
+import com.api.payments.validations.validators.UserValidator;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
@@ -20,8 +20,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.api.payments.messages.UserMessages.*;
-import static com.api.payments.validations.validators.UserValidator.userValidator;
+import static com.api.payments.messages.UserMessages.noUserDataRegistered;
+import static com.api.payments.messages.UserMessages.userDataNotFound;
+import static com.api.payments.messages.UserMessages.userEmailAlreadyRegistered;
+import static com.api.payments.messages.UserMessages.userNameAlreadyRegistered;
+import static com.api.payments.messages.UserMessages.userPhoneAlreadyRegistered;
 
 @Service
 @AllArgsConstructor
@@ -68,7 +71,7 @@ public class UserServiceImpl implements UserService {
                     if (phone.equals(user.getPhone())) throw new ServiceException(userPhoneAlreadyRegistered);
                 });
 
-        userValidator(userName, email, password, phone);
+        UserValidator.userValidator(userName, email, password, phone);
 
         String passwordEncoded = tokenInterceptor.passwordEncoder().encode(password);
 
@@ -104,7 +107,7 @@ public class UserServiceImpl implements UserService {
         boolean hasNotifications = userDto.getUserConfigurations().isHasNotifications();
         String language = userDto.getUserConfigurations().getLanguage();
 
-        userValidator(userName, email, password, phone);
+        UserValidator.userValidator(userName, email, password, phone);
 
         userRepository.findByEmail(email)
                 .ifPresent(existingUser -> {
@@ -146,7 +149,12 @@ public class UserServiceImpl implements UserService {
     public void deleteUserData(UUID userId) throws Exception {
 
         userRepository.findById(userId).orElseThrow(() -> new NotFoundException(userDataNotFound));
+        UserConfigurations userConfigurations = userConfigurationsRepository
+                .findByUserId(userId)
+                .orElseThrow(() -> new NotFoundException(userDataNotFound));
+
         userRepository.deleteById(userId);
+        userConfigurationsRepository.delete(userConfigurations);
     }
 
     private UsersDto convertToDto(Users user) {
