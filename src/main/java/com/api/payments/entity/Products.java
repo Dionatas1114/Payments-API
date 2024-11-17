@@ -4,8 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import javax.persistence.*;
 
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
 @Entity
 @Table(name = "PRODUCTS")
 @EqualsAndHashCode(callSuper = true)
