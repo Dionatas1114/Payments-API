@@ -1,24 +1,26 @@
 package com.api.payments.mocks;
 
 import com.api.payments.dto.TransactionDto;
+import com.api.payments.dto.UsersDto;
 import com.api.payments.entity.Payments;
+import com.api.payments.entity.Users;
+import com.api.payments.enums.PaymentMethods;
 import com.api.payments.repository.PaymentRepository;
-import lombok.AllArgsConstructor;
-import lombok.val;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Configuration
-@AllArgsConstructor
 public class PaymentsMocked {
 
     private static final UUID ID = UUID.fromString("4f9ab8ae-e62a-40f9-b7b8-66eb1d30b75a");
     private static final String USER_NAME = "Johann";
+    private static final String PAYMENT_METHOD = PaymentMethods.CREDIT_CARD.getValue();
+    private static final String DESCRIPTION = "Description";
+    private static final String CURRENCY = "BRL";
+    private static final double DISCOUNT = 0.0;
     private static final double PRICE = 10.00;
     private static final boolean PAYMENT_STATUS = true;
     public static final LocalDate TODAY = LocalDate.now();
@@ -29,36 +31,54 @@ public class PaymentsMocked {
     @Bean
     public TransactionDto returnPaymentDtoMocked(){
 
+        UsersDto userMocked = new UsersMocked().returnUserDtoMocked();
+
         return TransactionDto.builder()
                 .id(ID)
-//                .name(USER_NAME)
-//                .email(EMAIL)
-//                .password(PASSW)
-//                .phone(PHONE)
+                .debtorFullName(USER_NAME)
+                .debtorLastName(USER_NAME)
+                .paymentMethod(PAYMENT_METHOD)
+                .paymentStatus(PAYMENT_STATUS)
+                .expirationDate(TOMORROW)
+                .paymentDate(TODAY)
+                .currency(CURRENCY)
+                .interest(DISCOUNT)
+                .fine(DISCOUNT)
+                .increasedValue(DISCOUNT)
+                .discPayAdvance(DISCOUNT)
+                .originalValue(PRICE)
+                .total(PRICE)
+                .description(DESCRIPTION)
+                .messageText(DESCRIPTION)
+                .user(userMocked)
                 .build();
     }
 
     @Bean
     public Payments returnPaymentMocked(){
 
-        val payment = new Payments();
+        Users userMocked = new UsersMocked().returnUserMocked();
+
+        Payments payment = new Payments();
+
+        payment.setId(ID);
         payment.setDebtorFullName(USER_NAME);
         payment.setDebtorLastName(USER_NAME);
-        payment.setPaymentMethod(USER_NAME);
+        payment.setPaymentMethod(PAYMENT_METHOD);
         payment.setPaymentStatus(PAYMENT_STATUS);
         payment.setExpirationDate(TOMORROW);
-//        payments.setPaymentDate();
+        payment.setPaymentDate(TODAY);
         payment.setTransactionFrequency(USER_NAME);
-//        payments.setCurrency();
-//        payments.setInterest();
-//        payments.setFine();
-//        payments.setIncreasedValue();
-//        payments.setDiscPayAdvance();
+        payment.setCurrency(CURRENCY);
+        payment.setInterest(DISCOUNT);
+        payment.setFine(DISCOUNT);
+        payment.setIncreasedValue(DISCOUNT);
+        payment.setDiscPayAdvance(DISCOUNT);
         payment.setOriginalValue(PRICE);
-        payment.setAmount(PRICE);
-//        payments.setDescription();
-//        payments.setMessageText();
-//        payments.setUser();
+        payment.setTotal(PRICE);
+        payment.setDescription(DESCRIPTION);
+        payment.setMessageText(DESCRIPTION);
+        payment.setUser(userMocked);
 
         return payment;
     }
@@ -69,43 +89,6 @@ public class PaymentsMocked {
     }
 
     public void paymentsDB() {
-        val p1 = new Payments();
-        p1.setDebtorFullName(USER_NAME);
-        p1.setDebtorLastName(USER_NAME);
-        p1.setPaymentMethod(USER_NAME);
-        p1.setPaymentStatus(PAYMENT_STATUS);
-        p1.setExpirationDate(TOMORROW);
-        p1.setPaymentDate(TODAY);
-        p1.setTransactionFrequency(USER_NAME);
-//        p1.setCurrency();
-//        p1.setInterest();
-//        p1.setFine();
-//        p1.setIncreasedValue();
-//        p1.setDiscPayAdvance();
-        p1.setOriginalValue(PRICE);
-        p1.setAmount(PRICE);
-//        p1.setDescription();
-//        p1.setMessageText();
-//        p1.setUser();
-
-        val p2 = new Payments();
-        p2.setDebtorFullName(USER_NAME);
-        p2.setDebtorLastName(USER_NAME);
-        p2.setPaymentMethod(USER_NAME);
-        p2.setPaymentStatus(PAYMENT_STATUS);
-        p2.setExpirationDate(TOMORROW);
-//        p2.setPaymentDate(TODAY); // No Pay
-        p2.setTransactionFrequency(USER_NAME);
-//        p2.setCurrency();
-//        p2.setInterest();
-//        p2.setFine();
-//        p2.setIncreasedValue();
-//        p2.setDiscPayAdvance();
-        p2.setOriginalValue(PRICE);
-        p2.setAmount(PRICE);
-//        p2.setDescription();
-//        p2.setMessageText();
-//        p2.setUser();
-        paymentRepository.saveAll(List.of(p1, p2));
+        paymentRepository.saveAll(List.of(returnPaymentMocked(), returnPaymentMocked()));
     }
 }
