@@ -1,18 +1,18 @@
 package com.api.payments.entity;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "USERS")
 @EqualsAndHashCode(callSuper = true)
-public class Users extends BaseEntity{
+public class Users extends BaseEntity {
 
     @ApiModelProperty(notes = "Nome do Usuário")
     @Column(nullable = false, length = 50)

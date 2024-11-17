@@ -1,12 +1,12 @@
 package com.api.payments.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@AllArgsConstructor
+@Getter
 @Entity
 @Table(name = "SERVICES")
 @EqualsAndHashCode(callSuper = true)

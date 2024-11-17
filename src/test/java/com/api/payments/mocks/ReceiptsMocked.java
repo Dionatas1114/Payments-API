@@ -1,4 +1,4 @@
-package com.api.payments.config.test;
+package com.api.payments.mocks;
 
 import com.api.payments.dto.TransactionDto;
 import com.api.payments.entity.Receipts;
@@ -55,7 +55,7 @@ public class ReceiptsMocked {
 //        payments.setIncreasedValue();
 //        payments.setDiscPayAdvance();
         receipt.setOriginalValue(PRICE);
-        receipt.setAmount(PRICE);
+        receipt.setTotal(PRICE);
 //        payments.setDescription();
 //        payments.setMessageText();
 //        payments.setUser();
@@ -83,7 +83,7 @@ public class ReceiptsMocked {
 //        r1.setIncreasedValue();
 //        r1.setDiscPayAdvance();
         r1.setOriginalValue(PRICE);
-        r1.setAmount(PRICE);
+        r1.setTotal(PRICE);
 //        r1.setDescription();
 //        r1.setMessageText();
 //        r1.setUser();
@@ -102,7 +102,7 @@ public class ReceiptsMocked {
 //        r2.setIncreasedValue();
 //        r2.setDiscPayAdvance();
         r2.setOriginalValue(PRICE);
-        r2.setAmount(PRICE);
+        r2.setTotal(PRICE);
 //        r2.setDescription();
 //        r2.setMessageText();
 //        r2.setUser();
