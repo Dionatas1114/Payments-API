@@ -4,8 +4,7 @@ import com.api.payments.dto.TransactionDto;
 import com.api.payments.enums.PaymentMethods;
 import org.hibernate.service.spi.ServiceException;
 
-import java.util.Objects;
-
+import static com.api.payments.utils.ValidateField.validateField;
 import static com.api.payments.validations.messages.PaymentValidatorMessages.*;
 
 public class PaymentValidator {
@@ -33,18 +32,6 @@ public class PaymentValidator {
 
         validateField(paymentsData.getDescription(), descriptionInvalid);
         validateField(paymentsData.getMessageText(), messageTextInvalid);
-    }
-
-    private static void validateField(Object field, String message) {
-        if (Objects.isNull(field)) throw new ServiceException(message);
-
-        if(field instanceof String) {
-            if (((String) field).isBlank()) throw new ServiceException(message);
-        }
-
-        if (field instanceof Double) {
-            if ((Double) field <= 0) throw new ServiceException(message);
-        }
     }
 
     private static void paymentMethodValidator(String paymentMethod) {
