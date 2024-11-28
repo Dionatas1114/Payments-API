@@ -1,4 +1,4 @@
-package com.api.payments.utils;
+package com.api.payments.validations.validators;
 
 import org.hibernate.service.spi.ServiceException;
 

@@ -4,7 +4,7 @@ import com.api.payments.dto.TransactionDto;
 import com.api.payments.enums.PaymentMethods;
 import org.hibernate.service.spi.ServiceException;
 
-import static com.api.payments.utils.ValidateField.validateField;
+import static com.api.payments.validations.validators.ValidateField.validateField;
 import static com.api.payments.validations.messages.PaymentValidatorMessages.*;
 
 public class PaymentValidator {

@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static com.api.payments.messages.ProductMessages.*;
-import static com.api.payments.utils.ValidateField.validateField;
+import static com.api.payments.validations.validators.ValidateField.validateField;
 import static com.api.payments.validations.messages.ProductValidatorMessages.itemNameInvalid;
 import static com.api.payments.validations.validators.ProductValidator.*;
 

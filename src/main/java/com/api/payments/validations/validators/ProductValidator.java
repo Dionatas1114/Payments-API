@@ -3,7 +3,7 @@ package com.api.payments.validations.validators;
 import com.api.payments.dto.ProductsDto;
 import org.hibernate.service.spi.ServiceException;
 
-import static com.api.payments.utils.ValidateField.validateField;
+import static com.api.payments.validations.validators.ValidateField.validateField;
 import static com.api.payments.validations.messages.ProductValidatorMessages.*;
 
 public class ProductValidator {
