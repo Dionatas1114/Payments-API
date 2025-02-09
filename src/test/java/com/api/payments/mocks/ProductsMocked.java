@@ -3,7 +3,6 @@ package com.api.payments.mocks;
 import com.api.payments.dto.ProductsDto;
 import com.api.payments.entity.Products;
 import com.api.payments.repository.ProductRepository;
-import lombok.AllArgsConstructor;
 import lombok.val;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +12,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Configuration
-@AllArgsConstructor
 public class ProductsMocked {
 
     private static final UUID ID = UUID.fromString("4f9ab8ae-e62a-40f9-b7b8-66eb1d30b75a");
