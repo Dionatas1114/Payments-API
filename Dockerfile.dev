@@ -1,0 +1,19 @@
+# Usa a imagem do OpenJDK 11 como base
+FROM eclipse-temurin:11-jdk-alpine
+
+# Define o diretório de trabalho
+WORKDIR /app
+
+# Copia apenas os arquivos necessários para cache das dependências
+COPY mvnw pom.xml ./
+COPY .mvn .mvn
+RUN ./mvnw dependency:go-offline
+
+# Copia o código-fonte da aplicação
+COPY src src
+
+# Expõe a porta da aplicação
+EXPOSE 8080
+
+# Comando para rodar a aplicação no modo desenvolvimento
+CMD ["./mvnw", "spring-boot:run"]
