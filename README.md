@@ -32,34 +32,42 @@ This API is designed to address three financial needs:
 2. Build Docker image using Dockerfile (only for database):
    2.1. Development Environment:  
       ```sh
-      docker-compose --env-file env.dev -f docker-compose.dev.yml up --build -d
+      docker-compose --env-file env.dev -f docker-compose.dev.yaml up --build -d
       ```
 
    2.2. Production Environment:
       ```sh
-      docker-compose --env-file env.prod -f docker-compose.prod.yml up --build -d
+      docker-compose --env-file env.prod -f docker-compose.prod.yaml up --build -d
       ```
 3. Initialize the database:
    ```sh
    mvn flyway:migrate
    ```
+   
+4. Open in SQL Client (e.g. Dbeaver):
+   ```sh
+   jdbc:postgresql://localhost:5432/crudjavapostgres
+   ```
+   
+   Username: username
+   Password: passw
 
-4. Build the project:
+5. Build the project:
    ```sh
    mvn clean install
    ```
 
-5. Run the application:
+6. Run the application:
    ```sh
    mvn spring-boot:run
    ```
 
-6. Open Swagger UI:
+7. Open Swagger UI:
    ```sh
    http://localhost:8080/swagger-ui/#/
    ```
 
-7. Run the tests:
+8. Run the tests:
    ```sh
    mvn test
    ```
