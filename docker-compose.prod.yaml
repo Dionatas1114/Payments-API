@@ -3,9 +3,9 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: `${DB_PASS}:passw`
-      POSTGRES_USER: `${DB_USER}:postgres`
-      POSTGRES_DB: `${DB_NAME}:crudjavapostgres`
+      POSTGRES_PASSWORD: "${DB_PASS}:passw"
+      POSTGRES_USER: "${DB_USER}:postgres"
+      POSTGRES_DB: "${DB_NAME}:crudjavapostgres"
     ports:
       - "5432:5432"
     volumes:
