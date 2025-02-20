@@ -29,28 +29,17 @@ This API is designed to address three financial needs:
    cd financial-api
    ```
    
-2. Build Docker image using Dockerfile (only for database):
-   2.1. Development Environment:  
-      ```sh
-      docker-compose --env-file env.dev -f docker-compose.dev.yaml up --build -d
-      ```
+2. Build Docker image using Dockerfile (see `README.Docker.md`).
 
-   2.2. Production Environment:
-      ```sh
-      docker-compose --env-file env.prod -f docker-compose.prod.yaml up --build -d
-      ```
 3. Initialize the database:
    ```sh
    mvn flyway:migrate
    ```
    
 4. Open in SQL Client (e.g. Dbeaver):
-   ```sh
-   jdbc:postgresql://localhost:5432/crudjavapostgres
-   ```
-   
-   Username: username
-   Password: passw
+   * Connection URL: jdbc:postgresql://localhost:5432/crudjavapostgres
+   * Username: username
+   * Password: passw
 
 5. Build the project:
    ```sh
