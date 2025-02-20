@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
         Optional.of(userRepository.findAll())
                 .filter(list -> !list.isEmpty())
-                .orElseThrow(() -> new Exception(noUserDataRegistered))
+                .orElseThrow(() -> new NotFoundException(noUserDataRegistered))
                 .forEach(user -> usersDtoList.add(convertToDto(user)));
 
         return usersDtoList;

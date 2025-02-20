@@ -33,7 +33,7 @@ public class ProductServiceImpl implements ProductService {
 
         Optional.of(productRepository.findAll())
                 .filter(list -> !list.isEmpty())
-                .orElseThrow(() -> new Exception(noProductDataRegistered))
+                .orElseThrow(() -> new NotFoundException(noProductDataRegistered))
                 .forEach(product -> productsDtoList.add(convertToDto(product)));
 
         return productsDtoList;

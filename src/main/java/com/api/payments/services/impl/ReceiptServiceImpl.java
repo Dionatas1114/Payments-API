@@ -31,7 +31,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 
         Optional.of(receiptRepository.findAll())
                 .filter(list -> !list.isEmpty())
-                .orElseThrow(() -> new Exception(noReceiptDataRegistered))
+                .orElseThrow(() -> new NotFoundException(noReceiptDataRegistered))
                 .forEach(receipt -> receiptsDtoList.add(convertToDto(receipt)));
 
         return receiptsDtoList;

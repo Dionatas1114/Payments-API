@@ -30,7 +30,7 @@ public class ServiceServiceImpl implements ServiceService {
 
         Optional.of(serviceRepository.findAll())
                 .filter(services -> !services.isEmpty())
-                .orElseThrow(() -> new Exception(noServiceDataRegistered))
+                .orElseThrow(() -> new NotFoundException(noServiceDataRegistered))
                 .forEach(service -> servicesDtoList.add(convertToDto(service)));
 
         return servicesDtoList;
