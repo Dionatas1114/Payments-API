@@ -16,6 +16,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static com.api.payments.messages.ProductMessages.*;
+import static com.api.payments.validations.validators.ValidateField.validateField;
+import static com.api.payments.validations.messages.ProductValidatorMessages.itemNameInvalid;
 import static com.api.payments.validations.validators.ProductValidator.*;
 
 @Service
@@ -31,7 +33,7 @@ public class ProductServiceImpl implements ProductService {
 
         Optional.of(productRepository.findAll())
                 .filter(list -> !list.isEmpty())
-                .orElseThrow(() -> new Exception(noProductDataRegistered))
+                .orElseThrow(() -> new NotFoundException(noProductDataRegistered))
                 .forEach(product -> productsDtoList.add(convertToDto(product)));
 
         return productsDtoList;
@@ -51,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductsDto> findByItemName(String itemName) throws Exception {
 
         List<ProductsDto> productDtoList = new ArrayList<>();
-        itemNameValidator(itemName);
+        validateField(itemName, itemNameInvalid);
 
         productRepository.findByItemName(itemName)
                 .orElseThrow(() -> new NotFoundException(productDataNotFound))

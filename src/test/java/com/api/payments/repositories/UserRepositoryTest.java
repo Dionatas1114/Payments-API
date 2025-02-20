@@ -1,118 +1,148 @@
 package com.api.payments.repositories;
 
+import com.api.payments.entity.Users;
 import com.api.payments.mocks.UsersMocked;
+import com.api.payments.repository.UserRepository;
 import com.api.payments.utils.Log;
-import lombok.val;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-@ExtendWith(MockitoExtension.class)
-@WebMvcTest
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+@DataJpaTest
 public class UserRepositoryTest {
 
-    @Autowired
-    private TestEntityManager testEntityManager;
+    private boolean shouldSave = true;
+    private Users user;
+    private UUID userId;
 
     @Autowired
-    private com.api.payments.repository.UserRepository userRepository;
+    private UserRepository userRepository;
 
-//    @Test
-//    @DisplayName("This test should return all user data")
-//    public void findAllUsers() {
-//        val userDataMocked = new UsersMocked().returnUserDataMocked();
-//
-//        val userPersisted = testEntityManager.persist(userDataMocked);
-//        Log.info("## userPersisted, userName: " + userPersisted.getName());
-//
-//        val allUsersFromRepository = userRepository.findAll();
-//
-//        Assertions.assertEquals(2, allUsersFromRepository.size());
-//        Assertions.assertEquals(userDataMocked.getName(), allUsersFromRepository.get(0).getName());
-//    }
-//
-//    @Test
-//    @DisplayName("This test should return user data by params: name, email or phone")
-//    public void findUserByParam() {
-//        val userDataMocked = new UsersMocked().returnUserDataMocked();
-//
-//        val userPersisted = testEntityManager.persist(userDataMocked);
-//        String userName = userPersisted.getName();
-//        String userEmail = userPersisted.getEmail();
-//        String userPhone = userPersisted.getPhone();
-//
-//        val userByName = userRepository.findByName(userName);
-//        val userByEmail = userRepository.findByEmail(userEmail);
-//        val userByPhone = userRepository.findByPhone(userPhone);
-//
-//        Assertions.assertEquals(userDataMocked.getName(), userByName.getName());
-//        Assertions.assertEquals(userDataMocked, userByName);
-//
-//        Assertions.assertEquals(userDataMocked.getEmail(), userByName.getEmail());
-//        Assertions.assertEquals(userDataMocked, userByEmail);
-//
-//        Assertions.assertEquals(userDataMocked.getPhone(), userByName.getPhone());
-//        Assertions.assertEquals(userDataMocked, userByPhone);
-//    }
-//
-//    @Test
-//    @DisplayName("This test should save user data")
-//    public void saveUserData() {
-//        val userDataMocked = new UsersMocked().returnUserDataMocked();
-//
-//        val userPersisted = testEntityManager.persist(userDataMocked);
-//
-//        val userSaved = userRepository.save(userPersisted);
-//
-//        Assertions.assertEquals(userDataMocked, userSaved);
-//    }
-//
-//    @Test
-//    @DisplayName("This test should update user data")
-//    public void updateUserData() {
-//        val userDataMocked = new UsersMocked().returnUserDataMocked();
-//
-//        val userPersisted = testEntityManager.persist(userDataMocked);
-//
-//        String newUserName = "Luis";
-//        String newUserEmail = "luis@gmail.com.br";
-//        String newUserPassw = "Luis1234#@";
-//        String newUserPhone = "5551555554444";
-//
-//        userPersisted.setName(newUserName);
-//        userPersisted.setEmail(newUserEmail);
-//        userPersisted.setPassword(newUserPassw);
-//        userPersisted.setPhone(newUserPhone);
-//
-//        val userUpdated = userRepository.save(userPersisted);
-//
-//        Assertions.assertEquals(newUserName, userUpdated.getName());
-//        Assertions.assertEquals(newUserEmail, userUpdated.getEmail());
-//        Assertions.assertEquals(newUserPassw, userUpdated.getPassword());
-//        Assertions.assertEquals(newUserPhone, userUpdated.getPhone());
-//    }
-//
-//    @Test
-//    @DisplayName("This test should delete user data by userId")
-//    public void deleteUserData() {
-//        val userDataMocked = new UsersMocked().returnUserDataMocked();
-//
-//        val userPersisted = testEntityManager.persist(userDataMocked);
-//        UUID userId = userPersisted.getId();
-//
-//        userRepository.deleteById(userId);
-//
-//        val user = userRepository.findById(userId);
-//
-//        Assertions.assertTrue(user.isEmpty());
-//    }
+    @BeforeEach
+    public void setUp() {
+        userRepository.deleteAll();
+
+        if (shouldSave) {
+            Users userMocked = new UsersMocked().returnUserMocked();
+
+            Users userPersisted = userRepository.save(userMocked);
+            Log.info("userId: " + userPersisted.getId().toString());
+            userId = userPersisted.getId();
+            user = userPersisted;
+        }
+    }
+
+    @Test
+    @DisplayName("This test should return all user data")
+    public void findAllUsers() {
+        List<Users> usersList = userRepository.findAll();
+
+        assertEquals(1, usersList.size());
+        assertEquals(user.getName(), usersList.get(0).getName());
+        assertEquals(user.getEmail(), usersList.get(0).getEmail());
+        assertEquals(user.getPassword(), usersList.get(0).getPassword());
+        assertEquals(user.getPhone(), usersList.get(0).getPhone());
+    }
+
+    @Test
+    @DisplayName("This test should return user data by name")
+    public void testFindByName() {
+        Optional<Users> userOptional = userRepository.findByName(user.getName());
+
+        assertTrue(userOptional.isPresent());
+        assertEquals(user.getName(), userOptional.get().getName());
+    }
+
+    @Test
+    @DisplayName("This test should return user data by email")
+    public void testFindByEmail() {
+        Optional<Users> userOptional = userRepository.findByEmail(user.getEmail());
+
+        assertTrue(userOptional.isPresent());
+        assertEquals(user.getEmail(), userOptional.get().getEmail());
+    }
+
+    @Test
+    @DisplayName("This test should return user data by phone")
+    public void testFindByPhone() {
+        Optional<Users> userOptional = userRepository.findByPhone(user.getPhone());
+
+        assertTrue(userOptional.isPresent());
+        assertEquals(user.getPhone(), userOptional.get().getPhone());
+    }
+
+    @Test
+    @DisplayName("This test should return user data by params: name, email or phone")
+    public void findByNameOrEmailOrPhone() {
+        Optional<Users> userOptional = userRepository.findByNameOrEmailOrPhone(
+                user.getName(),
+                user.getEmail(),
+                user.getPhone()
+        );
+
+        assertTrue(userOptional.isPresent());
+        assertEquals(user.getName(), userOptional.get().getName());
+        assertEquals(user.getEmail(), userOptional.get().getEmail());
+        assertEquals(user.getPhone(), userOptional.get().getPhone());
+    }
+
+    @Test
+    @DisplayName("This test should save user data")
+    public void saveUserData() {
+        shouldSave = false;
+        Users userPersisted = userRepository.save(user);
+
+        assertEquals(user.getName(), userPersisted.getName());
+        assertEquals(user.getEmail(), userPersisted.getEmail());
+        assertEquals(user.getPassword(), userPersisted.getPassword());
+        assertEquals(user.getPhone(), userPersisted.getPhone());
+    }
+
+    @Test
+    @DisplayName("This test should update user data")
+    public void updateUserData() {
+        user.setName("Luis");
+        user.setEmail("luis@gmail.com.br");
+        user.setPassword("Luis1234#@");
+        user.setPhone("5551555554444");
+
+        Users userPersisted = userRepository.save(user);
+
+        assertNotNull(userPersisted);
+        assertEquals("Luis", userPersisted.getName());
+        assertEquals("luis@gmail.com.br", userPersisted.getEmail());
+        assertEquals("Luis1234#@", userPersisted.getPassword());
+        assertEquals("5551555554444", userPersisted.getPhone());
+        assertEquals(userId, userPersisted.getId());
+    }
+
+    @Test
+    @DisplayName("This test should delete user data")
+    public void deleteUserData() {
+        Optional<Users> user = userRepository.findById(userId);
+        assertTrue(user.isPresent());
+
+        userRepository.delete(user.get());
+
+        Optional<Users> user2 = userRepository.findById(userId);
+        assertTrue(user2.isEmpty());
+    }
+
+    @Test
+    @DisplayName("This test should delete user data by id")
+    public void deleteUserDataById() {
+        userRepository.deleteById(userId);
+        Optional<Users> user = userRepository.findById(userId);
+        assertTrue(user.isEmpty());
+    }
 }

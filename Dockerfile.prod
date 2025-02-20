@@ -1,0 +1,22 @@
+# Fase 1: Build da aplicação
+FROM eclipse-temurin:11-jdk-alpine AS build
+
+WORKDIR /app
+
+# Copia o código-fonte e gera o JAR
+COPY . .
+RUN ./mvnw clean package -DskipTests
+
+# Fase 2: Apenas a execução do JAR em uma imagem menor
+FROM eclipse-temurin:11-jre-alpine
+
+WORKDIR /app
+
+# Copia apenas o JAR gerado
+COPY --from=build /app/target/*.jar app.jar
+
+# Expõe a porta da aplicação
+EXPOSE 8080
+
+# Comando de execução
+ENTRYPOINT ["java", "-jar", "app.jar"]
