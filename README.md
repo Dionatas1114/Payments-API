@@ -29,7 +29,8 @@ This API is designed to address three financial needs:
    cd financial-api
    ```
    
-2. Build Docker image using Dockerfile (see `README.Docker.md`).
+2. Build Docker image using Dockerfile:
+   - see `README.Docker.md`
 
 3. Initialize the database:
    ```sh
@@ -37,7 +38,7 @@ This API is designed to address three financial needs:
    ```
    
 4. Open in SQL Client (e.g. Dbeaver):
-   * Connection URL: jdbc:postgresql://localhost:5432/crudjavapostgres
+   * Connection URL: jdbc:postgresql://localhost:5432/payments
    * Username: username
    * Password: passw
 
@@ -73,18 +74,19 @@ ___
 Create **Postgres Database** using docker command:
 
 ```bash
-docker run -d -i -t --name crudjavapostgres -ePOSTGRES_PASSWORD=passw -ePOSTGRES_DATABASE=crudjavapostgres -ePOSTGRES_USER=username -p5432:5432 postgres
+docker run -d -i -t --name payments -ePOSTGRES_PASSWORD=passw -ePOSTGRES_DATABASE=payments -ePOSTGRES_USER=username -p5432:5432 postgres
 ```
 
 ## Tables Structure
 
-| Table Name | Description                 |
-|------------|-----------------------------|
-| `users`    | Stores user information.    |
-| `products` | Stores product information. |
-| `payments` | Stores payment information. |
-| `receipts` | Stores receipt information. |
-...
+| Table Name           | Description                    |
+|----------------------|--------------------------------|
+| `users`              | Stores user information.       |
+| `userConfigurations` | Stores userConfig information. |
+| `products`           | Stores product information.    |
+| `services`           | Stores service information.    |
+| `payments`           | Stores payment information.    |
+| `receipts`           | Stores receipt information.    |
 
 ## Project Structure
 
