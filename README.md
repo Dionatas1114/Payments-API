@@ -32,32 +32,27 @@ This API is designed to address three financial needs:
 2. Build Docker image using Dockerfile:
    - see `README.Docker.md`
 
-3. Initialize the database:
-   ```sh
-   mvn flyway:migrate
-   ```
-   
-4. Open in SQL Client (e.g. Dbeaver):
+3. Open in SQL Client (e.g. Dbeaver):
    * Connection URL: jdbc:postgresql://localhost:5432/payments
    * Username: username
    * Password: passw
 
-5. Build the project:
+4. Build the project:
    ```sh
    mvn clean install
    ```
 
-6. Run the application:
+5. Run the application:
    ```sh
    mvn spring-boot:run
    ```
 
-7. Open Swagger UI:
+6. Open Swagger UI:
    ```sh
    http://localhost:8080/swagger-ui/#/
    ```
 
-8. Run the tests:
+7. Run the tests:
    ```sh
    mvn test
    ```
