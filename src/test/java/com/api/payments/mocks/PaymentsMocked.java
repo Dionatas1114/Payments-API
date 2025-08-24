@@ -4,7 +4,7 @@ import com.api.payments.dto.TransactionDto;
 import com.api.payments.dto.UsersDto;
 import com.api.payments.entity.Payments;
 import com.api.payments.entity.Users;
-import com.api.payments.enums.PaymentMethods;
+import com.api.payments.enums.PaymentMethodTypes;
 import com.api.payments.repository.PaymentRepository;
 import org.springframework.context.annotation.Bean;
 
@@ -17,7 +17,7 @@ public class PaymentsMocked {
 
     private static final UUID ID = UUID.fromString("4f9ab8ae-e62a-40f9-b7b8-66eb1d30b75a");
     private static final String USER_NAME = "Johann";
-    private static final String PAYMENT_METHOD = PaymentMethods.CREDIT_CARD.getValue();
+    private static final String PAYMENT_METHOD = PaymentMethodTypes.CREDIT_CARD.getValue();
     private static final String DESCRIPTION = "Description";
     private static final String CURRENCY = "BRL";
     private static final double DISCOUNT = 0.0;

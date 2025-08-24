@@ -1,11 +1,19 @@
 package com.api.payments.validations.validators;
 
 import com.api.payments.dto.TransactionDto;
-import com.api.payments.enums.PaymentMethods;
 import org.hibernate.service.spi.ServiceException;
 
+import static com.api.payments.validations.messages.PaymentValidatorMessages.currencyInvalid;
+import static com.api.payments.validations.messages.PaymentValidatorMessages.debtorFullNameInvalid;
+import static com.api.payments.validations.messages.PaymentValidatorMessages.debtorLastNameInvalid;
+import static com.api.payments.validations.messages.PaymentValidatorMessages.descriptionInvalid;
+import static com.api.payments.validations.messages.PaymentValidatorMessages.expirationDateInvalid;
+import static com.api.payments.validations.messages.PaymentValidatorMessages.messageTextInvalid;
+import static com.api.payments.validations.messages.PaymentValidatorMessages.paymentDateInvalid;
+import static com.api.payments.validations.messages.PaymentValidatorMessages.paymentMethodInvalid;
+import static com.api.payments.validations.messages.PaymentValidatorMessages.paymentStatusInvalid;
+import static com.api.payments.validations.messages.PaymentValidatorMessages.userIdInvalid;
 import static com.api.payments.validations.validators.ValidateField.validateField;
-import static com.api.payments.validations.messages.PaymentValidatorMessages.*;
 
 public class PaymentValidator {
 
@@ -36,6 +44,5 @@ public class PaymentValidator {
 
     private static void paymentMethodValidator(String paymentMethod) {
         validateField(paymentMethod, paymentMethodInvalid);
-        PaymentMethods.fromValue(paymentMethod);
     }
 }

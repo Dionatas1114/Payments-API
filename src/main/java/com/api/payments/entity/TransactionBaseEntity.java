@@ -1,6 +1,7 @@
 package com.api.payments.entity;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
 
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 @MappedSuperclass
+@Getter
 public class TransactionBaseEntity extends BaseEntity {
 
     @ApiModelProperty(notes = "Nome Completo do Devedor")
@@ -21,7 +23,7 @@ public class TransactionBaseEntity extends BaseEntity {
     public String debtorLastName;
 
     @ApiModelProperty(notes = "Método de Pagamento")
-    @Column(nullable = false)
+    @Column(name = "payment_Method", nullable = false)
     public String paymentMethod;
 
     @ApiModelProperty(notes = "Status de Pagamento")

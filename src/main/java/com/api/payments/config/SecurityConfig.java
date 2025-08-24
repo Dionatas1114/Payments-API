@@ -26,9 +26,9 @@ public class SecurityConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000") // authorized domains //TODO move to env var
+//                .allowedOrigins("http://localhost:3000") // authorized domains //TODO move to env var
                 .allowedMethods("GET", "POST", "PUT", "DELETE") //TODO move to env var
-                .allowedHeaders("*")
-                .allowCredentials(true);
+                .allowedHeaders("*");
+//                .allowCredentials(true);
     }
 }

@@ -38,6 +38,17 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+        <!-- Cache -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -174,9 +185,16 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>10.17.0</version>
                 <configuration>
-                    <url>jdbc:mysql://localhost/mydb</url>
-                    <user>myUser</user>
-                    <password>mySecretPwd</password>
+                    <url>jdbc:postgresql://localhost:5432/crudjavapostgres</url>
+                    <user>username</user>
+                    <password>passw</password>
+                    <schemas>
+                        <schema>public</schema>
+                    </schemas>
+                    <baselineOnMigrate>true</baselineOnMigrate>
+                    <locations>
+                        <location>classpath:db/migration</location>
+                    </locations>
                 </configuration>
             </plugin>
         </plugins>
