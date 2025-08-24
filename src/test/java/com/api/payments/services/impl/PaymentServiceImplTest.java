@@ -2,7 +2,7 @@ package com.api.payments.services.impl;
 
 import com.api.payments.dto.TransactionDto;
 import com.api.payments.entity.Payments;
-import com.api.payments.enums.PaymentMethods;
+import com.api.payments.enums.PaymentMethodTypes;
 import com.api.payments.mocks.PaymentsMocked;
 import com.api.payments.repository.PaymentRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -121,7 +121,7 @@ class PaymentServiceImplTest {
         Mockito.when(paymentRepository.findByPaymentMethod(any(String.class)))
                 .thenReturn(Optional.of(Collections.singletonList(payments)));
 
-        String cashValue = PaymentMethods.CASH.getValue();
+        String cashValue = PaymentMethodTypes.CASH.getValue();
         List<TransactionDto> paymentsByPaymentMethod = paymentServiceImpl.findByPaymentMethod(cashValue);
 
         Mockito.verify(paymentRepository, Mockito.times(1))

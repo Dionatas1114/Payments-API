@@ -3,6 +3,7 @@ package com.api.payments.exception;
 import com.api.payments.utils.Log;
 import javassist.NotFoundException;
 import org.hibernate.service.spi.ServiceException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -20,6 +21,8 @@ public class GenericExceptionHandler {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
         } else if (exception instanceof AuthenticationException) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
+        } else if (exception instanceof InvalidDataAccessApiUsageException) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(badRequest);
     }

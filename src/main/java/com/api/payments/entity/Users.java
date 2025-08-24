@@ -1,78 +1,62 @@
 package com.api.payments.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.EqualsAndHashCode;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
+@Getter
+@Setter
+@ToString
+@Builder
 @Entity
-@Table(name = "USERS")
-@EqualsAndHashCode(callSuper = true)
+@Table(name = "users")
+@NoArgsConstructor()
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Users extends BaseEntity {
 
+    @NotBlank
+    @Size(max = 50)
+    @Column(nullable = false)
     @ApiModelProperty(notes = "Nome do Usuário")
-    @Column(nullable = false, length = 50)
     public String name;
 
+    @Email
+    @NotBlank
+    @Size(max = 100)
+    @Column(nullable = false, unique = true)
     @ApiModelProperty(notes = "Email do Usuário")
-    @Column(nullable = false, length = 30)
     public String email;
 
+    @NotBlank
+    @Size(max = 255)
+    @Column(nullable = false)
+    @JsonIgnore
     @ApiModelProperty(notes = "Password do Usuário")
-    @Column(nullable = false, length = 100)
     public String password;
 
+    @NotBlank
+    @Size(max = 30)
+    @Column(nullable = false)
     @ApiModelProperty(notes = "Telefone do Usuário")
-    @Column(nullable = false, length = 30)
     public String phone;
 
+    @ToString.Exclude
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @ApiModelProperty(notes = "Configurações do Usuário")
-    @OneToOne(
-            mappedBy = "user",
-            cascade = CascadeType.ALL)
     public UserConfigurations userConfigurations;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public UserConfigurations getUserConfigurations() {
-        return userConfigurations;
-    }
-
-    public void setUserConfigurations(UserConfigurations userConfigurations) {
-        this.userConfigurations = userConfigurations;
-    }
 }
