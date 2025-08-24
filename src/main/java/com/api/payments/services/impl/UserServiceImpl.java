@@ -12,6 +12,8 @@ import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -48,6 +50,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Cacheable(value = "users", key = "#userId")
     public UsersDto findUserById(UUID userId) throws Exception {
 
         Users user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(userDataNotFound));
@@ -93,12 +96,11 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
+    @CacheEvict(value = "users", key = "#userId")
     public void updateUserData(UUID userId, UsersDto userDto) throws Exception {
 
-        Users users = new Users();
-        UserConfigurations userConfigurations = new UserConfigurations();
-
-        userRepository.findById(userId).orElseThrow(() -> new NotFoundException(userDataNotFound));
+        Users existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(userDataNotFound));
 
         String userName = userDto.getName();
         String email = userDto.getEmail();
@@ -109,43 +111,45 @@ public class UserServiceImpl implements UserService {
 
         UserValidator.userValidator(userName, email, password, phone);
 
-        userRepository.findByEmail(email)
-                .ifPresent(existingUser -> {
-                    if (!existingUser.getId().equals(userId)) {
-                        throw new ServiceException(userEmailAlreadyRegistered);
-                    }
-                });
+        // Verifica duplicidade de email
+        if (!email.equals(existingUser.getEmail()) && userRepository.existsByEmail(email)) {
+            throw new ServiceException(userEmailAlreadyRegistered);
+        }
 
-        userRepository.findByPhone(phone)
-                .ifPresent(existingUser -> {
-                    if (!existingUser.getId().equals(userId)) {
-                        throw new ServiceException(userPhoneAlreadyRegistered);
-                    }
-                });
+        // Verifica duplicidade de telefone
+        if (!phone.equals(existingUser.getPhone()) && userRepository.existsByPhone(phone)) {
+            throw new ServiceException(userPhoneAlreadyRegistered);
+        }
+
+        // Atualiza a senha apenas se fornecida e diferente da atual
+        if (password != null && !password.isEmpty() &&
+                !tokenInterceptor.passwordEncoder().matches(password, existingUser.getPassword())) {
+            existingUser.setPassword(tokenInterceptor.passwordEncoder().encode(password));
+        }
 
         UserConfigurations userConfiguration = userConfigurationsRepository
                 .findByUserId(userId)
-                .orElseThrow(() -> new NotFoundException(userDataNotFound));
+                .orElseGet(() -> {
+                    UserConfigurations newConfig = new UserConfigurations();
+                    newConfig.setUser(existingUser);
+                    return newConfig;
+                });
 
-        users.setId(userId);
-        users.setName(userName);
-        users.setEmail(email);
-        users.setPassword(password);
-        users.setPhone(phone);
+        // Atualiza os dados do usuário
+        existingUser.setName(userName);
+        existingUser.setEmail(email);
+        existingUser.setPhone(phone);
 
-        userRepository.save(users);
+        userConfiguration.setHasNotifications(hasNotifications);
+        userConfiguration.setLanguage(language);
 
-        UUID userConfigurationId = userConfiguration.getId();
-        userConfigurations.setId(userConfigurationId);
-        userConfigurations.setHasNotifications(hasNotifications);
-        userConfigurations.setLanguage(language);
-        userConfigurations.setUser(users);
-
-        userConfigurationsRepository.save(userConfigurations);
+        userRepository.save(existingUser);
+        userConfigurationsRepository.save(userConfiguration);
     }
 
     @Transactional
     @Override
+    @CacheEvict(value = "users", key = "#userId")
     public void deleteUserData(UUID userId) throws Exception {
 
         userRepository.findById(userId).orElseThrow(() -> new NotFoundException(userDataNotFound));
