@@ -1,13 +1,17 @@
 package com.api.payments.entity;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
-import javax.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import org.hibernate.proxy.HibernateProxy;
+
+import java.util.Objects;
 
 @Getter
 @Entity
 @Table(name = "PRODUCTS")
-@EqualsAndHashCode(callSuper = true)
 public class Products extends ItemBaseEntity {
 
     @ApiModelProperty(notes = "Marca do produto")
@@ -64,5 +68,21 @@ public class Products extends ItemBaseEntity {
 
     public void setUnitaryPrice(double unitaryPrice) {
         this.unitaryPrice = unitaryPrice;
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        Products products = (Products) o;
+        return getId() != null && Objects.equals(getId(), products.getId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
 }

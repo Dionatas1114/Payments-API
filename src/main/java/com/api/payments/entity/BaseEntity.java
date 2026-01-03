@@ -1,16 +1,15 @@
 package com.api.payments.entity;
 
 import io.swagger.annotations.ApiModelProperty;
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.PrePersist;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -21,7 +20,6 @@ public class BaseEntity {
 
     @ApiModelProperty(notes = "Identificador único da entidade")
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", updatable = false, unique = true, nullable = false, length = 16)
     private UUID id;
 
@@ -35,4 +33,10 @@ public class BaseEntity {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    @PrePersist
+    public void prePersist() {
+        if (id == null) { // Usa o bean do Spring
+            id = com.github.f4b6a3.uuid.UuidCreator.getTimeOrdered();
+        }
+    }
 }

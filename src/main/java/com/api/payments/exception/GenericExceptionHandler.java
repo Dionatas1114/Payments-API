@@ -15,15 +15,16 @@ public class GenericExceptionHandler {
 
     public static ResponseEntity<?> getException(Exception exception) {
         Log.error(exception.getMessage());
-        if (exception instanceof NotFoundException) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
-        } else if (exception instanceof ServiceException) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
-        } else if (exception instanceof AuthenticationException) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
-        } else if (exception instanceof InvalidDataAccessApiUsageException) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(badRequest);
+        return switch (exception) {
+            case NotFoundException notFoundException ->
+                    ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+            case ServiceException serviceException ->
+                    ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
+            case AuthenticationException authenticationException ->
+                    ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
+            case InvalidDataAccessApiUsageException invalidDataAccessApiUsageException ->
+                    ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+            default -> ResponseEntity.status(HttpStatus.BAD_REQUEST).body(badRequest);
+        };
     }
 }

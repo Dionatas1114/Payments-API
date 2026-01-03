@@ -49,7 +49,6 @@ CREATE TABLE IF NOT EXISTS services (
 -- Tabela base para transações
 CREATE TABLE IF NOT EXISTS transaction_base (
     id UUID PRIMARY KEY,
-    transaction_date TIMESTAMP NOT NULL,
     payment_method VARCHAR(50) NOT NULL,
     payment_conditions VARCHAR(100),
     total_value NUMERIC(10, 2) NOT NULL,
@@ -62,7 +61,6 @@ CREATE TABLE IF NOT EXISTS transaction_base (
 -- Tabela de pagamentos
 CREATE TABLE IF NOT EXISTS payments (
     id UUID PRIMARY KEY,
-    transaction_date TIMESTAMP NOT NULL,
     payment_method VARCHAR(50) NOT NULL,
     payment_conditions VARCHAR(100),
     total_value NUMERIC(10, 2) NOT NULL,
@@ -76,7 +74,6 @@ CREATE TABLE IF NOT EXISTS payments (
 -- Tabela de recibos
 CREATE TABLE IF NOT EXISTS receipts (
     id UUID PRIMARY KEY,
-    transaction_date TIMESTAMP NOT NULL,
     payment_method VARCHAR(50) NOT NULL,
     payment_conditions VARCHAR(100),
     total_value NUMERIC(10, 2) NOT NULL,
@@ -92,5 +89,3 @@ CREATE INDEX idx_users_email ON users(email);
 CREATE INDEX idx_users_phone ON users(phone);
 CREATE INDEX idx_products_internal_code ON products(internal_code);
 CREATE INDEX idx_services_internal_code ON services(internal_code);
-CREATE INDEX idx_payments_transaction_date ON payments(transaction_date);
-CREATE INDEX idx_receipts_transaction_date ON receipts(transaction_date);

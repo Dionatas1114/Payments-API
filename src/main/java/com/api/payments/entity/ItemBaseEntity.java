@@ -1,11 +1,10 @@
 package com.api.payments.entity;
 
 import io.swagger.annotations.ApiModelProperty;
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
 
 @Getter
 @Setter

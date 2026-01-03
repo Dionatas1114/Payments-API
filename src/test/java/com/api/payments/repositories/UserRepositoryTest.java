@@ -3,22 +3,24 @@ package com.api.payments.repositories;
 import com.api.payments.entity.Users;
 import com.api.payments.mocks.UsersMocked;
 import com.api.payments.repository.UserRepository;
-import com.api.payments.utils.Log;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
+@ActiveProfiles("test")
+@TestPropertySource(locations = "classpath:application-test.properties")
 public class UserRepositoryTest {
 
     private boolean shouldSave = true;
@@ -26,20 +28,31 @@ public class UserRepositoryTest {
     private UUID userId;
 
     @Autowired
+    private TestEntityManager entityManager;
+
+    @Autowired
     private UserRepository userRepository;
 
     @BeforeEach
     public void setUp() {
-        userRepository.deleteAll();
+        // Clear any existing data
+        userRepository.deleteAllInBatch();
 
-        if (shouldSave) {
-            Users userMocked = new UsersMocked().returnUserMocked();
+        // Create and save test user
+        Users userMocked = new UsersMocked().returnUserMocked();
 
-            Users userPersisted = userRepository.save(userMocked);
-            Log.info("userId: " + userPersisted.getId().toString());
-            userId = userPersisted.getId();
-            user = userPersisted;
-        }
+        // Use TestEntityManager to persist the user
+        user = entityManager.persistAndFlush(userMocked);
+        userId = user.getId();
+
+        // Clear the persistence context to ensure we're reading from the database
+        entityManager.clear();
+
+        // Verify the user was saved
+        assertNotNull(userId, "User ID should not be null after save");
+        Optional<Users> foundUser = userRepository.findById(userId);
+        assertTrue(foundUser.isPresent(), "User should exist in database");
+        assertEquals(user.getEmail(), foundUser.get().getEmail(), "User email should match");
     }
 
     @Test

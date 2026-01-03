@@ -1,5 +1,5 @@
-# Usa a imagem do OpenJDK 11 como base
-FROM eclipse-temurin:11-jdk-alpine
+# Usa a imagem do Microsoft OpenJDK 21 como base
+FROM mcr.microsoft.com/openjdk/jdk:21-ubuntu
 
 # Define o diretório de trabalho
 WORKDIR /app

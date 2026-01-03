@@ -1,5 +1,5 @@
 # Fase 1: Build da aplicação
-FROM eclipse-temurin:11-jdk-alpine AS build
+FROM mcr.microsoft.com/openjdk/jdk:21-ubuntu AS build
 
 WORKDIR /app
 
@@ -7,8 +7,8 @@ WORKDIR /app
 COPY . .
 RUN ./mvnw clean package -DskipTests
 
-# Fase 2: Apenas a execução do JAR em uma imagem menor
-FROM eclipse-temurin:11-jre-alpine
+# Fase 2: Execução do JAR
+FROM mcr.microsoft.com/openjdk/jdk:21-ubuntu
 
 WORKDIR /app
 
@@ -17,6 +17,9 @@ COPY --from=build /app/target/*.jar app.jar
 
 # Expõe a porta da aplicação
 EXPOSE 8080
+
+# Otimizações de memória para o Java
+ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0 -XX:+UseG1GC -XX:+OptimizeStringConcat -XX:+UseStringDeduplication"
 
 # Comando de execução
 ENTRYPOINT ["java", "-jar", "app.jar"]

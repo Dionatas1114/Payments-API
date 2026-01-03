@@ -8,6 +8,7 @@ import com.api.payments.repository.UserConfigurationsRepository;
 import com.api.payments.repository.UserRepository;
 import com.api.payments.services.UserService;
 import com.api.payments.validations.validators.UserValidator;
+import jakarta.transaction.Transactional;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
@@ -16,7 +17,6 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
