@@ -7,13 +7,27 @@ This API is designed to address three financial needs:
 - **A stock and crypto market monitor** 💹
 
 ### Prerequisites
-- [Java 11 LTS](https://adoptium.net/temurin/releases/?version=11)
+- [Java 21 LTS](https://learn.microsoft.com/pt-br/java/openjdk/download#openjdk-21)
 - [Maven](https://maven.apache.org/)
 - [Docker](https://www.docker.com/) (optional for database)
 - [Git](https://git-scm.com/)
 
 ### Dependencies
-* Spring Boot (2.7.10);
+* Spring Boot (4.0.1);
+* Spring Cloud (5.0.0);
+* Spring Data JPA (ORM);
+* Spring Boot Starter Web;
+* Spring Boot Starter Cache;
+* Spring Boot Starter Validation;
+* Springfox Boot Starter (3.0.0);
+* JJWT (0.11.5);
+* ModelMapper (3.1.1);
+* JAXB API (2.4.0);
+* Javassist (3.29.2);
+* H2 Database (test);
+* Flyway (10.17.0);
+* Caffeine Cache;
+* UUID Creator (5.3.0);
 * JPA (ORM);
 * Postgres (DB);
 * Lombok (1.18.22);
@@ -21,6 +35,7 @@ This API is designed to address three financial needs:
 * Git (2.33.0);
 * Docker (18.09.9);
 * Swagger (2.9.2);
+* Datadog;
 
 ### Steps
 1. Clone this repository:
