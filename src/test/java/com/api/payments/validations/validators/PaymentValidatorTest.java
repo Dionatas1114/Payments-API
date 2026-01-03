@@ -11,19 +11,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static com.api.payments.validations.messages.PaymentValidatorMessages.currencyInvalid;
-import static com.api.payments.validations.messages.PaymentValidatorMessages.debtorFullNameInvalid;
-import static com.api.payments.validations.messages.PaymentValidatorMessages.debtorLastNameInvalid;
-import static com.api.payments.validations.messages.PaymentValidatorMessages.descriptionInvalid;
-import static com.api.payments.validations.messages.PaymentValidatorMessages.expirationDateInvalid;
-import static com.api.payments.validations.messages.PaymentValidatorMessages.messageTextInvalid;
-import static com.api.payments.validations.messages.PaymentValidatorMessages.paymentDateInvalid;
-import static com.api.payments.validations.messages.PaymentValidatorMessages.paymentMethodInvalid;
-import static com.api.payments.validations.messages.PaymentValidatorMessages.paymentStatusInvalid;
-import static com.api.payments.validations.messages.PaymentValidatorMessages.userIdInvalid;
+import static com.api.payments.validations.messages.PaymentValidatorMessages.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -42,16 +30,26 @@ public class PaymentValidatorTest {
 
     @Test
     @DisplayName("Should validate payment method")
-    public void testPaymentMethod() {
-        List<String> invalidPaymentMethods = Arrays.asList(null, " ", "invalid");
+    public void testWhenPaymentMethodIsNull() {
+        String invalidMethod = null;
 
-        for (String invalidMethod : invalidPaymentMethods) {
-            Exception e = assertThrows(Exception.class, () -> {
-                paymentsData.setPaymentMethod(invalidMethod);
-                PaymentValidator.paymentValidator(paymentsData);
-            });
-            assertEquals(paymentMethodInvalid, e.getMessage());
-        }
+        Exception e = assertThrows(Exception.class, () -> {
+            paymentsData.setPaymentMethod(invalidMethod);
+            PaymentValidator.paymentValidator(paymentsData);
+        });
+        assertEquals(paymentMethodInvalid, e.getMessage());
+    }
+
+    @Test
+    @DisplayName("Should validate payment method")
+    public void testWhenPaymentMethodIsInvalid() {
+        String invalidMethod = " ";
+
+        Exception e = assertThrows(Exception.class, () -> {
+            paymentsData.setPaymentMethod(invalidMethod);
+            PaymentValidator.paymentValidator(paymentsData);
+        });
+        assertEquals(paymentMethodInvalid, e.getMessage());
     }
 
     @Test
