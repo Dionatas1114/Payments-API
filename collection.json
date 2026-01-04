@@ -1,0 +1,1477 @@
+{
+	"info": {
+		"_postman_id": "594aff1a-ac1e-47a4-8714-e6b61384aa5e",
+		"name": "Payments API - Java/Postgres",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11754773"
+	},
+	"item": [
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Products",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{private_api_host}}/products",
+							"host": [
+								"{{private_api_host}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{private_api_host}}/products/a5e835f4-9ff7-488c-855d-13ad1f0ca72d",
+							"host": [
+								"{{private_api_host}}"
+							],
+							"path": [
+								"products",
+								"a5e835f4-9ff7-488c-855d-13ad1f0ca72d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Products/byItemName",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{private_api_host}}/products/byItemName/Other",
+							"host": [
+								"{{private_api_host}}"
+							],
+							"path": [
+								"products",
+								"byItemName",
+								"Other"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Products/byItemType",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "i{{private_api_host}}/products/byItemType/Other",
+							"host": [
+								"i{{private_api_host}}"
+							],
+							"path": [
+								"products",
+								"byItemType",
+								"Other"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"itemName\": \"Other\",\r\n    \"itemType\": \"Other\",\r\n    \"productBrand\": \"Other\",\r\n    \"itemCategory\": \"Other\",\r\n    \"manufacturer\": \"Uninformed\",\r\n    \"captionPacking\": \"Other\",\r\n    \"totalPrice\": 0.01,\r\n    \"unitaryPrice\": 0.01,\r\n    \"discountPrice\": 0.01,\r\n    \"barCode\": \"Other\",\r\n    \"internalCode\": \"Other\",\r\n    \"itemDescription\": \"Other\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{private_api_host}}/products",
+							"host": [
+								"{{private_api_host}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Product",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"itemName\": \"ASD\",\r\n    \"itemType\": \"ASD\",\r\n    \"productBrand\": \"oTHER\",\r\n    \"category\": \"ASD\",\r\n    \"manufacturer\": \"Uninformed\",\r\n    \"captionPacking\": \"ASD\",\r\n    \"totalPrice\": 0.01,\r\n    \"unitaryPrice\": 0.01,\r\n    \"discountPrice\": 0.01,\r\n    \"barCode\": \"ASD\",\r\n    \"internalCode\": \"ASD\",\r\n    \"description\": \"ASD\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{private_api_host}}/products/61834b12-90b7-41ea-bd3b-cb1a2489ffa7",
+							"host": [
+								"{{private_api_host}}"
+							],
+							"path": [
+								"products",
+								"61834b12-90b7-41ea-bd3b-cb1a2489ffa7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{private_api_host}}/products/a5e835f4-9ff7-488c-855d-13ad1f0ca72d",
+							"host": [
+								"{{private_api_host}}"
+							],
+							"path": [
+								"products",
+								"a5e835f4-9ff7-488c-855d-13ad1f0ca72d"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Services",
+			"item": [
+				{
+					"name": "Services",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{private_api_host}}/services",
+							"host": [
+								"{{private_api_host}}"
+							],
+							"path": [
+								"services"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Service",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{private_api_host}}/services/19c77f2b-77f2-4eb1-9fbf-8870094746e4",
+							"host": [
+								"{{private_api_host}}"
+							],
+							"path": [
+								"services",
+								"19c77f2b-77f2-4eb1-9fbf-8870094746e4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Services/byItemName",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{private_api_host}}/services/byItemName/Other",
+							"host": [
+								"{{private_api_host}}"
+							],
+							"path": [
+								"services",
+								"byItemName",
+								"Other"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Services/byItemType",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{private_api_host}}/services/byItemType/Other",
+							"host": [
+								"{{private_api_host}}"
+							],
+							"path": [
+								"services",
+								"byItemType",
+								"Other"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Service",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"itemName\": \"Other\",\r\n    \"itemCategory\": \"Other\",\r\n    \"totalPrice\": 0.01,\r\n    \"discountPrice\": 0.01,\r\n    \"internalCode\": \"Other\",\r\n    \"itemDescription\": \"Other\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{private_api_host}}/services",
+							"host": [
+								"{{private_api_host}}"
+							],
+							"path": [
+								"services"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Service",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"itemName\": \"ASD\",\r\n    \"itemType\": \"ASD\",\r\n    \"productBrand\": \"oTHER\",\r\n    \"category\": \"ASD\",\r\n    \"manufacturer\": \"Uninformed\",\r\n    \"captionPacking\": \"ASD\",\r\n    \"totalPrice\": 0.01,\r\n    \"unitaryPrice\": 0.01,\r\n    \"discountPrice\": 0.01,\r\n    \"barCode\": \"ASD\",\r\n    \"internalCode\": \"ASD\",\r\n    \"description\": \"ASD\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{private_api_host}}/services/61834b12-90b7-41ea-bd3b-cb1a2489ffa7",
+							"host": [
+								"{{private_api_host}}"
+							],
+							"path": [
+								"services",
+								"61834b12-90b7-41ea-bd3b-cb1a2489ffa7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Service",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{private_api_host}}/services/34e88fc8-bbe0-4281-a25b-12c0225be97a",
+							"host": [
+								"{{private_api_host}}"
+							],
+							"path": [
+								"services",
+								"34e88fc8-bbe0-4281-a25b-12c0225be97a"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notifications",
+			"item": [
+				{
+					"name": "Notification/payments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{private_api_host}}/notifications/currentPayments",
+							"host": [
+								"{{private_api_host}}"
+							],
+							"path": [
+								"notifications",
+								"currentPayments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Notification/receipts",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{private_api_host}}/notifications/currentReceipts",
+							"host": [
+								"{{private_api_host}}"
+							],
+							"path": [
+								"notifications",
+								"currentReceipts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payment",
+			"item": [
+				{
+					"name": "Payments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/payments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"payments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PaymentById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/payments/df119af6-0ae2-42bc-af0a-f000a9dc5220",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"payments",
+								"df119af6-0ae2-42bc-af0a-f000a9dc5220"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "paymentsByExpirationDate",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"expirationDate\": \"2018-01-07\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/payments/byExpirationDate/2018-01-07",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"payments",
+								"byExpirationDate",
+								"2018-01-07"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "paymentsByDebtorFullName",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"expirationDate\": \"2018-01-07\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/payments/byDebtorFullName/Dionatas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"payments",
+								"byDebtorFullName",
+								"Dionatas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "paymentsByPaymentStatus",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"expirationDate\": \"2018-01-07\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/payments/byPaymentStatus/false",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"payments",
+								"byPaymentStatus",
+								"false"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "paymentsByPaymentMethod",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"expirationDate\": \"2018-01-07\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/payments/byPaymentMethod/PIX",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"payments",
+								"byPaymentMethod",
+								"PIX"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Payment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"debtorFullName\": \"Dionatas\",\r\n    \"debtorLastName\": \"Dionatas\",\r\n    \"paymentMethod\": \"PIX\",\r\n    \"paymentStatus\": false,\r\n    \"paymentDate\": \"2018-01-07\",\r\n    \"expirationDate\": \"2018-01-07\",\r\n    \"transactionFrequency\": \"\",\r\n    \"currency\": \"R$\",\r\n    \"interest\": 0.00,\r\n    \"fine\": 0.00,\r\n    \"increasedValue\": 0.00,\r\n    \"discPayAdvance\": 0.00,\r\n    \"originalValue\": 0.00,\r\n    \"total\": 0.00,\r\n    \"description\": \"\",\r\n    \"messageText\": \"\",\r\n    \"user\": {\r\n        \"id\": \"905b9a13-d67a-4651-aea2-ce4123dff3b3\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/payments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"payments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Payment",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"debtorFullName\": \"Dionatas\",\r\n    \"debtorLastName\": \"Dionatas\",\r\n    \"paymentMethod\": \"PIX\",\r\n    \"paymentStatus\": false,\r\n    \"expirationDate\": \"2018-01-07\",\r\n    \"paymentDate\": \"2018-01-07\",\r\n    \"paymentType\": \"\",\r\n    \"currency\": \"R$\",\r\n    \"interest\": 0.0,\r\n    \"fine\": 0.0,\r\n    \"increasedValue\": 0.0,\r\n    \"discPayAdvance\": 0.0,\r\n    \"originalValue\": 0.0,\r\n    \"total\": 0.0,\r\n    \"description\": \"\",\r\n    \"messageText\": \"AAAA\",\r\n    \"user\": {\r\n        \"id\": \"0670fb68-8d0a-47d0-a77a-4fc96c9e234b\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/payments/4f36e4e2-25c3-4b5f-b1ed-e7c4a58fb178",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"payments",
+								"4f36e4e2-25c3-4b5f-b1ed-e7c4a58fb178"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Payment",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/payments/df119af6-0ae2-42bc-af0a-f000a9dc5220",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"payments",
+								"df119af6-0ae2-42bc-af0a-f000a9dc5220"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Receipt",
+			"item": [
+				{
+					"name": "Receipts",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/receipts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"receipts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Receipt",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/receipts/a1ee9419-fad3-444b-b16d-589444bc5bd6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"receipts",
+								"a1ee9419-fad3-444b-b16d-589444bc5bd6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "receiptsByDebtorFullName",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"expirationDate\": \"2021-09-29\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/receipts/byDebtorFullName/fullname",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"receipts",
+								"byDebtorFullName",
+								"fullname"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "receiptsByPaymentStatus",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"expirationDate\": \"2021-09-29\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/receipts/byPaymentStatus/true",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"receipts",
+								"byPaymentStatus",
+								"true"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "receiptsByPaymentMethod",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"expirationDate\": \"2021-09-29\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/receipts/byPaymentMethod/credit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"receipts",
+								"byPaymentMethod",
+								"credit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "receiptsByExpirationDate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/receipts/byExpirationDate/2021-09-29",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"receipts",
+								"byExpirationDate",
+								"2021-09-29"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Receipt",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"debtorFullName\": \"fullname\",\r\n    \"debtorLastName\": \"lastname\",\r\n    \"paymentMethod\": \"credit\",\r\n    \"paymentStatus\": true,\r\n    \"paymentDate\": \"2021-09-29\",\r\n    \"expirationDate\": \"2021-09-29\",\r\n    \"originalValue\": 0.00,\r\n    \"interest\": 0.00,\r\n    \"fine\": 0.00,\r\n    \"increasedValue\": 0.00,\r\n    \"discPayAdvance\": 0.00,\r\n    \"total\": 0.00,\r\n    \"receiptType\": \"\",\r\n    \"currency\": \"R$\",\r\n    \"description\": \"desc\",\r\n    \"messageText\": \"message_text\",\r\n    \"user\": {\r\n        \"id\": \"905b9a13-d67a-4651-aea2-ce4123dff3b3\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/receipts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"receipts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Receipt",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"debtorFullName\": \"fullname\",\r\n    \"debtorLastName\": \"lastname\",\r\n    \"paymentMethod\": \"credit\",\r\n    \"paymentStatus\": true,\r\n    \"paymentDate\": \"2021-09-29\",\r\n    \"expirationDate\": \"2021-09-29\",\r\n    \"originalValue\": 0.00,\r\n    \"interest\": 0.00,\r\n    \"fine\": 0.00,\r\n    \"increasedValue\": 0.00,\r\n    \"discPayAdvance\": 0.00,\r\n    \"total\": 0.00,\r\n    \"receiptType\": \"\",\r\n    \"currency\": \"R$\",\r\n    \"description\": \"desc\",\r\n    \"messageText\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/receipts/a1ee9419-fad3-444b-b16d-589444bc5bd6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"receipts",
+								"a1ee9419-fad3-444b-b16d-589444bc5bd6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Receipt",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/receipts/a1ee9419-fad3-444b-b16d-589444bc5bd5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"receipts",
+								"a1ee9419-fad3-444b-b16d-589444bc5bd5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"dionatas@gmail.com\",\r\n    \"password\": \"Dionatas14%&\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{public_auth_host}}/login",
+							"host": [
+								"{{public_auth_host}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{private_auth_host}}/refresh_token",
+							"host": [
+								"{{private_auth_host}}"
+							],
+							"path": [
+								"refresh_token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Digit Code",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkaW9uYXRhc0BnbWFpbC5jb20iLCJpYXQiOjE2ODM1MTIyNDQsImV4cCI6MTY4MzU5ODY0NH0.e7DKY23IrchCh03lqIHxHNhIA5Pc_BuHVvDdB9F0OMn1qzgGEoyEBHBopFjQ_HvriNdxdL_mDt0OmiH3zT10rQ\",\r\n    \"length\": \"4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{private_auth_host}}/digit-code",
+							"host": [
+								"{{private_auth_host}}"
+							],
+							"path": [
+								"digit-code"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{private_auth_host}}/refresh_token",
+							"host": [
+								"{{private_auth_host}}"
+							],
+							"path": [
+								"refresh_token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{private_api_host}}/users",
+							"host": [
+								"{{private_api_host}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users Configurations",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{private_api_host}}/usersConfigurations",
+							"host": [
+								"{{private_api_host}}"
+							],
+							"path": [
+								"usersConfigurations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{private_api_host}}/users/9758e003-e2f6-436f-b080-42fb904fc435",
+							"host": [
+								"{{private_api_host}}"
+							],
+							"path": [
+								"users",
+								"9758e003-e2f6-436f-b080-42fb904fc435"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User (public)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"dionatas\",\r\n    \"email\": \"dionatas@gmail.com\",\r\n    \"password\": \"Dionatas14%&\",\r\n    \"phone\": \"5551998656349\",\r\n    \"userConfigurations\": {\r\n        \"hasNotifications\": true,\r\n        \"language\": \"pt_BR\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{public_api_host}}/users",
+							"host": [
+								"{{public_api_host}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"dionatas\",\r\n    \"email\": \"dionatas@gmail.com\",\r\n    \"phone\": \"5551998656340\",\r\n    \"password\": \"Dionatas14%&\",\r\n    \"userConfigurations\": {\r\n        \"hasNotifications\": true,\r\n        \"language\": \"pt_BR\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{private_api_host}}/users/9758e003-e2f6-436f-b080-42fb904fc435",
+							"host": [
+								"{{private_api_host}}"
+							],
+							"path": [
+								"users",
+								"9758e003-e2f6-436f-b080-42fb904fc435"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{private_api_host}}/users/4f8b4ad0-7191-46e3-9c3e-7c84201229a1",
+							"host": [
+								"{{private_api_host}}"
+							],
+							"path": [
+								"users",
+								"4f8b4ad0-7191-46e3-9c3e-7c84201229a1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{TOKEN}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Whatsapp Messages",
+			"item": [
+				{
+					"name": "Whatsapps",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/whatsapp",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"whatsapp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Whatsapp",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/whatsapp/905b9a13-d67a-4651-aea2-ce4123dff3b3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"whatsapp",
+								"905b9a13-d67a-4651-aea2-ce4123dff3b3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Whatsapp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"dionatas\",\r\n    \"email\": \"dionatas@gmail.com\",\r\n    \"password\": \"Dionatas14%&\",\r\n    \"phone\": \"5551998656349\",\r\n    \"userConfigurations\": {\r\n        \"hasNotifications\": true,\r\n        \"language\": \"pt_BR\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/whatsapp",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"whatsapp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Whatsapp",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"dionatas\",\r\n    \"email\": \"dionatas@gmail.com\",\r\n    \"phone\": \"5551998656340\",\r\n    \"password\": \"Dionatas14%&\",\r\n    \"userConfigurations\": {\r\n        \"hasNotifications\": true,\r\n        \"language\": \"pt_BRasdasd\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/whatsapp/ec1654ac-3fc7-41f8-8d7d-bacc0c179cac",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"whatsapp",
+								"ec1654ac-3fc7-41f8-8d7d-bacc0c179cac"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Whatsapp",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/whatsapp/ffa1a9a7-45a0-426b-88dd-7edae61d24d2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"whatsapp",
+								"ffa1a9a7-45a0-426b-88dd-7edae61d24d2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "stock_exchange_monitor",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY_EXTENDED&symbol=IBM&interval=15min&slice=year1month1&apikey=OHGY6LDTPMAVE37L",
+							"protocol": "https",
+							"host": [
+								"www",
+								"alphavantage",
+								"co"
+							],
+							"path": [
+								"query"
+							],
+							"query": [
+								{
+									"key": "function",
+									"value": "TIME_SERIES_INTRADAY_EXTENDED"
+								},
+								{
+									"key": "symbol",
+									"value": "IBM"
+								},
+								{
+									"key": "interval",
+									"value": "15min"
+								},
+								{
+									"key": "slice",
+									"value": "year1month1"
+								},
+								{
+									"key": "apikey",
+									"value": "demo",
+									"disabled": true
+								},
+								{
+									"key": "apikey",
+									"value": "OHGY6LDTPMAVE37L"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "__Test",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/test",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "__Test Copy",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/whatsapp",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"whatsapp"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://postman-echo.com/get",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://postman-echo.com/get",
+					"protocol": "https",
+					"host": [
+						"postman-echo",
+						"com"
+					],
+					"path": [
+						"get"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "TOKEN",
+			"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkaW9uYXRhc0BnbWFpbC5jb20iLCJpYXQiOjE2ODE3MDA5MDYsImV4cCI6MTY4MTc4NzMwNn0.hF6CcQCGZF1J4QHrP2f2RpFgf3lBFVx-STirA3ABTpXKRLjiolxqsMHbrukRzN4bPTsphDPE38PRtZRh1GU8PQ"
+		}
+	]
+}
